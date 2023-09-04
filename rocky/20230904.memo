@@ -96,11 +96,25 @@ DISK
 
 공유되어 사용되고 있으며 실제 물리적인 성능을 뛰어 넘어서 사용 할 수는 없다.
 
+리눅스를 설치시에 
+AMD는 사실 잘 모르겠습니다.
+INTEL : 9세대 까지는 정상설치 
 
+i5 9600F < 기본 설치 가능
 
+i9 11세대
+TPM 
+보안부팅 ms 인증된 장비에 대한 설치 및 부팅 제공 
+실제머신에서는 TPM 활성화
 
+iso -> PC자체에 설치?
+ISO를 부팅 미디어로 제작	
+rufus
+https://rufus.ie/ko/
 
+root password : rocky
 
+user: team01 /team01 
 
 
 
