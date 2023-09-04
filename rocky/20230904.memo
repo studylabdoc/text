@@ -159,16 +159,191 @@ NAT vmnet8 :
 https://open-infra.tistory.com/m/14
 참고용 링크 2개
 
+사용되는 명령어 마다
+조금씩 윈도우랑 비교를 했을때 이해가 쉬운게 있기 때문에 적어두었습니다.
+
+왠만한건 한글 파일에다가 모두 작성
+PDF  생성 > 오전 / 오후 
+
+업데이트 
+
+
+
+리눅스에서는 명령어 입력으로 작업을 수행하는 TEXT 모드(CLI)를 주로 사용한다. 명령어 사용법을 익혀야 하며, 명령어를 입력하면 쉘에서 명령어를 해석하여 작업을 수행한다. 명령어에는 옵션(Options)과 인자(Arguments)가 있는데, 옵션은 명령어의 동작을 다르게 하는데 사용하고, 인자는 명령어의 인자나 옵션의 인자로 사용될 수 있다.
+
+키보드 / 마우스 60%
+
+GUI - TUI 
+CLI / TUI
+
+# Command [options] [Arguments]
+
+# : shell prompt 
+bash 쉘을 사용
+입력을 대기하기위한 상태 
+
+[입력]-[연산]-[출력]
+
+www.google.com
+search : rockylinux 
+
+어딘가에 있는 웹서버  rockylinux정보
+
+web UI 출력
+
+# 관리자 
+$ 사용자
+나오는 문자로 믿으면 안된다.
+[1] Command : 명령어
+[2] options : 명령에 대한 변화
+[3] Arguments : 명령어를 실행할 대상을 지시
+
+쉘을 첫번째 토큰으로 받아들이는 문자를 명령어로 인식
+토큰: 빈칸 , 탭
+options : 명령어에 비슷한 기능
+명령어 세트 -> 옵션 
+# nmcli [tab][tab]
+Arguments: 보통 지시하지 않는다면? 현재 폴더가 우선
+
+# ls 
+
+# cmd op arg 
+
+도움말 
+
+프로그램 처음 만져보거나
+어떤 제품 언박싱
+
+매뉴얼
+
+제품 매뉴얼
+
+명령어 -
+ls
+cal : 제일 잘 알고있는 사람? 개발자
+
+각 명령어 매뉴얼
+매뉴얼 보는 방법:
+매뉴얼 검색 방법:
+매뉴얼 : 제어
+
+ls 
+
+컨테이너 설치 / web 
+
+podman 
+
+매뉴얼: KLDP 한글화 프로젝트:
+ls / cp ..   한글로 작성
+
+# man 사용하는 방법:
+
+# man [CMD]
+# man ls
+q
+
+# man cd
+# man cal 
+
+ 03:35분에 시작하도록 하겠습니다
+
+LS(1)               User Commands              LS(1)
+명령어 (섹션)
+NAME
+       ls - list directory contents
+간략한 설명
+
+
+SYNOPSIS
+       ls [OPTION]... [FILE]...
+
+DESCRIPTION
+       List information about the FILEs (the current
+       directory by default).  Sort  entries  alpha‐
+       betically  if none of -cftuvSUX nor --sort is
+       specified.
+
+       Mandatory  arguments  to  long  options   are
+       mandatory for short options too.
+
+whatis 사용
+1 섹션 확인용
+2 이 명령어가 어떻게 사용되는가를 쉽게 확인
+
+비밀번호를 변경하는 명령어
+# passwd 
+1. 관리자
+관리자 root
+# passwd
+Changing password for user [root].
+New password: redhat
+BAD PASSWORD: The password is shorter than 8 characters
+Retype new password: redhat
+passwd: all authentication tokens updated successfully.
+관리자 fedora
+Changing password for user fedora.
+New password: 
+BAD PASSWORD: The password is shorter than 8 characters
+Retype new password: 
+passwd: all authentication tokens updated successfully
+
+관리자가 변경을 하는 경우에는 이전 비밀번호를 몰라도 변경이 가능하다.
+passwd 명령어만 사용하면 현재 계정 인자로 특정 계정 입력 : 특정계정을 변경
+
+
+2. 사용자 team01
+사용자 team01
+$ passwd
+passwd
+Changing password for user team01.
+Current password: : 기존의 비밀번호를 알아야 한다.
+New password: 
+Retype new password: 
+passwd: all authentication tokens updated successfully.
+사용자 team02
+passwd: Only root can specify a user name.
+
+사용자는 자신의 비밀번호만 변경이 가능하며
+다른 사용자를 변경하는 것은 root 또는 해당 사용자로 전환해야 한다. 
+
+# echo 'rocky' | passwd --stdin root
+# echo 'tema01' | passwd --stdin team01
+
+
+x86_64  
+
+x86  32
+
+AI
+AMD / intel ...
+아키텍처 구별
+플랫폼...
+지금은 다 통합이라 그렇게 중요하지는 않습니다.
+
+redhat 정책때문인지 
+모든 페이지가 다 보이지는 않습니다.
+서브스크립션이 없다면 보이지 않는 페이지도 존재.
+
+rocky
+redhat
+team/team
+
+실제로는 이렇게 주면 안된다.
+
+8글자 이상
+특수문자 포함
+숫자 
+
+정책을 만든 사람:
+괜히 만들었다.: 비밀번호는 긴게 최고
+
+# passwd  : 자신의 계정의 비밀번호를 변경
+# passwd team01 : team01 계정의 비밀번호를 변경
+
+
+
 
  
-
-
-
-
-
-
-
-
 
 
 
