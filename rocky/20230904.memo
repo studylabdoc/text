@@ -17,4 +17,59 @@ rocky linux
 rockylinux download
 https://download.rockylinux.org/pub/rocky/9/isos/x86_64/Rocky-9.2-x86_64-dvd.iso
 
+vmware / virtualbox 사용하고 있다. : 사용하셔도 됩니다. mac
+시간이 상당히 오래 걸림.: 10-15분?
+100M 
+
+hyper-v 
+
+unix -> minix -> linux(커널)
+HW / OS 
+HP HP_UX
+IBM AIX
+SUN solaris
+linux -> linux (커널 + 배포판의 어플리케이션)
+
+linux 완벽한 리눅스는 아니고 불완전한 리눅스
+minix + hurd + unix + linux = linux(커널) 0.0.1
+
+초기 프로그래머들 개발 
+배포 / 재배포 
+
+코드 법적소송 
+
+redhat / RHEL 프로그램 개발 
+법적인 모든 책임 
+
+공짜! 배포
+
+코드?
+
+one.exe 
+최종 사용 허가
+
+코드에 접근 권한? 
+
+빠르게 설치하고 수업 구성 마무리
+10:30
+
+hyper-v
+[win]+ R　＞control > 범주 > 작은 아이콘 > 프로그램 및 기능
+windows 기능 켜기 /끄기
+hyper-v 선택
+확인 > 재부팅 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
