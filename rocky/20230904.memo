@@ -463,14 +463,12 @@ rm -rf . <<< : 해당 디렉토리 밑의 모든 파일을 삭제.
 
 alias
 
-
-
 alias c='clear'
-
 
 unalias
 17:
 
+cat부터 시작 
 
 
 
