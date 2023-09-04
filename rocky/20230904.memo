@@ -139,6 +139,30 @@ SUBNET 255.255.255.0
 GW 192.168.10.1
 DNS 8.8.8.8
 
+여기까지 하시면서 문제가 잇으신 분들은
+
+참가자 -> 김기연
+
+우클릭 > 키보드 및 마우스 제어 전달
+
+원격 접속
+제어 전달
+
+접근이 hyperv에서 힘드신 분들은  
+vmware 가 있다면 vmware 에서 작업을 하셔도 상관 X 
+
+
+hyper-v 
+default switch : server 버전이 아니다.
+NAT vmnet8 : 
+ https://rdr-it.com/en/hyper-v-the-different-virtual-switches/amp/
+https://open-infra.tistory.com/m/14
+참고용 링크 2개
+
+
+ 
+
+
 
 
 
