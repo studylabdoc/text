@@ -340,14 +340,93 @@ team/team
 # passwd  : 자신의 계정의 비밀번호를 변경
 # passwd team01 : team01 계정의 비밀번호를 변경
 
+date 
+
+시간 설정 rdate > ntp [chrony]
+
+date TIME
+
+보석 : 1초 60hz
 
 
+작업중인 디렉토리를 변경할 때 사용
+# cd 
+# cd path
+/etc/sysconfig/network-scripts
+현재 위치
+/etc/sysconfig
+- 상대경로(Relative PATH) # cd dir1
+현재 있는 디렉토리가 기준
+# pwd
+/etc/sysconfig
+# cd network-scripts
+# pwd
+/etc/sysconfig/network-scripts
+- 절대경로(Absolute PATH) # cd /dir1
+항상 동일한 위치에서 시작 : /
+cd   /etc/sysconfig/network-scripts
+# pwd
+/etc/sysconfig/network-scripts
 
- 
+/etc/sysconfig/network-scripts
+1     2              3
 
 
+1 = 최상위 디렉토리
+
+2 ,3 = 디렉토리 구분자 
+
+. 사용자가 진입해있는 디렉토리 
+리 
+ .. 사용자가 진입해있는 디렉토리의 상위 디렉토
 
 
+/test/dir1/dir2
+현재 위치에서 파일을 생성
+/root
+
+file1 상대경로
+file2 절대경로
+
+touch [../../../root/]file1
+touch []file2
+
+~ : 현재 자신의 계정
+~fedora : fedora 계정
+
+ls 
+-rw-r--r--. 1 root root 0 Sep  4 17:13 file1
+
+-
+파일의 형식
+- 파일 exe, zip, text pdf..... 
+d 디렉토리 
+l 링크파일 [바로가기]
+c,b 장치파일
+
+rw-r--r--
+
+rwxrwxrwx 권한 
+읽기 수정 실행
+
+. ACL
+
+. 설정이 없음
++ 설정이 있다.
+1 : 링크 숫자.
+
+파일시스템에 동일한 데이터 블럭으로 이동하기 위해서 몇개의 포인트가 존재하는가? 
+
+root 소유자 
+root 그룹소유자
+0 용량
+Sep  4 17:13 시간
+file1 파일 이름
+
+요 구성만 이해를 한다면 
+1. 파일의 속성을 이해
+2. 권한/ 소유자..
+3. 이후 작업을 어떻게 해야 할지 이해
 
 
 
