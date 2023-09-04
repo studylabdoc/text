@@ -116,9 +116,28 @@ root password : rocky
 
 user: team01 /team01 
 
+putty
+https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
 
+로그인시
+Not lists?
+root
+rocky
+[TERM]: # poweroff
 
+가상머신 > 내보내기 
 
+rocky1
+IP 192.168.10.210
+SUBNET 255.255.255.0
+GW 192.168.10.1
+DNS 8.8.8.8
+
+rocky2
+IP 192.168.10.220
+SUBNET 255.255.255.0
+GW 192.168.10.1
+DNS 8.8.8.8
 
 
 
