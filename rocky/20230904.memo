@@ -867,11 +867,25 @@ chmod 제일 해야할것이 많은 명령어
 
 -rw-r--r--. 1 root   fedora 0 Sep  5 14:48 file1
 
-
-
 rw-r--r--
 
+rwxrwxrwx
 
+RWX RWX RWX
+  U    G    O
+
+u: user   /etc/passwd 	계정
+g: group  /etc/group    그룹
+o: other  u와g에 설정된 두 객체를 제외한 나머지 모두 
+a: all    u g o 전체 
+
+r : read 읽기
+w : write 수정
+x : excute 실행
+
++ : 권한을 추가
+- : 권한을 제거
+= : 기존권한을 무시하고 새로운 권한으로 업데이트 
 
 
 
