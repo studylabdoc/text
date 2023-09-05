@@ -887,6 +887,93 @@ x : excute 실행
 - : 권한을 제거
 = : 기존권한을 무시하고 새로운 권한으로 업데이트 
 
+# chmod [] file
+
+
+chmod : 권한 변경
+
+# chmod [perm]  f|d 
+
+심볼릭 u-x  : 권장
+옥탈     755
+
+심볼릭 모드 부터 변경하는것을 해보도록 하겠습니다.
+
+chmod 
+
+위에서 작성한 문자들을 조합
+
+u+r   유저에 읽기 권한을 추가
+g-x  그룹에서 실행권한을 제거
+u+r,g-x  위 두 권한을 동시에 실행
+a=rw-  전체 권한을 rw-로 설정
+
+
+옥탈모드일때?
+
+RWX
+각각의 문자열에 숫자가 포함되어 있습니다,.
+매핑
+
+R  W  X
+4  2  1
+
+0-7
+FILE
+파일은 읽고 쓰고 수정 기본
+0 --- O
+1 --x X
+2 -w- X
+3 -wx X
+4 r-- O
+5 r-x O
+6 rw- O vi 
+7 rwx O
+
+DIR
+디렉토리 접근하고 수정 실행 디렉토리에 대한 권한 
+R ls 
+W rm cp touch.. 
+X cd 명령
+
+0 ---  O
+1 --x  X
+2 -w-  X
+3 -wx  X
+4 r--  X
+5 r-x  O
+6 rw-  X
+7 rwx  O
+
+권한중에 심볼릭 모드에서만 가능한것! 
+김기연 님이 모두에게:    오후 3:45
+/test/dir1:
+total 0
+d------rwx. 3 root root 31 Sep  5 15:40 dir1
+-r-xr-xrwx. 1 root root  0 Sep  5 15:40 file1
+/test/dir1/dir1:
+total 0
+dr-xr-xrwx. 3 root root 18 Sep  5 15:40 dir2
+-rw-rw-rwx. 1 root root  0 Sep  5 15:40 file2
+/test/dir1/dir1/dir2:
+total 0
+drwxr-xrwx. 2 root root 19 Sep  5 15:40 dir3
+/test/dir1/dir1/dir2/dir3:
+total 0
+-------rwx. 1 root root 0 Sep  5 15:40 file3
+
+
+chmod 로 사용하는 경우  심볼릭모드에서 X 로 설정하는경우에 x 권한이 적용되는 범위가 있다.
+디렉토리의 경우에는 설정 
+파일의 경우에는 기존 권한에 x가 설정되어 있는 경우에만 x권한이 설정
+
+
+
+
+
+
+
+
 
 
 
