@@ -560,6 +560,96 @@ wc : word count
 # CMD | wc -l   <<< * 
 
 
+su
+계정을 전환하는 경우에 사용!
+관리자 , 사용자 라고 하더라도 계정을 하나만 사용하는 경우보다는 용도어 맞춰 여러개 계정을 사용하는 경우가 많다.
+
+root계정 > 
+
+root 계정의 경우에는 ssh로 바로 접근 X 
+ssh / 
+
+telnet rsh rlogin 
+평문 통신 
+
+원격 접속 
+1. 사용자 권한
+2. 관리자 / 특정 사용자로 전환
+
+$ su -
+# su - admin 
+
+
+$ su admin
+$ su - admin * 
+
+일반계정/ 관리자 
+
+su login 할때의 차이점
+[root@localhost test]# su - team01
+[team01@localhost ~]$ 
+관리자 > 사용자 전환
+비밀번호를 따로 요구받지 않는다.
+[team01@localhost ~]$ su - fedora
+Password: 
+[fedora@localhost ~]$ 
+[team01@localhost ~]$ su - 
+Password: 
+[root@localhost ~]# 
+사용자 > 사용자
+사용자 > 관리자
+비밀번호를 요구 받는다. : 여기서 사용되는 비밀번호는 전환되는 계정의 비밀번호 root / fedora 계정
+
+
+su 
+su - 
+* su 로그인은 완벽하게 환경 전환이 되는것은 아니기 때문에 ssh로 재접근 하는것이 필요한 경우도 있다. 
+
+
+su 
+
+sudo 
+
+             su               sudo
+비밀번호? 관리자 비밀번호 입력  사용자의 비밀번호를 입력
+사용권한? 명령어 자체의 권한       설정파일의 권한 
+[root@localhost test]# ssh team01@localhost
+team01@localhost's password: 
+Last login: Tue Sep  5 10:42:22 2023
+[team01@localhost ~]$ cat /etc/shadow
+cat: /etc/shadow: Permission denied
+[team01@localhost ~]$ sudo cat /etc/shadow 
+
+We trust you have received the usual lecture from the local System
+Administrator. It usually boils down to these three things:
+
+    #1) Respect the privacy of others.
+    #2) Think before you type.
+    #3) With great power comes great responsibility.
+
+[sudo] password for team01: 
+team01 is not in the sudoers file.  This incident will be reported.
+[root@localhost test]# vi /etc/sudoers
+[root@localhost test]# visudo
+
+id
+
+groups
+
+
+사용자 및 그룹에 관련된 파일
+
+/etc/passwd 계정정보
+/etc/group  그룹정보
+/etc/shadow 비밀번호 / 비밀번호 일자
+/etc/gshadow 그룹비밀번호 
+[root@localhost ~]# ls -l /etc/ | grep ^- | grep [-]$
+group-
+gshadow-
+passwd-
+shadow-
+
+-가 끝에 붙어있는 백업 파일이 존재
 
 
 
