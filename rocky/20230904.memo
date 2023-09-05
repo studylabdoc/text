@@ -674,79 +674,77 @@ $? == 0
 미리 이야기
 
 기본명령어 70개
-# ls
-# cd
-# pwd
-# passwd
-# useradd
-# rm
-# cp
-# mv
-# date
-# touch
-# mkdir
-# rmdir
-# id
-# cat
-# ps
-# bash
-# su -
-# echo
-# more
-# man
-# clear
-# ln
-# tree
-# dnf
-# chmod
-# chown
-# umask
-# which
-# where is
-# whereis
-# alias
-# histroy
-# stat
-# file
-# cat file1 file2 > file3
-# find . -name core 2> /dev/null
-# cat < file1
-# ssh
-# scp
-# sftp
-# script
-# tree
-# vi
-# uname
-# systemctl
-# exit
-# export
-# ^c
-# ^d
-# export
-# poweroff
-# init 
-# reboot
-# shutdown
-# ping
-# telnet
-# ifconfig
-# head
-# tail
-# who
-# last
-# lastb
-# w
-# while true do ; action ; done
-# df
-# du
-# sort
-# tee
-# screen
-# mail
-# wall 
-# grep
-# find
+# ls - 디렉토리의 파일/ 디렉토리 출력
+# cd - 디렉토리 변경
+# pwd - 작업 디렉토리 출력
+# passwd - 비밀번호변경
+# useradd - 계정 생성
+# rm - 삭제
+# cp - 복사
+# mv - 이동
+# date - 시간확인/ 시간 수정
+# touch - 빈파일 생성 / 파일 수정시간 변경
+# mkdir - 디렉토리 생성
+# rmdir - 디렉토리 삭제
+# id - 계정 정보 확인
+# cat - 파일 병합 및 파일 확인
+# ps - 프로세스 확인
+# bash - 쉘
+# su - 사용자 전환
+# echo - 문자열 출력 / 변수출력
+# more - 텍스트 파일 읽기 페이지단위
+# man - 매뉴얼 확인
+# clear - 창을 깨끗하게 청소
+# ln - 링크걸기 [하드][심볼릭]
+# tree - 디렉토리 구조 확인
+# dnf - = yum 소프트웨어 관리 /설치
+# chmod - 권한 변경
+# chown - 소유자 변경
+# umask - 기본 권한 변경
+# which - 절대경로 확인
+# whereis - 매뉴얼 확인
+# alias - 명령어 축약
+# histroy - 지금까지 사용한 명령어 확인
+# stat - 파일의 내부 정보 확인
+# file - 팡일의 형식 확인
+# cat file1 file2 > file3 : 표준 출력을 이용하여 파일을 병합
+# find . -name core 2> /dev/null  검색시 에러를 삭제
+# cat < file1 - file1을 cat를 이용하여 읽음
+# ssh - 원격접속
+# scp - 원격복사 *rcp와 알고리즘을 사용하고 있기에 위험하다.:*
+# sftp - 원격파일전송
+# script - 쉘의 내용을 그대로 파일로 저장
+# vi - 텍스트편집기
+# uname - 시스템 정보확인
+# systemctl - systemd 제어
+# exit - 빠져나갈때 사용
+# export - 환경변수 지정
+# ^c - 실행중인 프로그램에 인터럽트 
+# ^d - 1.EOF 2. 쉘을 빠져나갈때
+# poweroff - 시스템 종료
+# reboot - 시스템 재부팅
+# shutdown - 시간조절 + 재부팅,종료
+# ping - 상대방 컴퓨터 확인
+# ifconfig -> ip a : 네트워크 정보 확인
+# head - 텍스트 파일의 위부터 10줄 기본 확인
+# tail - 텍스트 파일의 아래부터 10줄 기본 확인
+# who - 접속한 사용자 확인
+# last - 계정의 마지막 접속 
+# lastb - 계정 접속시 접속 실패 기록
+# w - 접속한 계정이 어떠한 작업을 하고 있는지
+# while true do ; action ; done - 반복문
+# df - 디스크 용량의 남은 용량을 확인
+# du - 실제로 사용된 용량을 확인 <<
+# sort - 표준출력에 대한 정렬
+# tee - 출력을 두 방향을 복제 1 파이프 2표준출력
+# screen -> tmux : 쉘을 분할하여 두개로 사용
+# mail - 메일
+# wall  - 시스템 전체에 브로드캐스트 메시지 전송
+# grep - 내가 원하는 라인을 검색하기 위함
+# find - inode 정보로 원하는 파일을 필터링 하기 위하여 사용
+
+12:00 시작 
+
 
 
 
