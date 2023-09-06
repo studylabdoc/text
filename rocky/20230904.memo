@@ -1187,6 +1187,66 @@ pdf 다운로드 업데이트
 
 :q!
 
+bash
+
+프로세스 : 
+disk X mem O 
+
+PID : 번호가 붙어 있는 살아있는 프로그램 
+
+파일에 대한 입출력 크게 3가지로 나뉜다.
+0 : 표준 입력  <
+1 : 표준 출력 >
+2 : 표준 에러 > 
+
+# CMD | CMD 
+>> | pipe 
+
+pipe? 리눅스의 고유기능
+
+윈도우 개발? 
+
+운영체제 론:
+
+운영체제 8대 기능 하나가 pipe 
+
+[    ] ->  [     ]
+# CMD | CMD | CMD?
+
+PIPE가 넘길수 있는 것들:
+표준 출력
+
+파이프: 
+파이프(Pipe)란? 앞에 실행한 명령어의 [표준출력] 결과를 뒤에 실행하는 명령어의 표준입력 값으로 넣어 준다. 
+
+표준 출력이 아닌 표준 에러는 파이프를 타고 넘어가지 못한다.
+
+쉬는시간
+질문:
+PIPE를 10개 이상 사용하는 명령어 구문을 만들어봅시다.
+# echo 'file' | cat | cat | cat | cat | cat | cat | cat | cat | cat 
+file
+
+# echo 'file' | 
+      표준출력  >>표준 입력 
+[root@localhost test]# date | cut -c 12-19
+11:42:44
+[root@localhost test]# date
+Wed Sep  6 11:42:48 AM KST 2023
+[root@localhost test]# date | cut -c 12-20 ; date +%T
+11:42:56 
+11:42:56
+[root@localhost test]# date | awk '{print $4}'
+11:43:07
+[root@localhost test]#  timedatectl | grep time | head -1 | awk '{print $5}'
+11:43:11
+[root@localhost test]# touch $$ ; stat $$ | tail -4 | head -1 | awk -F . '{print $1}' | awk '{print $3}'
+11:43:17
+[root@localhost test]# touch $$ ; stat $$ | tail -4 | head -1 | awk -F . '{print $1}' | cut -c 20-27
+11:43:24
+
+
+
 
 
 
