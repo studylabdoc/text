@@ -2231,13 +2231,86 @@ chmod g-x project03
 # mkdir team
 # chmod 1777 team
 
+10:
+20분 까지 해서
+90개 확인 
 
 
+------------------------------
+리눅스 프로그램 설치 및 패키지 
+
+초창기 어플리케이션 설치
+
+소스 설치 
+파일을 웹/ ftp 등으로 다운로드 
+
+app.tar.gz  app.tar.bzip2
+
+app dir 
+
+config > make > install
+config : 설정 파일을 설명자 생성
+make : 기본 체계 구성
+install : 실제 설치
+
+상당한 에러를 동반 
+
+apache2 웹서버의 경우가 좀 많았다.
+OS : linux
+RHEL5 
+5.6
+소스 -> 성공? lib link/ version 호환성
+실패를 하는 경우가 더 많았다.
 
 
+소스설치: 사용자가 직접 하나씩 단계별로 설치
+장점: rpm등에서 제공하는 버전과 상관없이 현 시스템에 맞추어 빌드가 가능. 설치 디렉토리를 변경하는것 또한 가능
+단점: 빌드시 한번에 성공하기 보다는 여러번의 실패가 동반
+
+자동차
+소스 설치 : 직접 손수 제작 :  바디, 엔진
+rpm : 기성품
+장점: 소스 설치보다 편하다.
+단점: 종속성의 문제가 존재한다.
+A-B-C(D,E)
+
+yum,dnf : rpm의 단점을 보완한 설치 프로그램
+
+장점: 종속성의 문제를 해결
+단점: 버전이 변경되는 경우 항상 최신 버전만을 제공
+         로컬리포지토리 구성
+         인기가 없는 배포판의 경우에는 미러 사이트도 많이 없다. 
+          버전이 변경되어 오래되면 삭제되는 경우도 존재
+i U
+v
+h
+
+e
+
+DVD 장착 후 마운트하기
+hyper-v 관리자 - 가상머신 우클릭 - 설정
+DVD 드라이브 -> 이미지 파일 -> rocky linux iso 파일 선택
+
+GUI모드가 있다면 자동으로 마운트가 완료
+# lsblk
+NAME        MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+sda           8:0    0  100G  0 disk 
+├─sda1        8:1    0  600M  0 part /boot/efi
+├─sda2        8:2    0    1G  0 part /boot
+└─sda3        8:3    0 98.4G  0 part 
+  ├─rl-root 253:0    0 64.4G  0 lvm  /
+  ├─rl-swap 253:1    0  2.6G  0 lvm  [SWAP]
+  └─rl-home 253:2    0 31.4G  0 lvm  /home
+sr0          11:0    1  8.8G  0 rom  
+
+sr0 = cd,dvd rom 
+
+# mkdir /mnt/cdrom
+# mount /dev/sr0 /mnt/cdrom
+# umount /mnt/cdrom
 
 
-
+ 
 
 
 
