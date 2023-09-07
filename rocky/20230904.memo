@@ -2269,7 +2269,9 @@ RHEL5
 
 자동차
 소스 설치 : 직접 손수 제작 :  바디, 엔진
-rpm : 기성품
+rpm : 기성품 차 , 
+dnf: 올인원으로 준비 
+
 장점: 소스 설치보다 편하다.
 단점: 종속성의 문제가 존재한다.
 A-B-C(D,E)
@@ -2309,13 +2311,56 @@ sr0 = cd,dvd rom
 # mount /dev/sr0 /mnt/cdrom
 # umount /mnt/cdrom
 
+dnf
 
- 
+yum의 가장 큰 단점: 사용하다 보면 자꾸 hang
+# ps -ef | grep yum 
+kill 
+
+kill -9 바로 사용하는것은 위험
+
+kill PID : 정상 종료 
+메모리 상태의 정보를 클린업/ 
+kill -9 PID
+클린업 상태를 만들지 않고 묻지도 따지지도 않고 그냥 냅다 종료
+
+usb
+
+자료 저장
+
+1G
+10G 
+
+usb를 이용한다.
+
+sync; sync
+
+
+마운트:
+
+마운트 
+
+
+
+                                bash 
+USER                FS    파이
+--------
+KERNEL       kernel -> VFS : 가상 파일 시스템 
+--------
+H/W        DISK
+여러개의 파일시스템이 존재 : 
+disk  FS 
+
+# touch /.autorelabel
+# exit
+# exit
+
+30
 
 
 
 
-
+ㅇㄹㅇㅇㄹㄹㅇ
 
 
 
