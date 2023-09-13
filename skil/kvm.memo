@@ -110,9 +110,29 @@ rocky9 > 설정
 - DVD 드라이브
 - 네트워크 어댑터 
 
+------------------
+점심 
 
 
 
+\\10.0.1.107\iso
+
+rocky install
+
+Install Rocky linux 9.2
+GUI 화면 출력
+언어 선택 -> 설치중 사용할 언어 : en , US
+시간 설정 -> Asia/Seoul
+DISK -> auto > done
+
+hostname : server1.example.com -> Apply
+network -> config ->
+IPv4 Setting
+Method -> manual -> add
+ADD            NET            GW
+192.168.10.200 255.255.255.0 192.168.10.1
+
+DNS -> 8.8.8.8
 
 
 
