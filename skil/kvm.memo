@@ -205,7 +205,7 @@ BIOS 시스템의 앱 설정에서 시스템을 재부팅하여 확인하고 확
 
 
 이후 설치를 진행한다. 설치 자체는 아주 간단함
-# dnf install qemu-kvm libvirt python3-libvirt libguestfs-tools virt-install -y
+# dnf install qemu-kvm libvirt python3-libvirt libguestfs-tools virt-install virt-manager -y
 또는 
 # dnf groupinstall "virtualization host"
 GUI
@@ -213,7 +213,7 @@ GUI
 # dnf -y install epel-release
 
 
-시스템의 시각화 계층을 활성화하는 에뮬레이터 자체 - qemu
+시스템의 시각화 계층을 활성화하는 에뮬레이터 자체 - qemu  disk / nic / mem /cpu 
 QEMU 에뮬레이터를 실행하는 libvirt
 추가 패키지는 라이브러리
 libguest 도구는 VM에 필요한 추가 도구
@@ -225,6 +225,10 @@ virsh 명령을 사용가능함
 libvirt를 활성화
 # systemctl enable --now libvirtd
 # systemctl status libvirtd
+
+
+GUI -> CLI
+
 
 KVM 환경 설치 시 제공되는 기본 브리지입니다.
 
