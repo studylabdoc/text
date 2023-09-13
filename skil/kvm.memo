@@ -11,6 +11,47 @@ Hyper-V : 선택 > 확인
 재부팅 요구
 Hyper-V 프로그램 확인
 
+리눅스 파일을 다운로드
+rocky9
+https://download.rockylinux.org/pub/rocky/9/isos/x86_64/Rocky-9.2-x86_64-dvd.iso
+FULL 
+
+minimal < vm용
+
+11:30 - 13:00 
+
+hyper 클라이언트용 / 서버용 
+
+가상 스위치 관리자 > 새 가상 네트워크 스위치 > 내부 >  가상스위치만들기  > 이름 : vswitch
+
+ vm 
+
+default   vswitch 
+----------------
+hyper-v
+
+
+내부용 스위치 : 물리적 디바이스 공유
+[win]+r > ncpa.cpl
+
+vm---vswitch--NIC--> external 
+
+vswich 속성
+ipv4 IP 192.168.10.1
+ipv4 SUBNET 255.255.255.0
+
+물리적 NIC 속성
+>공유 : vswitch 선택 , > 확인
+-------------------------------
+
+가상머신 구성시 디렉토리 구성
+
+C:\VMs  디렉토리 생성
+가상머신
+
+
+
+
 
 KVM 설치 방법에 대하여 구성
 가장 먼저 해야 할 일은 KVM이 아직 사용자 환경에 설치되지 않았는지 확인하는 것
