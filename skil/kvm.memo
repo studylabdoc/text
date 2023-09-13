@@ -212,6 +212,18 @@ GUI
 
 # dnf -y install epel-release
 
+kvm 
+
+[KVM + qemu + libvirt]
+-------------------- 가상화를 위한 기반이 완성
+KVM 가속기로서의 기능
+qemu 에뮬레이터 / 장치 생성
+KVM + qemu  가상화를 지원, 명령어가 너무 길다.
+libvirt  API virsh / virt-manager / virt-install ..  변환시켜 qemu 전달
+
+KVM + qemu + libvirt  vir* > qemu/kvm 
+VM이 구동되고 사용가능한 상태 
+
 
 시스템의 시각화 계층을 활성화하는 에뮬레이터 자체 - qemu  disk / nic / mem /cpu 
 QEMU 에뮬레이터를 실행하는 libvirt
@@ -234,7 +246,8 @@ GUI -> CLI
 # mv Rocky-9.2-x86_64-minimal.iso /iso/
 
 
-KVM 환경 설치 시 제공되는 기본 브리지입니다.
+KVM 환경 설치 시 제공되는 기본 브리지
+virbr0
 
 기본적으로 브리지입니다.
 3: virbr0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default qlen 1000
@@ -242,8 +255,8 @@ KVM 환경 설치 시 제공되는 기본 브리지입니다.
     inet 192.168.122.1/24 brd 192.168.122.255 scope global virbr0
        valid_lft forever preferred_lft forever
 
-기본적으로 브리지가 설치되어 있음 이 브리지는 이 가상 IP를 통해 도달할 수 있으며 포트는 브리지의 포트에 있다.
-새로운 가상 머신을 설치할 수 있게 될까요? 이 다리에 연결되어 있는 경우 이 기계 이 브리지의 이름은 VIRBR0입니다.
+기본적으로 브리지가 설치되어 있음 이 브리지는 이 가상 IP를 통해 도달할 수 있으며 브리지 네트워크에 있다.
+새로운 가상 머신을 설치한다면 기본브릿지에 연결되어 있는 경우 네트워크 장치는 virbg0 이다.
 
 다음 으로 넘어가자
 # ping -c 3 192.168.122.1
@@ -261,11 +274,31 @@ rtt min/avg/max/mdev = 0.030/0.038/0.043/0.005 ms
 시스템에 추가 브리지를 설치하는 방법을 알아보자. 
 
 --------------------------------------------------------------------
-network1[virbr0] network2[] network3[nat]
+default[virbr0] network1[] network2[nat]
 
 
-network3을 통해 nat로 외부 통신을 구성한다.
+VM 
+-nic 연결가능한 장치 목록 : default|network1|network2
+
+
+
+default[virbr0] network1[] network2[nat]
+
+
+external ------------------VM zone[web db nfs ]
+web
+network1[] network2[nat]
+ 
+db nfs
+network1[]
+
+storage / 
+
+network2을 통해 nat로 외부 통신을 구성한다.
 즉, 모든 VM이 이 스위치를 통해 연결되고 인터넷에 접속할 수 있다
+
+one | controller
+---------------------------
 
 # virsh -h | grep net-  < 네트워크 설정을 위한 명령어 세트 확인
 
@@ -361,15 +394,14 @@ Network default destroyed
 vribr0가 사라진것을 확인 가능
 # virsh net-undefine default  < 실제 입력하지는 않을 것임 
 
-가상머신을 통해 연결하게 되면 이제 내부망에서 사용가능한 네트워크 라인 구성이 가능해짐
-
-vm배포 하긔
+가상머신을 통해 연결하게 되면 이제 내부망에서 사용가능한 
+네트워크 라인 구성이 가능해짐
 
 nat로 연결된 vm들은 외부 네트워크가 가능해짐 
 NAT(Network Attached Network)로 전달하도록 구성하자.
 사실 : 그냥해도 나감
 # /etc/sysctl.conf
-net.ipv4 ip_forward =  1
+net.ipv4.ip_forward =  1
 # sysctl -p
 
 ISO 파일 다운로드 : wget을 통해 image download
@@ -392,6 +424,8 @@ Content-Type: text/html;charset=ISO-8859-1
 
 *********launch VM creation
 
+로컬 리포를 구성한 뒤에 
+
 # virt-install \
 --name controller \
 --memory 4096 \
@@ -412,17 +446,56 @@ Volume 'vda'(/var/lib/libvirt/images/controller.qcow2) removed.
 
 # virt-install --name controller --memory 4096 --vcpus 4 --disk size=10 --location /iso/Rocky-9.2-x86_64-minimal.iso  --os-variant rocky9 --nographics --extra-args="console=ttyS0,115200n8" --network network:network2
 
------------------------요기까지 설치하긔 -----------------------------------
+root : rockylinux
+user : team01 / team01
+network dhcp
+
+
+외부에서도 작업가능한 상태로 이미지 설치를 해봅시다.
+설치시 주의점:
+1 그래픽 화면이 안나오기 때문에 당황할수도 있음
+2. 숫자로 입력 다른걸 누를 가능성도 있음
+3. 한 화면에 모두 안나오는 경우 종종 
+네트워크는 모두 dhcp를 사용한다.
+
+1) Start VNC
+2) Use text mode
+>2 
+
+[x] 설정완료
+[!] 설정해야할 사항이 남아있음.
+
+# virsh  
+1. 일반계정으로 먼저 접근
+2. ssh root 접근을 해제
+3. systemctl restart sshd
+
 
 사실상 마스터 이미지를 생성하는것
 
+crtl + ] <<
+
+
+CLI 설치 후 root  계정 ssh login 허용
+일반 계정 접속
+ssh team01@11.10.10.146
+$ su - 
+Password: 
+# id
+uid=0(root) gid=0(root) groups=0(root) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+
+# vi /etc/ssh/sshd_config
+/\cpermit
+40번째 라인을 다음과 같이 변경
+PermitRootLogin yes   < 변경
+# systemctl restart sshd
 
 두번째 네트워크를 연결하기 위한 작업
 
-# virsh domiflist rocky9
+# virsh domiflist controller 
  Interface   Type      Source     Model    MAC
 --------------------------------------------------------------
- vnet0       network   network2   virtio   52:54:00:19:8c:74
+ vnet6       network   network2   virtio   52:54:00:f8:2b:16
 
 # virsh net-dhcp-leases network2
  Expiry Time           MAC address         Protocol   IP address        Hostname   Client ID or DUID
@@ -434,7 +507,7 @@ Volume 'vda'(/var/lib/libvirt/images/controller.qcow2) removed.
 PermitRootLogin yes
 
 
-추가 적인 네트워크에 연결하기
+추가적인 네트워크에 연결하기
 # virsh attach-interface --domain controller --type network --source network1 --model virtio --config --live
 
 # virsh domiflist controller 
@@ -451,7 +524,7 @@ PermitRootLogin yes
  vnet7       network   network2   virtio   52:54:00:19:c7:2d
  vnet8       network   network1   virtio   52:54:00:23:0e:d5
 
-# virsh detach-interface --domain controller --type network --mac 52:54:00:23:0e:d5 --config --live 
+# virsh detach-interface --domain controller --type network --mac <MAC확인> --config --live 
 Interface detached successfully
 
 # virsh domiflist controller
