@@ -1,0 +1,485 @@
+3일동안 사용할 환경 구성
+hyper-v /
+
+vmware / virtual box ..
+
+ms - hyper-V : 활성화
+[win]+r : control
+범주 / 작은아이콘 
+windows 기능 켜기 끄기
+Hyper-V : 선택 > 확인 
+재부팅 요구
+Hyper-V 프로그램 확인
+
+
+KVM 설치 방법에 대하여 구성
+가장 먼저 해야 할 일은 KVM이 아직 사용자 환경에 설치되지 않았는지 확인하는 것
+설치가 되었는지를 확인하기 위해서는 다음 명령어를 확인해본다.
+# vrish -h
+설치가 되었다면 버전 확인 / 되지 않았다면 명령어 검색 불가능
+현재 KVM이 사용자 환경에 존재하지 않으며 수행해야 할 다른 작업이 있음을 의미
+KVM을 설치하기 전에 확인해야 할 것은 CPU가 가상화를 지원하는지에 대한 여부 확인
+# egrep -c '(vmx|svm)' /proc/cpuinfo
+vmx|svm 패턴과 같은 특수 패턴을 지원합니다.
+만약 없다면?
+BIOS를 통해 환경에서 이 기능 또는 이 기능을 활성화해야 함을 의미/ 하지만 현재는 hyper-v 이기 때문에 해당 기능을 활성화 하기 위한 작업을 추가로 해야한다.
+POWERSHEEL 에서 작업해야함
+> GET-VMProcessor -VMName <VMNAME>  | Format-List *
+  ExposeVirtualizationExtensions               : False  << Tue가 되어야 한다.
+
+가상머신을 종료해야 한다.
+> Set-VMProcessor -VMNAME <VMNAME> -ExposeVirtualizationExtensions:$True 
+  다시 확인뒤 기동
+
+# cat /proc/cpuinfo | egrep "vmx|svm"
+flags에서 vmx나 svm을 확인함.
+
+BIOS 시스템의 앱 설정에서 시스템을 재부팅하여 확인하고 확인
+
+이후 설치를 진행한다. 설치 자체는 아주 간단함
+# dnf install qemu-kvm libvirt libvirt-python libguestfs-tools virt-install -y
+또는 # dnf groupinstall "virtualization host"
+
+시스템의 시각화 계층을 활성화하는 에뮬레이터 자체 - qemu
+QEMU 에뮬레이터를 실행하는 libvirt
+추가 패키지는 라이브러리
+libguest 도구는 VM에 필요한 추가 도구
+몇가지 추가 작업을 위한 virt-install
+
+설치가 진행되었다면? 
+virsh 명령을 사용가능함
+
+libvirt를 활성화
+# systemctl enable --now libvirtd
+# systemctl status libvirtd
+
+KVM 환경 설치 시 제공되는 기본 브리지입니다.
+
+기본적으로 브리지입니다.
+3: virbr0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default qlen 1000
+    link/ether 52:54:00:27:d8:34 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.122.1/24 brd 192.168.122.255 scope global virbr0
+       valid_lft forever preferred_lft forever
+
+기본적으로 브리지가 설치되어 있음 이 브리지는 이 가상 IP를 통해 도달할 수 있으며 포트는 브리지의 포트에 있다.
+새로운 가상 머신을 설치할 수 있게 될까요? 이 다리에 연결되어 있는 경우 이 기계 이 브리지의 이름은 VIRBR0입니다.
+
+다음 으로 넘어가자
+# ping -c 3 192.168.122.1
+PING 192.168.122.1 (192.168.122.1) 56(84) bytes of data.
+64 bytes from 192.168.122.1: icmp_seq=1 ttl=64 time=0.030 ms
+64 bytes from 192.168.122.1: icmp_seq=2 ttl=64 time=0.042 ms
+64 bytes from 192.168.122.1: icmp_seq=3 ttl=64 time=0.043 ms
+
+--- 192.168.122.1 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2036ms
+rtt min/avg/max/mdev = 0.030/0.038/0.043/0.005 ms
+
+네트워킹에 관해 조금 진행해봅시다.
+이전에 보았듯이 현재 기본 브리지가 존재함. virbr0 KVM 설치 후 설치되는 기본 브리지
+시스템에 추가 브리지를 설치하는 방법을 알아보자. 
+
+--------------------------------------------------------------------
+network1[virbr0] network2[] network3[nat]
+
+
+network3을 통해 nat로 외부 통신을 구성한다.
+즉, 모든 VM이 이 스위치를 통해 연결되고 인터넷에 접속할 수 있다
+
+# virsh -h | grep net-  < 네트워크 설정을 위한 명령어 세트 확인
+
+두개의 네트워크를 더 생성해보자.
+1. 네트워크를 위한 정의파일 생성
+2. 정의파일을 읽어 스위치 추가 
+
+# vi /root/network1.xml
+
+<network>
+  <name>network1</name>
+  <bridge name="network1"/>
+    <ip address="10.10.10.1" netmask="255.255.255.0">
+	<dhcp>
+      <range start="10.10.10.2" end="10.10.10.254"/>
+    </dhcp>
+    </ip>
+</network>
+
+dhcp가 구성되어 있기에 해당 네트워크에 연결된다면 ip를 할당받음
+
+xml 파일을 읽어 새로운 네트워크를 구성한다.
+
+# virsh net-define /root/network1.xml 
+Network network1 defined from /root/network1.xml
+
+구성된 네트워크를 확인해봄
+# virsh net-list --all
+ Name       State      Autostart   Persistent
+-----------------------------------------------
+ default    active     yes         yes
+ network1   inactive   no          yes
+
+새로 구성된 network1을 기본으로 사용해보자.
+
+# virsh net-autostart network1 
+Network network1 marked as autostarted
+
+# virsh net-list --all
+ Name       State      Autostart   Persistent
+-----------------------------------------------
+ default    active     yes         yes
+ network1   inactive   yes         yes
+
+새로 생성된 네트워크를 시작한다.
+# virsh net-start network1
+Network network1 started
+
+# virsh net-list --all
+ Name       State    Autostart   Persistent
+---------------------------------------------
+ default    active   yes         yes
+ network1   active   yes         yes
+
+ip addr에서 새로운 네트워크인  network1을 확인가능함
+
+# ping 10.10.10.1
+PING 10.10.10.1 (10.10.10.1) 56(84) bytes of data.
+64 bytes from 10.10.10.1: icmp_seq=1 ttl=64 time=0.069 ms
+64 bytes from 10.10.10.1: icmp_seq=2 ttl=64 time=0.044 ms
+^C
+--- 10.10.10.1 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1049ms
+rtt min/avg/max/mdev = 0.044/0.056/0.069/0.012 ms
+
+다음 NAT 구성이 있는 network2를 생성해보자
+
+# vi /root/network2.xml
+
+<network>
+  <name>network2</name>
+  <bridge name="network2"/>
+    <forward mode="nat"  dev='장치명'/>
+    <ip address="11.10.10.1" netmask="255.255.255.0">
+	<dhcp>
+      <range start="11.10.10.2" end="11.10.10.254"/>
+    </dhcp>
+    </ip>
+</network>
+
+# virsh net-define /root/network2.xml 
+Network network2 defined from /root/network2.xml
+# virsh net-list --all
+# virsh net-autostart network2
+# virsh net-start network2
+# ping 11.10.10.1
+
+기본 브리지를 삭제 또는 비활성화 를 해보자. 
+
+# virsh net-destroy default
+Network default destroyed
+# ip addr
+vribr0가 사라진것을 확인 가능
+# virsh net-undefine default  < 실제 입력하지는 않을 것임 
+
+가상머신을 통해 연결하게 되면 이제 내부망에서 사용가능한 네트워크 라인 구성이 가능해짐
+
+vm배포 하긔
+
+nat로 연결된 vm들은 외부 네트워크가 가능해짐 
+NAT(Network Attached Network)로 전달하도록 구성하자.
+사실 : 그냥해도 나감
+# /etc/sysctl.conf
+net.ipv4 ip_forward =  1
+# sysctl -p
+
+ISO 파일 다운로드 : wget을 통해 image download
+
+하지만 왠만하면 로컬 저장소를 생성하여 내부에서 만드는것이 더 좋다.
+외부 네트워크를 타게되면 트래픽 / 속도에 엄청난 영향을 받게 된다.
+
+LOCAL REPO 생성
+# dnf -y install httpd
+# mkdir /mnt/Rocky-install
+# mount -o loop,ro -t iso9660 /iso/Rocky-9.2-x86_64-minimal.iso /mnt/Rocky-install/
+# cp -rv /mnt/Rocky-install/ /var/www/html/
+# systemctl enable --now httpd
+
+# curl -I http://11.10.10.1/Rocky-install/
+HTTP/1.1 200 OK
+Date: Tue, 12 Sep 2023 17:29:35 GMT
+Server: Apache/2.4.53 (Rocky Linux)
+Content-Type: text/html;charset=ISO-8859-1
+
+*********launch VM creation
+
+# virt-install \
+--name controller \
+--memory 4096 \
+--vcpus 4 \
+--disk size=100G \
+--location http://11.10.10.1/Rocky-install \
+--os-variant rocky9 \
+--nographics \
+--extra-args="console=ttyS0,115200n8" \
+--network network:network2
+
+# virsh undefine controller --remove-all-storage 
+Domain 'controller' has been undefined
+Volume 'vda'(/var/lib/libvirt/images/controller.qcow2) removed.
+
+# cp /iso/Rocky-9.2-x86_64-minimal.iso  /var/lib/libvirt/images/Rocky-9.2-x86_64-minimal.iso
+
+
+# virt-install --name controller --memory 4096 --vcpus 4 --disk size=10 --location /iso/Rocky-9.2-x86_64-minimal.iso  --os-variant rocky9 --nographics --extra-args="console=ttyS0,115200n8" --network network:network2
+
+-----------------------요기까지 설치하긔 -----------------------------------
+
+사실상 마스터 이미지를 생성하는것
+
+
+두번째 네트워크를 연결하기 위한 작업
+
+# virsh domiflist rocky9
+ Interface   Type      Source     Model    MAC
+--------------------------------------------------------------
+ vnet0       network   network2   virtio   52:54:00:19:8c:74
+
+# virsh net-dhcp-leases network2
+ Expiry Time           MAC address         Protocol   IP address        Hostname   Client ID or DUID
+---------------------------------------------------------------------------------------------------------
+  2023-09-13 04:20:35   52:54:00:19:c7:2d   ipv4       11.10.10.41/24    test1      01:52:54:00:19:c7:2d
+
+
+/etc/ssh/sshd_config : 수정
+PermitRootLogin yes
+
+
+추가 적인 네트워크에 연결하기
+# virsh attach-interface --domain controller --type network --source network1 --model virtio --config --live
+
+# virsh domiflist controller 
+ Interface   Type      Source     Model    MAC
+--------------------------------------------------------------
+ vnet7       network   network2   virtio   52:54:00:19:c7:2d
+ vnet8       network   network1   virtio   52:54:00:23:0e:d5
+
+
+붙인거 떨어뜨리기
+# virsh domiflist controller
+ Interface   Type      Source     Model    MAC
+--------------------------------------------------------------
+ vnet7       network   network2   virtio   52:54:00:19:c7:2d
+ vnet8       network   network1   virtio   52:54:00:23:0e:d5
+
+# virsh detach-interface --domain controller --type network --mac 52:54:00:23:0e:d5 --config --live 
+Interface detached successfully
+
+# virsh domiflist controller
+ Interface   Type      Source     Model    MAC
+--------------------------------------------------------------
+ vnet7       network   network2   virtio   52:54:00:19:c7:2d
+
+
+기본 작업에 대한 것을 확인해봅시다.
+
+가상머신 시작하기
+# virsh start controller
+
+
+가상머신 시작하면서 콘솔 붙이기 
+# virsh start controller --console  
+
+
+* 콘솔 붙이기 예시
+# systemctl enable serial-getty@ttyS0.service  < 우분투
+이후 재부팅 && 재접속 하기
+
+가상머신 정지
+# virsh shutdown controller
+
+가상머신 강제 정지
+# virsh destroy controller
+
+가상머신 자동 시작을 위한 구성
+
+# virsh autostart controller
+
+자동시작 중지
+# virsh autostart --disable controller
+
+전체 가상머신 확인
+# virsh list --all
+
+Switch console,
+만약 사용이 가능하다면 
+Ctrl + ] key.
+
+
+많은 구성이 들어가기전 가상머신을 클론으로 생성하자
+너무 많은 구성이 들어간다면 오히려 힘들어진다. 
+
+어느정도 구성이 끝났다고 판단이 된다면 그 다음으로는 시스템을 종료함
+# virt-clone --original controller --name controller30012022 --auto-clone 
+Allocating 'controller30012022.qcow2'                   |  10 GB  00:01     
+
+Clone 'controller30012022' created successfully.
+# cd /var/lib/libvirt/images/
+
+# vm start 
+
+
+#  virsh net-dhcp-leases network2
+ Expiry Time           MAC address         Protocol   IP address        Hostname   Client ID or DUID
+---------------------------------------------------------------------------------------------------------
+ 2023-09-13 04:40:41   52:54:00:19:8c:74   ipv4       11.10.10.165/24   -          01:52:54:00:19:8c:74
+ 2023-09-13 04:59:08   52:54:00:19:c7:2d   ipv4       11.10.10.41/24    test1      01:52:54:00:19:c7:2d
+
+
+스냅샷 구성하기
+
+#  virsh snapshot-list --domain controller
+ Name   Creation Time   State
+-------------------------------
+
+# virsh snapshot-create-as --domain controller --name "controllersnap1" --description "Snapshot firsh"
+
+가상머신 종료후 스냅샷
+
+# virsh snapshot-create-as --domain controller --name "controllersnap2" --description "Snapshpot second"
+# virsh start controller
+
+스냅샷으로 돌아가기
+# virsh snapshot-revert --domain controller --snapshotname controllersnap1 
+Domain snapshot controllersnap1 reverted
+
+# virsh list
+ Id   Name                 State
+------------------------------------
+ 1    rocky9               running
+ 14   controller30012022   running
+ 16   controller           running
+
+삭제 하기
+# virsh snapshot-delete  controller controllersnap1
+Domain snapshot controllersnap1 deleted
+
+
+시스템에 디스크 추가
+# qemu-img create -f raw /var/lib/libvirt/images/disk1osd1.img 30G
+
+# virsh attach-disk controller --source /var/lib/libvirt/images/disk1osd1.img  --target vdb --persistent
+Disk attached successfully
+
+# virsh domblklist controller
+ Target   Source
+----------------------------------------------------
+ vda      /var/lib/libvirt/images/controller.qcow2
+ vdb      /var/lib/libvirt/images/disk1osd1.img
+ sda      -
+# ssh root@11.10.10.41
+root@11.10.10.41's password: 
+Last login: Tue Sep 12 14:59:18 2023 from 11.10.10.1
+[root@test1 ~]# lsblk
+NAME        MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+sr0          11:0    1 1024M  0 rom  
+vda         252:0    0   10G  0 disk 
+├─vda1      252:1    0    1G  0 part /boot
+└─vda2      252:2    0    9G  0 part 
+  ├─rl-root 253:0    0    8G  0 lvm  /
+  └─rl-swap 253:1    0    1G  0 lvm  [SWAP]
+vdb         252:16   0   30G  0 disk 
+
+이후 작업은 기존에 사용하던 방식과 동일합니다.
+
+가상머신에서 사용하던 디스크를 제거하기
+
+가상디스크를 관리해보자
+
+
+# virsh domblkinfo controller vda
+
+Capacity:       10737418240
+Allocation:     2064089088
+Physical:       10739318784
+
+동일한 값을 나타낸다.
+# virsh domblkinfo controller /var/lib/libvirt/images/controller.qcow2
+Capacity:       10737418240
+Allocation:     2064089088
+Physical:       10739318784
+
+확인을 위한 명령어
+# virsh domblklist controller
+ Target   Source
+----------------------------------------------------
+ vda      /var/lib/libvirt/images/controller.qcow2
+ vdb      /var/lib/libvirt/images/disk1osd1.img
+ sda      -
+
+# virsh domblkinfo controller vda --human
+Capacity:       10.000 GiB
+Allocation:     1.922 GiB
+Physical:       10.002 GiB
+
+# virsh domblkstat controller vda --human
+Device: vda
+ number of read operations:      740
+ number of bytes read:           25014272
+ number of write operations:     401
+ number of bytes written:        25422848
+ number of flush operations:     237
+ total duration of reads (ns):   72141989
+ total duration of writes (ns):  940394752
+ total duration of flushes (ns): 228764351
+
+
+# virsh domblklist controller --details
+ Type   Device   Target   Source
+--------------------------------------------------------------------
+ file   disk     vda      /var/lib/libvirt/images/controller.qcow2
+ file   disk     vdb      /var/lib/libvirt/images/disk1osd1.img
+ file   cdrom    sda      -
+
+메모리 상태 정보 확인 
+# virsh dommemstat controller
+actual 4194304
+swap_in 0
+swap_out 0
+major_fault 232
+minor_fault 125838
+unused 3540740
+available 3749628
+usable 3447008
+last_update 1694545877
+disk_caches 47112
+hugetlb_pgalloc 0
+hugetlb_pgfail 0
+rss 771780
+
+
+전체 정보 확인
+# virsh dominfo controller
+Id:             16
+Name:           controller
+UUID:           8bf6cdb7-f558-43bf-a930-6e086aeba1ee
+OS Type:        hvm
+State:          running
+CPU(s):         4
+CPU time:       12.4s
+Max memory:     4194304 KiB   < 1048576을 기억하자  
+Used memory:    4194304 KiB
+Persistent:     yes
+Autostart:      disable
+Managed save:   no
+Security model: selinux
+Security DOI:   0
+Security label: system_u:system_r:svirt_t:s0:c434,c624 (enforcing)
+
+
+종료
+# virsh shutdown controller
+
+# virsh edit controller
+
+
+
+
