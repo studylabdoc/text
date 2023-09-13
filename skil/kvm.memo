@@ -133,6 +133,24 @@ ADD            NET            GW
 192.168.10.200 255.255.255.0 192.168.10.1
 
 DNS -> 8.8.8.8
+혹시나 활성화가 안된다면 on/off 버튼 한번씩 클릭
+done
+
+root : rocky
+/etc/ssh/sshd_config
+permitrootlogin yes
+systemctl restart sshd
+user : 아무거나 하나 생성 
+
+-> 설치 진행
+-> 재부팅
+
+네트워크 확인
+# ip a
+# nslookup www.naver.com
+putty :  https://the.earth.li/~sgtatham/putty/latest/w64/putty-64bit-0.79-installer.msi
+파일
+
 
 
 
@@ -140,7 +158,7 @@ vmware :cpu 설정 vt 선택
 KVM 설치 방법에 대하여 구성
 가장 먼저 해야 할 일은 KVM이 아직 사용자 환경에 설치되지 않았는지 확인하는 것
 설치가 되었는지를 확인하기 위해서는 다음 명령어를 확인해본다.
-# vrish -h
+# virsh -h
 설치가 되었다면 버전 확인 / 되지 않았다면 명령어 검색 불가능
 현재 KVM이 사용자 환경에 존재하지 않으며 수행해야 할 다른 작업이 있음을 의미
 KVM을 설치하기 전에 확인해야 할 것은 CPU가 가상화를 지원하는지에 대한 여부 확인
