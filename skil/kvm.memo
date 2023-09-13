@@ -228,6 +228,10 @@ libvirt를 활성화
 
 
 GUI -> CLI
+그래픽 콘솔내에서 
+# virt-manager
+# mkdir /iso
+# mv Rocky-9.2-x86_64-minimal.iso /iso/
 
 
 KVM 환경 설치 시 제공되는 기본 브리지입니다.
