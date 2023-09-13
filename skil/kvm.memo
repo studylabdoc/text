@@ -205,7 +205,7 @@ BIOS 시스템의 앱 설정에서 시스템을 재부팅하여 확인하고 확
 
 
 이후 설치를 진행한다. 설치 자체는 아주 간단함
-# dnf install qemu-kvm libvirt libvirt-python libguestfs-tools virt-install -y
+# dnf install qemu-kvm libvirt python3-libvirt libguestfs-tools virt-install -y
 또는 
 # dnf groupinstall "virtualization host"
 GUI
