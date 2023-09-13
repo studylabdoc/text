@@ -167,6 +167,11 @@ KVM 설치 방법에 대하여 구성
 가장 먼저 해야 할 일은 KVM이 아직 사용자 환경에 설치되지 않았는지 확인하는 것
 설치가 되었는지를 확인하기 위해서는 다음 명령어를 확인해본다.
 # virsh -h
+
+kvm / qemu / libvirt< 설치 
+
+kvm 
+
 설치가 되었다면 버전 확인 / 되지 않았다면 명령어 검색 불가능
 현재 KVM이 사용자 환경에 존재하지 않으며 수행해야 할 다른 작업이 있음을 의미
 KVM을 설치하기 전에 확인해야 할 것은 CPU가 가상화를 지원하는지에 대한 여부 확인
@@ -176,7 +181,7 @@ vmx|svm 패턴과 같은 특수 패턴을 지원합니다.
 BIOS를 통해 환경에서 이 기능 또는 이 기능을 활성화해야 함을 의미/ 하지만 현재는 hyper-v 이기 때문에 해당 기능을 활성화 하기 위한 작업을 추가로 해야한다.
 POWERSHEEL 에서 작업해야함
 > GET-VMProcessor -VMName <VMNAME>  | Format-List *
-  ExposeVirtualizationExtensions               : False  << Tue가 되어야 한다.
+  ExposeVirtualizationExtensions               : False  << True가 되어야 한다.
 
 가상머신을 종료해야 한다.
 > Set-VMProcessor -VMNAME <VMNAME> -ExposeVirtualizationExtensions:$True 
@@ -187,9 +192,26 @@ flags에서 vmx나 svm을 확인함.
 
 BIOS 시스템의 앱 설정에서 시스템을 재부팅하여 확인하고 확인
 
+(검사점)스냅샷
+기존에 존재하는 기본 검사점은 삭제
+[rocky9:vDISK]-----[default sanp]
+---------------    --------------
+      RO                RW 
+[rocky9:vDISK]
+              
+             
++ 내보내기
++ 가져오기
+
+
 이후 설치를 진행한다. 설치 자체는 아주 간단함
 # dnf install qemu-kvm libvirt libvirt-python libguestfs-tools virt-install -y
-또는 # dnf groupinstall "virtualization host"
+또는 
+# dnf groupinstall "virtualization host"
+GUI
+
+# dnf -y install epel-release
+
 
 시스템의 시각화 계층을 활성화하는 에뮬레이터 자체 - qemu
 QEMU 에뮬레이터를 실행하는 libvirt
