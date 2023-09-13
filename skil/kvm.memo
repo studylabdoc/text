@@ -541,13 +541,15 @@ Interface detached successfully
 
 가상머신 시작하면서 콘솔 붙이기 
 # virsh start controller --console  
-
+콘솔 작업 후 빠져나가기 
+ctrl + ] 
 
 * 콘솔 붙이기 예시
 # systemctl enable serial-getty@ttyS0.service  < 우분투
 이후 재부팅 && 재접속 하기
 
-가상머신 정지
+
+가상머신 정지 * 
 # virsh shutdown controller
 
 가상머신 강제 정지
@@ -555,13 +557,15 @@ Interface detached successfully
 
 가상머신 자동 시작을 위한 구성
 
+libvirtd < enable 
 # virsh autostart controller
 
 자동시작 중지
 # virsh autostart --disable controller
 
 전체 가상머신 확인
-# virsh list --all
+# virsh list    > 활성화 중인 가상머신만 확인
+# virsh list --all > 활성화 / 비활성화 확인 
 
 Switch console,
 만약 사용이 가능하다면 
@@ -594,7 +598,7 @@ Clone 'controller30012022' created successfully.
  Name   Creation Time   State
 -------------------------------
 
-# virsh snapshot-create-as --domain controller --name "controllersnap1" --description "Snapshot firsh"
+# virsh snapshot-create-as --domain controller --name "controllersnap1" --description "Snapshot first"
 
 가상머신 종료후 스냅샷
 
@@ -604,6 +608,8 @@ Clone 'controller30012022' created successfully.
 스냅샷으로 돌아가기
 # virsh snapshot-revert --domain controller --snapshotname controllersnap1 
 Domain snapshot controllersnap1 reverted
+부팅중 : 메모리 / cpu / disk 
+종료 : disk 
 
 # virsh list
  Id   Name                 State
@@ -616,6 +622,12 @@ Domain snapshot controllersnap1 reverted
 # virsh snapshot-delete  controller controllersnap1
 Domain snapshot controllersnap1 deleted
 
+
+서버 - 디스크 장착
+인식
+파티션
+파일시스템
+fstab
 
 시스템에 디스크 추가
 # qemu-img create -f raw /var/lib/libvirt/images/disk1osd1.img 30G
@@ -648,6 +660,21 @@ vdb         252:16   0   30G  0 disk
 
 가상디스크를 관리해보자
 
+fdisk > mkfs.xfs 
+/dir1 : 
+# fdisk /dev/vdb
+n
+enter
+enter
+enter
+enter
+w
+
+# mkfs.xfs -K /dev/vdb1
+
+
+
+-----------------------------------------------------------<<<< one day
 
 # virsh domblkinfo controller vda
 
@@ -733,6 +760,11 @@ Security label: system_u:system_r:svirt_t:s0:c434,c624 (enforcing)
 # virsh shutdown controller
 
 # virsh edit controller
+#
+
+
+
+
 
 
 
