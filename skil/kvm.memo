@@ -151,7 +151,15 @@ user : 아무거나 하나 생성
 putty :  https://the.earth.li/~sgtatham/putty/latest/w64/putty-64bit-0.79-installer.msi
 파일
 
+cmd >
+minimal 파일 
+C:\VMs\iso\Rocky-9.2-x86_64-minimal
 
+cmd 
+cd C:\VMs\iso
+scp Rocky-9.2-x86_64-minimal.iso root@192.168.10.200:/root
+root@192.168.10.200's password: rocky
+Rocky-9.2-x86_64-minimal.iso                                      100% 1536MB 209.3MB/s   00:07
 
 
 vmware :cpu 설정 vt 선택
