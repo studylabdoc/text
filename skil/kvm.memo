@@ -765,11 +765,15 @@ podman
 
 docker를 대체하기 위하여 나옴
 docker는 더이상 커뮤니티를 지원하지 않음 
+docker-EE  << 
+codker-CE X 
 커뮤니티도 docker 보다는 OCI 표준으로 진행중
 OCI의 일부분인 podman으로 변경중
 
 podman은 docker와 동일
-image / container /network 등 동일하게 지원 
+image / container / network 등 동일하게 지원 
+
+pod 개념을 도입 
 
 docker 이미지도 oci 표준으로 구성되어 있기에 기존 이미지를 동일하게 사용가능
 
@@ -780,7 +784,7 @@ podman 에서는 pod를 나열할수 있는 추가적인 명령어가 있음
 # podman pod list
 
 예시
-# podman pod create
+# podman pod create 
 # podman run -td --pod [POD ID] [image name]
 
 
@@ -806,6 +810,439 @@ pause : 일종의 컨테이너
 
 -namespace 기반으로 자원을 격리하는 것이 목적이다
 net / cgroup / mnt/ uts/ ipc ..
+
+podman 
+
+docker를 대체하기 위하여 나옴
+docker는 더이상 커뮤니티를 지원하지 않음 
+커뮤니티도 docker 보다는 OCI 표준으로 진행중
+OCI의 일부분인 podman으로 변경중
+
+podman은 docker와 동일
+image / container /network 등 동일하게 지원 
+
+docker 이미지도 oci 표준으로 구성되어 있기에 기존 이미지를 동일하게 사용가능
+
+pod == pause 
+
+podman 에서는 pod를 나열할수 있는 추가적인 명령어가 있음
+
+# podman pod list
+
+예시
+# podman pod create
+# podman run -td --pod [POD ID] [image name]
+> k8s 
+
+상태기반 솔루션
+
+
+podman / CRI-O / runc
+
+runc 
+- namespace
+- cgorup
+- selinux
+
+container 
+
+현재는 runc 기반으로 모든 컨테이너가 구동 docker / podman / kube
+
+runc는 최소한의 기능으로 컨테이너를 구동
+
+cri-o의 경우에도 상위 명령어이긴 하지만 kube에서 사용
+
+pod에 관련하여 조금 더
+
+
+pause : 일종의 컨테이너 
+
+-namespace 기반으로 자원을 격리하는 것이 목적이다
+net / cgroup / mnt/ uts/ ipc ..
+
+가상화 / 컨테이너 /
+--------------------
+nsr230@daum.net
+01097902540
+
+도입 / 
+
+가상화
+
+하드웨어 가상화
+
+네트워크 가상화 SDN 
+스토리지 가상화 
+ST DISK
+10 10 10 80 100 
+저장소 pool -> split -> depl
+iops
+컴퓨터 가상화  < vmware xen 
+
+
+성능좋은 큰 서버를 한대사서
+
+수십개로 잘라서 사용하면 안되는가?
+10:1
+xeon  
+
+
+HA DRS 
+
+VM |VM |VM |
+--------------
+H/W
+
+안정성 * 
+
+파일 -> export 
+qcow2 / vmdk / vhdx 
+> OVF 
+> OVA 
+disk만 살아있으면 어디서든지 
+eve-ng 
+
+site----------------site 
+FT
+
+
+
+
+VM LI err |VM win| VM li,wi |
+-------------------
+하이퍼바이저
+----------------
+H/W < 
+disk 
+mem
+cpu
+nic
+
+vm1 sw1
+vm2 sw2
+vm3 sw3
+
+win10 
+
+win7 file  << 장애 
+
+mac 
+
+
+windows  | VM | VM3
+
+test 환경 구성 -> 삭제 
+
+환경 구성 > master image
+cow
+qcow
+qcow2
+
+VM VM VM VM VM VM
+
+------------------------
+       manage
+------------------------
+H/W1 H/W2 H/W3 H/W....
+
+
+통합 작업
+분산/ 파티셔닝 작업
+
+KVM
+hyper-v
+vmware>vmkernel
+3  bash  file 
+    hV
+-------
+ring0
+
+
+
+Saas  서비스 
+Paas  플랫폼
+Iaas  인프라 *
+
+무료 - 하나의 서버에서 모든 리소스를 공유
+
+프라이빗 클라이두를 도입 
+사용량 예측 
+
+api 
+
+클라우드 
+
+요금
+3-5
+프라이빗  < 
+
+pem 
+단일 장애 지점
+
+15  100% 
+VM  VM2
+100
+
+KVM 기능적인 측면 약함
+
+libvirt
+-----------
+kvm + qemu
+
+서비스를 위한 서버를 구축
+
+서비스 증설 ..
+서버 대수가 증가
+
+운용 인력  > 인건비 
+
+전기
+비어있는 서버 
+
+S1---S2-----S3
+---------------
+18:00-8:00
+
+ssh 
+
+DISK -> Logcal -> part
+
+py->  log  -> part 
+1.더유연한분배와사용이가능
+user
+-----------
+Kernel
+----------
+H/W
+2.자원효율성최적화및관리
+
+kvm   <<< 
+
+ovirt
+vcenter
+openstack: 
+
+
+
+mac -> ovf 
+
+windows  ovf 
+
+j
+------
+JVM 
+15 
+vmware workstaion 유료 30
+vmware player 무료
+1.네트워크 에디터
+2. 클론 
+
+virtual box 
+qemu
+nat defualt 
+nat << 
+
+통합 매니징  vcenter 
+----------------
+s1 s2 s3 s4 s5
+접근
+기본적인 보안사항 
+ip..
+
+관리 콘솔 
+3
+2
+1
+0
+host   : 가상화 서버
+guest : 가상 머신
+
+
+가상머신
+
+생성 -> vm 껍데기
+
+cpu
+mem
+nic
+disk...
+
++ 
+
+실행
+ 접근
+종료..
+
+
+image       : qcow2  
+container   : vm running
+
+
+
+container : /var/www/html 
+host      :  /dir1 
+
+
+
+KVM 
+
+
+openshift | K8S
+
+podman -> host 
+단순 서비스 : 
+
+
+로그인을 하지 않은 경우: 20회
+libvirt - > api
+
+
+con
+podman libpod / docker libvirt -> lxc 
+kernel 
+
+겉만 동일하면 문제없다.
+
+공통점 : 논리적인 파일 
+
+VM - 운영체제 / 서비스
+물리적인 시스템[고장] > 가상화 
+32bit x   > 가상화 vm
+물리적인 시스템 > 전환 
+vm > 복구 > 
+많은 서버 > 통합화 
+
+CON -  커널공유 / 프로세스 [서비스]
+서비스에 따라 
+작은 서비스가 많다. 
+
+
+CON
+----
+VM
+
+기존환경
+
+
+베어메탈 -> 가상화 -> 컨테이너 
+베어메탈 -> 컨테이너 [자체개발]
+           ----------------
+
+외부---IP  port
+
+서비스 IP   
+
+어플리케이션: 설정 
+dns : localhost 
+
+podman desktop
+
+# dnf -y install container-tools 
+
+podman buildah skopeo
+
+podman-compose
+1
+2
+3
+4
+
+rootful
+
+1-1024 X
+포트 바인딩 
+rootless  << 추천
+컨테이너 전용 사용자 생성
+컨테이너 구현
+
+이미지 없는 경우 : 레지스트리 다운로드 
+이미지 잇는 경우
+
+podman run -d -p  4000:80
+docker
+/etc/httpd/conf/httpd.conf 
+
+8080 > 4567
+
+생성 -> 실행 -중지 - 삭제
+실행  -> - 중지 -삭제 
+
+docker run ubuntu:20.04
+
+컨테이너 -> 내부에 사용되는 프로세스가 따로 없다면 시작 -> 종료
+
+docker.io/redhat/ubi9-micro:v9
+
+
+podman run docker.io/redhat/ubi9-micro:v9
+
+podman search > pull
+podman search > run 
+-v 
+
+/Users/su.../:/var/lib/mysql:Z 
+
+
+권한 / 소유자 
+
+selinux : 
+
+컨텍스트 : 파일 / 디렉토리 접근 권한 
+
+꾸러미 
+
+app set 
+
+1
+2
+3
+
+
+file > 실행
+
+
+vmware  
+app set 
+
+vm >
+
+1vm 2vm 3vm 
+
+con -> con -> conm -
+
+
+vs code 
+
+> yaml
+
+vscode / ssh con > 디렉토리 
+
+
+K8S google > 
+필요한 기능 / 수작업 
+
+openshift : redhat >
+all in one 
+
+openshift
+K8S
+podman /docker
+H/Wd
+
+touch /.autorelabel < 
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
