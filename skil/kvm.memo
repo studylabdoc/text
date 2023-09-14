@@ -756,21 +756,56 @@ Security DOI:   0
 Security label: system_u:system_r:svirt_t:s0:c434,c624 (enforcing)
 
 
-종료
+
 # virsh shutdown controller
 
 # virsh edit controller
-#
+
+podman 
+
+docker를 대체하기 위하여 나옴
+docker는 더이상 커뮤니티를 지원하지 않음 
+커뮤니티도 docker 보다는 OCI 표준으로 진행중
+OCI의 일부분인 podman으로 변경중
+
+podman은 docker와 동일
+image / container /network 등 동일하게 지원 
+
+docker 이미지도 oci 표준으로 구성되어 있기에 기존 이미지를 동일하게 사용가능
+
+pod == pause 
+
+podman 에서는 pod를 나열할수 있는 추가적인 명령어가 있음
+
+# podman pod list
+
+예시
+# podman pod create
+# podman run -td --pod [POD ID] [image name]
 
 
+podman / CRI-O / runc
+
+runc 
+- namespace
+- cgorup
+- selinux
+
+container 
+
+현재는 runc 기반으로 모든 컨테이너가 구동 docker / podman / kube
+
+runc는 최소한의 기능으로 컨테이너를 구동
+
+cri-o의 경우에도 상위 명령어이긴 하지만 kube에서 사용
+
+pod에 관련하여 조금 더
 
 
+pause : 일종의 컨테이너 
 
-
-
-
-
-
+-namespace 기반으로 자원을 격리하는 것이 목적이다
+net / cgroup / mnt/ uts/ ipc ..
 
 
 
