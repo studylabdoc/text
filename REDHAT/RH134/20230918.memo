@@ -210,14 +210,16 @@ Sep 17 22:16 : 수정 시간
 수정 시간 : 파일의 컨텐츠를 변경한 시간
 변경 시간 : inode 테이블이 변경된 시간
 stat
-file1 : 파일 이름
+f
 
 -h : 용량을 사람이 보기 쉽게 표시 
 -i : inode 번호를 확인
 -rt : 시간정보로 정렬
 -v : 숫자 + 이름 으로 정렬시 순서대로 나타내기 
+https://meet.google.com/ubt-caxx-ajg
 
-# cd
+# cdff
+
 # pwd
 # passwd
 # useradd
