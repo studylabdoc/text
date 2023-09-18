@@ -111,6 +111,80 @@ ssh는 자동 로그인
 https://meet.google.com/gtq-geur-ads
 
 # man
+모든 프로그램 
+제품 - 설명서 
+명령어들은 도움말이 존재.
+만든 사람이 가장 잘 알고있다.
+
+도움말을 보는 방법
+$ ls --help
+$ man ls 
+$ info ls / pinfo ls 
+
+기능키 : 필수적인 몇가지
+q : 빠져나가기
+h : 전체 키 확인
+enter : 라인 별로 출력
+space bar: 페이지별로 출력
+b : 위로 이동
+/ : 검색  ex : /-l
+n: next 
+N: undo next
+
+LS(1)            User Commands           LS(1)
+
+LS : 명령어
+(1): 섹션 번호  / # man man
+
+       1   Executable  programs  or shell com‐mands : 사용자가 사용가능한 명령어 
+       2   System calls (functions provided by
+           the kernel)
+       3   Library   calls  (functions  within
+           program libraries)
+       4   Special  files  (usually  found  in
+           /dev)
+       5   File  formats and conventions, e.g./etc/passwd : 파일 포맷 
+       6   Games
+       7   Miscellaneous   (including    macro
+           packages   and  conventions),  e.g.
+           man(7), groff(7)
+       8   System   administration    commands (usually only for root) : 관리자 전용 명령어 
+       9   Kernel routines [Non standard]
+
+1,5,8 
++ service daemon 
++ config file
+
+NAME 명령어에 대한 간략한 설명 
+       ls - list directory contents
+
+SYNOPSIS 문법
+
+       ls [OPTION]... [FILE]...
+
+DESCRIPTION 상세한 설명
+
+실제 사용되는 옵션에 대한 출력
+
+-a,--all : -a로 사용해도 되고 --all로 사용해도 된다.
+--author : 무조건 --author 옵션으로 사용
+
+example: 명령어 샘플
+example Example EXAMPLES
+
+SEE ALSO 참고명령어 
+
+-s 
+다른 매뉴얼 종류
+
+명령어 체계
+# [1] [2] [3]
+
+[1] 명령어 : 첫 토큰(쉘에서 입력할때 띄어쓰기를 기준으로 첫번째 워드)을 명령어로 인식 
+[2] 옵션 : 명령어의 형태 변화 / 출력 변화 
+[3] 인자 : file / dir  명령어 실행에 대한 타겟을 변경 
+
+
 # ls
 # cd
 # pwd
