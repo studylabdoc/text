@@ -188,6 +188,8 @@ SEE ALSO 참고명령어
 -a : 숨김파일을 확인
 -A : 숨김파일을 확인, 단 .과 ..을 제외 
 -l : 긴 포맷으로 출력
+-F : 파일 형식 
+
 -rw-r--r--. 1 root root 0 Sep 17 22:16 file1
 - 파일 형식
 - 일반 파일
@@ -419,27 +421,89 @@ A u+g+o 사용자
 - 권한을 제거
 = 기존 권한을 무시하고 새로운 권한으로 업데이트 
 
-r 
-w
-x
+파일
+r 읽을수 있는 권한 * 
+w 수정할 수 있는 권한
+x 실행 할 수 있는 권한
+rw- r-x r--
+
+디렉토리
+r ls 명령어를 실행 할 수 있는 권한
+w cp mv touch rm 명령어들을 실행 할수 있는 권한
+x cd 명령어를 실행 할 수 있는 권한 *
+
 
 r 
 w
 x
+X : 심볼릭 모드에서만 가능
 
+원본
+.:
+total 0
+drwxr-xr-x. 4 root root 43 Sep 18 02:27 ori
 
-r 
-w
-x
-X
+./ori:
+total 0
+drwx------. 2 root root 19 Sep 18 02:27 dir1
+d---------. 2 root root  6 Sep 18 02:27 dir2
+-rw-rwx---. 1 root root  0 Sep 18 02:27 file1
+
+./ori/dir1:
+total 0
+-rw-r--r--. 1 root root 0 Sep 18 02:27 file1
+
+./ori/dir2:
+total 0
+
+권한 변경
+other : 
+1.파일과 디렉토리에 관련하여 변경
+2.read excute write
+3. rwx를 주는데 원래 파일에 실행 권한이 없다면 여전히 없고 싶다. 
+
+실행 권한을 추가 할 때
+디렉토리거나 기존에 실행권한이 있는 경우에만 실행권한을 추가 하고 그외에는 실행권한을 추가 하지 않는다. 
+
 
 0-7
 
 
 
 # chmod
+# chmod u+x file1
+# chmod u+r,g+rw file1
+# chmod a=rw- file1
+
 	
 # chown
+R W X
+4 2 1
+F
+0 --- O
+1 --x 
+2 -w-
+3 -wx
+4 r-- O
+5 r-x O
+6 rw- O
+7 rwx O
+
+D
+0 --- O
+1 --x 
+2 -w-
+3 -wx
+4 r--
+5 r-x O
+6 rw-
+7 rwx O
+
+# chmod 
+
+chmod -v 옵션 필수 ! 
+
+
 소유자 / 그룹 소유자 변경
 # chown root [F|D]
 # chown .root [F|D]
@@ -448,37 +512,136 @@ X
 -r 디렉토리 내부의 모든 파일도 변경 
 -v 변경 내용을 출력
 
+
+ [!]000
+
+SETUID 실행 파일 
+SETGID 디렉토리[권장] 실행파일
+STIKYBIT 디렉토리 
+
+소유자의 권한을 빌려서 무언가를 실행/ 저장
+
+SETUID
+권한을 대여
+
+실행하는 대상자가 아닌 
+파일의 소유자 권한을 실행
+
+- 실행한 사용자의 권한이 아니라 
+파일/ 디렉토리의 소유자 권한으로 진행 된다.
+
+권고 사항 SETUID 
+쉘 실행 뒤 > 결과 파일 권한 
+
+렌탈
+
+잠시 권한을 빌려 실행 -> 반납 
+
+
+STIKYBIT 디렉토리 
+자유게시판
+각각 사용자의 파일을 본인이 관리 
+a B
+A 글을 업로드
+B 읽고 / 댓글  수정/삭제 
+
+SETGID 디렉토리
+공용 디렉토리 
+
+chmod 2770 dir 
+
+setuid
+
+
 # umask
+기본 권한 관리용 명령어
+F
+666  644
+D
+777  755
+777    666
+003    003  = wx  o-wx 
+774    663 
+774    664 
+
+숫자지만 숫자가 아니다.
+권한에 대한 매핑
+rwx
+4 2 1 
+권한을 제거한다. 
 
 # which
-# where is
+명령어의 절대 경로 
+
 # whereis
+매뉴얼파일의 위치
+
 # alias
+
+명령어를 사용할 때 순서
+#  ls
+1 hash 
+hash -r 
+2 alias 
+3 $PATH 
+
+위의 과정을 그냥 지나치고 $PATH로 사용
+# command ls 
+
 # histroy
+~/.bash_history
+
+history -c : 메모리상에 쌓인 추가적인 내용만 삭제 
+
+ctrl + r
+!! : 바로 전에 사용한 명령어 재사용
+!num : 입력된 숫자의 명령을 재사용
+
 # stat
+파일의 시간 정보 상태
 # file
+파일의 형식을 확인
+
 # cat file1 file2 > file3
+
 # cat < file1
-# ssh
-# scp
-# sftp
+
+# ssh 원격접속
+# scp 원격 파일 복사 보안상 X
+# sftp 원격 FTP
+
 # script
-# tree
+쉘에서 출력되는 모든 내용을 기록 로깅 명령어
+
++ tee 
+
+script /dev/null | tee /dev/pts/4 
+
+termius 
+
 # vi
-# uname
+
 # systemctl
+init > systemd 
+
 # exit
+exit 0 
+0-255
+1-255 err
+0 = OK 
+
 # export
-# ^c
-# ^d
-# export
+
+# ^c : 인터럽트 
+# ^d : 1. EOF 2. logout[exit]
+
 # poweroff
 # init 
 # reboot
 # shutdown
 # ping
-# telnet
 # ifconfig
+
 # head
 # tail
 # who
@@ -491,6 +654,9 @@ X
 # sort
 # tee
 # wall 
+
+
+
 # grep
 # find
 # find . -name core 2> /dev/null
