@@ -720,6 +720,92 @@ aws + openstack
 
 https://meet.google.com/gqt-fjoi-sbx
 
+windows batch 
+linux unix shell script / perl.. ansible + python 
+
+공통점 : 자동화 
+
+반복적인 작업을 위한 tool 
+쉘 스크립트
+------------
+top
+down
+------------
+
+shell: GUI에서 가능한 작업은 모두 CLI에서도 가능하다. 
+
+사람의 실수: 
+동일한 작업 : 
+shell + cron 
+
+text file : vi nano emacs 텍스트 에디터 사용법
+
+vi : 로 작업을 많이 한다.
+vscode :ssh 
+vscode server 로 wen UI로 접근 작성
+
+# vi filename
+---------------------
+#!/usr/bin/bash
+
+CMD
+----------------
+
+#!/usr/bin/bash : bash를 이용해서 쉘 스크립트를 작성하겠다.
+CMD : 작업되는 순서대로 넣어주면 된다.
+
+
+인용 특수 문자
+
+쉘에서는 특수문자 가지는 의미 
+
+' : 쉘이 해석을 하지 못하도록 막는다.
+" : 쉘이 해석을 하지 못하도록 막는다. + 해석이 가능한 특수문자가 존재
+`  \ 
+`: ``안쪽의 문자열을 명령어로 해석 $() < 최근에는 요렇게 
+\ :
+1 바로 뒤에 오는 문자를 해석하지 않음
+2 \ 문자뒤에 아무것도 없는 상태이면 쉘을 끝내지 않고 PS2 변수를 반환한 뒤에 쉘을 이어나간다. 
+; : 명령어 격리
+위험->> 명령어를 잘라서 앞 뒤로 나누어 진행
+&& : 앞의 명령어가 $? = 0 경우에만 뒤의 명령어를 실행 
+|| : 앞의 명령어가 $? != 0 경우에만 뒤의 명령어를 실행 
+
+스크립트는 작성이 되었다.
+
+1. 권한 주기
+실행 권한
+chmod u+x file.sh
+2. 어디에서 실행할 것인가?
+# ./file.sh
+
+/root/bin
+/home/team01/bin
+
+
+# cmd > file1 2>&1
+>&2  
+
+for
+for VARIABLE in LIST; do
+COMMAND VARIABLE
+done
+
+https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=mmarine&logNo=70094622832
+
+
+if
+
+while
+
+while true
+do
+action 명령어 [모니터링 ]
+
+done
+값이 참인 경우에 무한 반복
+
+
 
 
 
