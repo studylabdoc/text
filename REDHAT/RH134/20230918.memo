@@ -658,8 +658,52 @@ exit 0
 
 
 # grep
+정규식을 이용한 검색 
+패턴
+# grep pattern file
+# CMD | grep pattern
+
+-i 대소문자를 구별하지 않는다.
+-v 검색된 패턴만 제외
+-l 파일을 대상으로 검색
+-lr : 디렉토리를 대상으로 할 때 필요
+-w 정확한 패턴만 검색할 때 
+
+장치명: eth0
+설정파일: /etc
+
+-A [num] 
+-B [num]
+-C [num]
+
+-E egrep
+cat list | grep -E '(cat|dog)'
+-F fgrep
+
+pipe grep의 관계
+
+| = 표준 출력을 표준 입력으로 넘겨주는 역할
+
+# CMD > file 2>&1 
+# ls file1 file2 file3 file4  2>&1 | grep file
+
+
+
+
+
+
+
 # find
 # find . -name core 2> /dev/null
+
+# locate < 파일 이름만을 대상으로 사용
+# updatedb ; locate sample113
+
+# find 
+# find path 
+
+
+
 
 기본 명령어  +
 
@@ -796,6 +840,37 @@ https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=mmarine&logN
 
 if
 
+조건
+조건이 맞을시 : 행동
+
+if 조건; then
+   행동
+fi
+
+if 조건; then
+ 1차 행동
+else
+ 2차 행동
+fi
+
+if 조건; then
+ 1차 행동 
+elif 조건 ; then
+ 2차 행동 
+else
+ 2-2차 행동 
+fi
+
+최신의 스크립트는 문자를 단순하게 나열하여 사용하지ㅡ는 않습니다.
+
+TUI 유행
+
+
+
+
+
+
+
 while
 
 while true
@@ -805,6 +880,8 @@ action 명령어 [모니터링 ]
 done
 값이 참인 경우에 무한 반복
 
+# ls file* 
+file. file? 
 
 
 
