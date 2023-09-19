@@ -883,10 +883,171 @@ done
 # ls file* 
 file. file? 
 
+스케쥴러 
+
+at : 1회성 
+atd 
+# systemctl status atd
+● atd.service - Deferred execution scheduler
+     Loaded: loaded (/usr/lib/systemd/system/atd.service; ena>
+     Active: active (running) since Mon 2023-09-18 21:03:06 E>
+       Docs: man:atd(8)
+   Main PID: 792 (atd)
+      Tasks: 1 (limit: 10799)
+     Memory: 304.0K
+        CPU: 7ms
+     CGroup: /system.slice/atd.service
+             └─792 /usr/sbin/atd -f
+
+[root@servera ~]# systemctl is-active atd 현재 활성화 상태 
+active
+[root@servera ~]# systemctl is-enabled atd 부팅시에 활성화 상태
+enabled
+
+crontab : 반복 사용
+crond
+
+
+# crontab
+-l 리스트를 확인 
+-r 삭제
+-u 유저를 선택
+-e 에디터를 실행
+
+/var/spool/cron/사용자명
+
+* * * * *  CMD
+1 2 3 4 5 
+cat /etc/crontab
+1 분 0-59
+2 시 0-23
+3 일 1-31 
+4 월 1 -12
+5 주 1-6 [7,0]
+
+crontab은 1분 단위로 확인
+* * * * * logger 'team01 crontab'
+
+저장을 하는 순간부터 적용
+
+*/2 * * * * logger 'team01 crontab'
+2분에 한번씩 << 
+2 4 6 8 10...>
+5,10,15,20,25 * * * * logger 'team01 crontab'
+지정된 시간마다 실행
+5-10 * * * * logger 'team01 crontab'
+매시간 5 6 7 8 9 10분에 실행
+
+crontab : 0분은 사용하지 말아야 한다.
+
+5분 15분 
+
+systemd 
+
+systemd.timer 
+
+crontab -> timer 
+
+# systemctl daemon-reload 
+
+crontab에 대한 사용법:
+/etc/crontab
+
+* * * * * CMD
+crontab -l
+crontab -u username -e
+crontab -u username -l
+/var/spool/cron/username
+
+라이센스 -
+RHCSA 취득 메일 3년
+RHCSA 20230919 - 20260919
+10 RHCSA
+9 RHCE 
+
+10 RHCE
+
+/tmp
+/var/tmp
+
+
+rm -> mv
+
+linux rm -> 
+ 
+GUI 휴지통
+
+터미널 ssh...
+rm -> 더이상 찾을수가 없다.
+ext  lost+found 
+xfs
+
+서버 -> 10K 15K
+
+
+rm -> mv 
+ 
+
+rm -> 
+/tmpfile  30d
+ㄴroot-[dir]---[]
+ㄴteam01-
+백업 
+
+
+tail -f : 5M / 일정 시간이 지나 파일이 커지게 되면 기존 파일을 백업 새로운 파일 생성
+
+tail -F  : 5M 이상
+
+이벤트 - journald -> rsyslog - file
+           |
+       journalctl 
+
+ntp / chrony 
+
+rdate
+
+rdate -p server
+
+rdate -s server
+
+client--------------server 10:00:02
+          동기화
+          |    |||||||            +
+10:00:00           |                   -< 
+
+로그 / 인증 
+OTP 
+PC OTP 
+game server time----------windows 
+시간을 어떻게 해야 촘촘하게 맞출수 있을까?
 
 
 
 
+ntp
+
+client--------------server
+요청T1   --------------> 확인T2 0.3
+적용T4  <--------------- 응답T3 0.3
+
+(T2-T1)+(T4-T3) 0.6 
+추가적으로 reach 값을 모니터 377:
+
+OTP / ticket / 수강신청 
+
+한번에 되지 않는다.
+지속적으로 모니터링 실시
+최대 30분까지 싱크 시간 
+
+
+vi /etc/chrony.conf 
+server classroom.example.com iburst
+iburst: 패킷을 한번에 16개 보낸다.
+
+systemctl enable --now chronyd 
+
+https://www.satsignal.eu/ntp/reach.html
 
 
 
