@@ -1049,10 +1049,20 @@ systemctl enable --now chronyd
 
 https://www.satsignal.eu/ntp/reach.html
 
+*                현재 NTP 서버와 동기화 중
++                NTP 서버와 통신은 가능하지만 현재 동기화는 하고 있지 않음
+-                NTP 서버와 통신은 가능하지만 동기화 목록에서 제외된 경우
+blank or INIT    NTP 서버와 통신이 불가능
 
-
-
-
+reach = reachability	reach 값은 타임서버에 완전히 접속하기 위한 8진수로 377이어야 합니다.
+delay = delay		delay 값은 양의 수여야 하며 가능한 작은 값이어야 합니다.
+chrony
+chronyd
+dnf -y install chrony
+systemctl enable --now chronyd 
+vi /etc/chrony.conf
+server SERVER iburst
+timedatectl set-ntp true
 
 
 
