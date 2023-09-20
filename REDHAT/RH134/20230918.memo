@@ -1117,19 +1117,164 @@ rsync
 
 10분
 
-# sysctl 
+sysctl > tuned
+
+정적 튜닝 구성 > 기본
+한번 설정을 하게 되면 변경되지 않는다. 
+동적 튜닝 구성 > 구성을 변경
+ ㄴ 시스템의 변화에 맞추어 알아서 변경 
+ /etc/tuned/tuned-main.conf
+dynamic_tuning = 1  
+
+159p 
+연습문제 11분
+
+nice : 프로그램을 시작때 사용
+
+# nice programname
+renice : 프로세스의 우선순위를 변경할 때
+# renice PID 
+
+19-20 
+
+우선순위가 높음 : 처리를 빠르게  NI -> -10
+우선순위가 낮음 : 처리를 빠르게 할 필요가 없는 경우 NI -> +10
+PRI NI
+ 80  0
+ 70  -
+ 90  + 
+6080
+172p 
+40분
+
+PRIority NIce
+프로세스를 기본 실행하면 NICE값은 기본값으로 실행되고 우선순위값은 80으로 실행한다. 그리고 이후에 변경을 통해서 프로세스의 우선순위를 변경할수 있다. 
+그렇다면 기존에 실행된 프로세스는 PRI 값이 변경되지 않는것인가?
+
+339p
+
+방화벽
+
+SELINUX / FIREWALL
+
+서버 
+
+RHEL5 telnet
+
+telnet----> firewall
+               xinetd 
+                   telnet
+                       daemon
+
+firewalld
+
+firewall-cmd --[tab][tab]
+
+방화벽 설정 수정 >
+
+firewall-cmd --reload 
+
+ 
+--permanent : 저장되는 설정파일에 저장
+--reload : 설정되어 있는 정보를 불러오는 파일
+
+
+방화벽 설정 > 방화벽 리로드
+# firewall-cmd ~~~~
+# firwall-cmd --reload 
+
+
+런타임 
+
+설정정보
+
+권한 소유자
+
+컨텍스트 -> 확인
+# cat /etc/selinux/config
+
+SELINUX=enforcing
+
+enforcing
+permissive
+disabled -> 이전에는 파일에서 설정하여 재부팅시 적용
+ grubby --update-kernel ALL --args selinux=0
+
+grubby --update-kernel ALL --remove-args selinux
+
+콘텍스트는‘정보의 정보’라고 
+사전적 의미로 콘텍스트는 텍스트와 같은 단순 정보에 대한 해석이 아닌, 곧바로 인지되는 특정 상황을 말한다.
+
+unconfined_u:object_r:default_t:s0
+1                   2             3             4
+
+3
+
+httpd
+
+apache 사용자
+
+/var/www/html  index.html 
+                    root apache 
+
+curl http://servera GET index.html 
+
+SELINUX - enforcing 
+
+ /var/www/html -> 여기에 맞는 컨텍스트가 설정
+                            index.html  여기에 맞는 컨텍스트가 설정
+
+apache 사용자 여기에 맞는 컨텍스트가 설정
+
+   /var/www               /tmp /home 
 
 
 
+dns
+
+bind 
+
+ /var/named/zone...
+
+chroot-bind
+/var/named/chroot/var/named/zone
+
+file1 default_t setup_t
+chcon - 테스트 
+semanage fcontext - 영구적
+
+restorecon
+
+'/virtual(/.*)?'
+
+fcontext : 디렉토리와 / 내부 파일들의 컨텍스트 조정
+
+boolean - 기능에 대한 on /off 
+
+vsftp
+nfs .. home 
+
+355p
+
+selinux 
+firewall
+실습 문제 ..
+
+부팅 > 로그인
+root
+redhat 
 
 
+seLINUX
 
+타임 스탬프 
 
+/etc/shadow <<
 
-
-
-
-
+/.autorelabel ->
+부팅중에 이 파일을 만나게 되면 
+selinux -> disable
+enable -> 모든 파일에 대한 selinux 재작성
 
 
 
