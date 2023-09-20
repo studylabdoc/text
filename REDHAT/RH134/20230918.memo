@@ -1064,5 +1064,75 @@ vi /etc/chrony.conf
 server SERVER iburst
 timedatectl set-ntp true
 
+파일 보관 및 전송
+
+tar - 테이프 아카이빙
+
+압축 - 용량 확보 
+아카이빙 - 보관 
+
+네트워크를 통하여 전송
+1 여러개의 파일 - tar 
+2 rcp로 전송시의 문제 : 메타데이터 변경 
+
+-f 파일형태로 입력/추출
+-c 생성
+-x 추출
+-t  확인 
+-v 로깅 
+-z gzip
+-j bzip2
+-J xz
+
+tar 압축시 / 추출시 최상위 디렉토리를 지정하는 경우 삭제 
+tar: Removing leading `/' from member names
+
+아카이빙 + 압축
+
+tar cvzf : gzip
+      cvjf : bzip2
+      cvJf : xz 
+
+rsync : ssh 파일 전송
+# tar cf . - | (cd /path ; tar xf -) : 시간 정보
+
+
+-a 아카이브 모드)
+-z  압축 
+
+(주의) 아래 사항의 차이점을 이해 해야 한다.
+# rsync -avz --delete -e ssh /backup/ /test101/  (# rsync -avz --delete -e ssh /backup/ /test101)
+-> (ㄱ) /test101 디렉토리가 없으면 생성된다.
+-> (ㄴ) /backup 디렉토리의 내용과 /test101 디렉토리의 내용은 동일하다.
+
+# rsync -avz --delete -e ssh /backup /test101
+-> (ㄱ) /test101 디렉토리가 없으면 생성된다.
+-> (ㄴ) /test101 디렉토리안에 backup 디렉토리가 생성된다.
+
+tar 
+
+rsync 
+
+145p 
+
+10분
+
+# sysctl 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
