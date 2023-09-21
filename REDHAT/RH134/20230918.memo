@@ -1276,6 +1276,254 @@ seLINUX
 selinux -> disable
 enable -> 모든 파일에 대한 selinux 재작성
 
+-
+
+4-1 /etc/fstab : 영구설정
+
+4 mount
+# mount /dev/vdb1 /disk1
+
+3 filesystem
+# mkfs -t ..
+# mkfs.ext4
+# mkfs.xfs /dev/vdb1 
+
+2 partition
+# fdisk  : 파티션을 지정 / 설정 
+fdisk sfdisk gdisk[gpt] parted[ansible]
+sfdisk : 동일한 용량 / 동일한 파티션 구성을 하는 경우에 쓸만하다.
+1. 원본이 될 파티션 정보
+2. 작업할 디스크 
+source : vdb des: vdc
+# sfdisk -d /dev/vdb | sfdisk /dev/vdc
+fdisk : 메모리에서 작업된 내용을 w 명령을 통해 쓰기 작업 진행 
+parted : 명령을 내리는 즉시 작업이 완성: 위험
+
+1 block device - disk  /dev/ 장치 b 4K 
+# lsblk  # lsscsi  # lspci 
+
+# lsblk
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+vda    253:0    0   10G  0 disk 
+├─vda1 253:1    0    1M  0 part 
+├─vda2 253:2    0  200M  0 part /boot/efi
+├─vda3 253:3    0  500M  0 part /boot
+└─vda4 253:4    0  9.3G  0 part /
+vdb    253:16   0    5G  0 disk 
+vdc    253:32   0    5G  0 disk 
+vdd    253:48   0    5G  0 disk 
+# lsblk --fs 파일시스템 UUID를 확인한다. 
+
+/dev/   vda  xvda   sda   hda[IDE]
+# find /sys/devices -name scan -exec ls -l {} \;
+# echo "- - -" > /sys/devices/pci0000:00/0000:00:10.0/host0/scsi_host/host0/scan
+# echo 1 > /sys/block/sdc/device/delete
+
+
+
+
+
+디스크 장착:
+
+용량에 대한 분할
+장애시 살려낼수 있는 부분이 존재
+fsck 시간을 줄이기 위함
+
+/ < fsck 필수 
+
+구형 서버 + init => 부팅 20 40
+
+fdisk로 파티션 관리
+
+echo -e "n\np\n1\n\n\nt\n8e\nw" | fdisk /dev/sdX
+
+# fdisk /dev/vdb
+사용법: m 
+
+n : 새로운 파티션 생성
+p : 작성된 파티션 내용을 확인
+d : 파티션 삭제
+t : 파티션 형식을 변경
+
+o : mbr 
+g : gpt 
+
+파일 시스템 생성
+
+# mkfs.ext4 /dev/vdb1
+# mkfs.xfs /dev/vdb2
+
+
+마운트
+
+디렉토리    추상화된 인터페이스   ---> /dev/vdb1
+
+
+         shell    [file]  추상화된 인터페이스 
+user     
+-----------
+kernel   kerenl     
+------------ 
+H/W      disk     file1/ data..
+
+
+# mount /dev/vdb1 /dir1 
+
+/dev/vdb1과 /dir1을 연결
+
+# mount /dev/vdb2 /dir2 
+
+UUID=fb535..59f39a767       /       xfs     defaults        0       0
+UUID=fb535..59f39a767       /dir1   xfs     defaults       
+1 dump 1|0
+2 fsck 1|2|0
+/dev/vdb2
+UUID=   # lsblk --fs , blkid 
+
+# mount -a << 정상적으로 다 올라오는지 확인
+# df
+
+
+가상메모리
+
+swap
+
+
+메모리 ----- disk 
+           4K
+
+메모리 용량이 부족해서 
+* 개발자의 요청으로 프로그램에서 가상메모리를 사용하도록 구성된 경우
+
+MEM------DISK
+     >>>>> swap in
+     <<<<< swap out
+
+# 500M swap file
+
+disk 파티션 :권장, 시스템파일이 있는 / 파일시스템과 다른곳에 구성
+FS file : 임시적으로 사용하는 경우에 
+
+파티션 준비
+/dev/vdc1
+
+# mkswap /dev/vdc1  스왑 생성
+
+# swapon /dev/vdc1   스왑 활성화
+# swapoff /dev/vdc1  스왑 비활성화
+# swapon -s 현재 스왑 정보를 확인
+
+
+dd if=/dev/zero of=swapfile bs=1M count=500
+
+swapon /swap/swapfile
+swapoff /swap/swapfile
+
+fstab
+
+UUID=1bd9fd46-0dec-4584-b272-52b3e3d5fb4b       swap    swap    defaults        0       0
+# swapon -a
+
+Priority : 스왑이 두개 이상일 경우 먼저 사용할 스왑을 결정해야 한다. 그렇다면 어떻게? 
+value between -1 and 32767.   정수로 큰게 먼저 사용  10 20 
+
+UUID=1bd9fd46-0dec-4584-b272-52b3e3d5fb4b       swap    swap    defaults,pri=20        0       0
+
+mount
+FS
+[LVM]
+part
+DISK
+
+PV : lvm이 이해가능한 형태의 디스크
+VG : 디스크의 모음 
+LV : vg를 대상으로 파티셔닝 된 논리객체 
+
+pvcreage
+pvs
+pvdisplay
+
+vgcreate [NAME] [device]
+# vgcreate vg0 /dev/vdb1
+
+VG---LV
+PE---LE : 사이즈가 매핑 4M 
+LVM에서 사용하는 디스크의 최소 사이즈 조각
+-l +1 : 4M
+
+
+
+# lvcreate -n [name] -[l|L] size vgname 
+
+확장* 
+
+용량
+/dev/mapper/vg0-lv0  440M----> 650M
+/dev/mapper/vg0-lv1  595M----> 800M
+
+chrony 
+
+650
+800M
+
+
+  Current LE
+ 201  : 300 
+
+
+300-201
+
+
+생성 lvm
+
+LE 32M 
+
+vgcreate -s 32M 
+
+
+stratis
+8버전에 탑재 9 자랑...
+
+워크스테이션
+서비스 구현
+
+풀 생성
+파일 시스템 구현
+
+
+
+부팅
+
+
+fstab
+특정한 서비스가 필요한 경우  대기[서비스가 올라올때까지]를 할 수 있는 옵션 
+systemd.mount manual 
+UUID=0cbf3ff5-9765-4e5e-83a5-9e92b2e86982    /stage3 xfs     defaults,x-systemd.requires=stratisd.service 
+
+서비스, 
+
+
+278p 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
