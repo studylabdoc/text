@@ -1687,7 +1687,166 @@ https://tmpstorage.com/download/sird2g5p76
 
 시험을 진행
 
-activity
+activity -> icon[redhat]
+exam 사이트
+
+
+serverb
+1. root 비밀번호 초기화 
+
+servera
+2. 네트워크 설정
+3. 호스트네임 설정
+servera 에 대한 ssh로 접근
+4. 리포지토리 설정
+serverb
+serverb에 대한 ssh 접근
+5. 리포지토리 설정
+-------------------------
+문제를 풀기 위한 기본 설정 완료
+
+servera에 설치되어 있는 httpd 데몬을 통해 웹 서버가 동작해야 한다.
+httpd.conf 설정파일을 건드리면 안되며 출력되는 에러를 해결하고 정상적인 웹서버 가동을 해야한다.
+- 이 웹서버는 외부에서 확인이 가능해야 한다.
+
+lvm 생성
+lvm 확장
+swap 파티션
+
+용량 계산
+
+컨테이너 문제
+
+server1.example.com/Containerfile
+
+---------------
+base..
+run
+cmd...
+--------------
+컨테이너 생성
+
+servera에 cont 사용자로 구성:
+
+http://server1.example.com/Containerfile 를 사용하여 watch  라고 지정된 컨테이너를 빌드 합 니다.
+Containerfile을 변경하지 마세요.
+
+# dnf -y install container-tools
+# podman info 
+# ssh cont@localhost
+$ podman info
+$ mkdir -p /home/student/.config/containers
+registries.conf 파일 생성
+
+-------------------------------
+unqualified-search-registries = ['registry.lab.example.com']
+
+[[registry]]
+location = "registry.lab.example.com"
+insecure = true
+blocked = false
+------------------------------
+$ mkdir work
+$ cd work
+$ wget http://server1.example.com/Containerfile
+.... download
+$ ls 
+$ Containerfile
+$ podman build -t watch:latest .
+
+STEP 1/4: FROM registry.lab.example.com/ubi9-beta/ubi:latest
+...output omitted...
+STEP 2/4: RUN echo -e '[rhel-9.0-for-x86_64-baseos-rpms] ...
+...output omitted...
+STEP 3/4: RUN yum install --disablerepo=* --enablerepo=rhel-9.0-for-x86_64-baseosrpms --enablerepo=rhel-9.0-for-x86_64-appstream-rpms -y python3
+...output omitted...
+STEP 4/4: CMD ["/bin/bash", "-c", "sleep infinity"]
+...output omitted...
+Successfully tagged localhost/watch:latest
+80e68c195925beafe3b2ad7a54fe1e5673993db847276bc62d5f9d109e9eb499
+
+
+server1에 다음과 같이 systemd 서비스로 자동 시작되는 rootlees  컨테이너를 생성하자.
+컨테이너 이름은 aaa 입니다.
+컨테이너는 이전에 다른 항목에서 생성된 watch를 이미지로 사용합니다.
+기존 사용자 cont로만 systemd 서비스로 실행됩니다.
+서비스 이름은 container-aaa입니다.
+컨테이너는 수동 조작 없이 시스템 재부팅후 자동으로 시작됩니다.
+/opt/files 로컬 디렉토리를 컨테이너의 /otp/incoming 디렉토리에 연결
+/opt/processed 로컬 디렉토리를 컨테이너의 /otp/outgoing 디렉토리에 연결
+
+
+$ podman images
+
+watch  라는 이미지가 보여야 한다.
+$ podman run --name aaa -d localhost/watch -v /opt/files:/otp/incoming:Z -v /opt/processed:/otp/outgoing:Z 
+$ podman ps
+$ mkdir -p ~/.config/systemd/user/
+$ podman generate systemd --name aaa --new --files
+~/cont/work/container-aaa.service
+$ mv container-aaa.service ~/.config/systemd/user/
+$ systemctl --user daemon-reload
+$ systemctl --user enable --now  container-aaa.service
+$ loginctl enable-linger
+$ exit
+# reboot
+$ cd 
+/opt/files 로컬 디렉토리를 컨테이너의 /otp/incoming 디렉토리에 연결
+/opt/processed 로컬 디렉토리를 컨테이너의 /otp/outgoing 디렉토리에 연결
+
+$ cd /opt/files 
+$ echo 11111 > file1
+$ ls /opt/processed 
+file1.pdf
+$ file /opt/processed/file1.pdf
+pdf format..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
