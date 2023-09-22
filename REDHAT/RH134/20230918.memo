@@ -1504,21 +1504,185 @@ UUID=0cbf3ff5-9765-4e5e-83a5-9e92b2e86982    /stage3 xfs     defaults,x-systemd.
 
 
 278p 
+]
 
 
 
 
 
+client-------------------server  OS 
+                         export
+showmount X
+4 다른방식으로 test를 해야한다.
+     connet              bind
+
+nfs 
+
+네트워크 스토리지 
+
+network FS 
+블록디바이스가 아님
+
+-> 디렉토리로 제공
+mount  명령으로 편하게 접속 가능
+• mount 명령을 사용하여 수동으로
+• /etc/fstab 파일의 항목을 구성하여 부팅 시 영구적으로
+
+nfs-utils 
+
+serverb nfs를 열어두었다. 
+?
+
+[root@servera ~]# mkdir /mnt/nfs : 접속할 디렉토리 생성
+[root@servera ~]# mount -t nfs serverb.lab.example.com:/ /mnt/nfs : 원격 서버에 최상위 디렉토리인 / 를 마운트 
+내보내기 된 디렉토리중에 현재 서버에서 접근 가능한 자원정보를 모두 확인 가능
 
 
+실제 자원 사용을 위해서 마운트 작업
+mount -t nfs -o rw,sync server:/export /mountpoint
+
+# mkdir /stage5
+# mount -t nfs -o rw,sync serverb.lab.example.com:/shares/public /stage5
+
+mount시 timeo=7 [* 1/10] 
+
+원격 서버에 붙이는 경우에는 원격 서버를 먼저 켜둔다.
+하지만 리부팅, 장애
+
+자동마운트
+: 
+
+/etc/fstab
+
+1. nfs에서 내보내기 하는 자원이 한두개면 상관 없음.
+2. 수 많은 자원을 가지고 온다.
+3. 홈 디렉토리. 100 300 이유가 없다.
+사용할 때만 접근 / 자동으로 해제 autofs
+
+1. 접근시에만 마운트
+2. 일정시간동안 사용되지 않으면 마운트 해제
+
+직접 마운트 
+기존에 사용하던 방식대로 마운트 진행
+변하지 않고 단순 등록후 계속 사용하는 경우 
 
 
+간접 마운트 
+하나의 디렉토리 내에 수 많은 디렉토리
+디렉토리명 서버 / 클라이언트가 동일하게 사용해야 한다. 
++ 디렉토리 내의 디렉토리들이 계속 변화할때 
+
+100 50 > 150 300
+
+마운트할 디렉토리를 직접 만들 필요가 없다.
+
+사용자 입장: mount 명령어를 직접 사용 불가능
+autofs로 구성이 되어 있다면 요청사항을 데몬이 처리하여 접근
+
+# dnf -y install nfs-utils autofs
+
+/etc/auto.master  < 메인 설정 파일 
+
++dir:/etc/auto.master.d
+Include /etc/auto.master.d/*.autofs  << 
+
+[root@servera ~]# mount -t nfs serverb.lab.example.com:/shares/direct/external /mnt
+테스트로 진행한 마운트는 성공
+
+# cd /etc/auto.master
+# vi direct.autofs
+/- /etc/auto.direct
+
+/- << 직접마운트로 구성하겠다. 
+/etc/auto.direct  << 실제 설정이 들어가는 파일 
 
 
+# vi /etc/auto.direct
+
+/external -rw,sync,fstype=nfs4 serverb.lab.example.com:/shares/direct/external
 
 
+/external -rw,sync serverb.lab.example.com:/shares/direct/external
 
 
+# systemctl enable --now autofs
+
+간접마운트
+# vi /etc/auto.master.d/indirect.autofs
+
+/internal /etc/auto.indirect
+
+west -rw,sync,fstype=nfs4 serverb.lab.example.com:/shares/indirect/west
+
+/internal/west ------serverb.lab.example.com:/shares/indirect/west
+
+* -rw,sync,fstype=nfs4 serverb.lab.example.com:/shares/indirect/&
+
+*과 &는 동일한 문자열 매핑
+
+cd /internal/dir1 ->serverb.lab.example.com:/shares/indirect/dir1
+
+RHEL8 8.2 추가
+
+8.2 
+RHEL8 + podman 
+
+DO180 280 188  
+
+podman
+
+docker - podman 
+
+docker = podman X
+사용자 입장 
+
+가상화 - 컨테이너 차이
+
+컨테이너 볼륨
+
+overlay FS
+
+
+image -> container process
+
+container layer[RW] : 쓰기 데이터가 많아지면 급격하게 느려진다. 
+custom layer[RO]
+base layer[RO]
+
+volume
+
+-v 호스트의 디렉토리:컨테이너의 디렉토리
+SELINUX  가 구동중
+-v 호스트의 디렉토리:컨테이너의 디렉토리:Z
+호스트의 디렉토리와 컨테이너의 디렉토리를 마운트
+
+rw가 필요한 디렉토리를 외부로 뺀다.
+
+-p 
+웹서버 80
+
+컨테이너 웹서버 8080
+
+외부 사용자 . 1.1.1.1 ----> [host--[container]]
+
+-p hostport:conport 
+
+호스트도 8080이면 사용자가 포트를 변경해서 사용해야 하나?
+포트포워딩 설정
+
+1.1.1.2:80 -> host -> localhost:8080 -> con:8080
+-p 8080:8080
+
+app conf : localhost 
+
+dns -> name.conf
+
+
+01:00 2:00 
+
+2:00- ? dump 
+
+https://tmpstorage.com/download/52bbr4mnop
 
 
 
