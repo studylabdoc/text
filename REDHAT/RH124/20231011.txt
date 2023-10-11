@@ -359,6 +359,18 @@ R  읽기 Read
 W 수정 Write
 X 실행 eXcute
 
+F
+R  읽기 Read   파일을 읽을 수 있는 권한
+W 수정 Write   파일을 수정 할 수 있는 권한
+X 실행 eXcute 파일을 실행 할 수 있는 권한
+이 권한들 중에 메인이 되는 한가지 R 
+
+D
+R  읽기 Read  디렉토리를 읽을수 있는가? ls
+W 수정 Write 디렉토리에 수정을 할 수 있는가? touch rm cp .. 
+X 실행 eXcute 디렉토리에 접근하는 명령어를 실행 가능한가. cd 
+이 권한들 중에 메인이 되는 한가지 W
+
 U user  소유자
 G group 그룹소유자
 O other  소유자와 그룹소유자를 제외한 나머지 
