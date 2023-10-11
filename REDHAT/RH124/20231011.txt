@@ -116,9 +116,72 @@ EXAMPLES : 예시 명령
 # man -s 5 comma
 # man sshd
 
+명령어
+1. 내장명령어 BASH_BUILTINS
+2. 외장명령어 /usr/bin/~: 사용자 명령 /usr/sbin/~: 관리자명령
+
 디렉토리 이동과 확인
-cd
-pwd
+cd : 디렉토리의 이동 / 디렉토리 변경*
+
+cd /test
+mkdir dir1 dir2
+cd dir1
+경로:
+1. 절대경로 :
+시작점: /
+최상위 디렉토리로 부터 이동하려는 디렉토리를 모두 작성
+# cd /etc/sysconfig/network-scripts/
+# cd /
+/etc/sysconfig/network-script
+
+2. 상대경로 :
+시작점: 현재 작업 디렉토리 : pwd 
+/etc/sysconfig/network-script
+# pwd
+/etc
+# cd sysconfig/network-script
+# pwd 
+/etc/sysconfig/network-script
+
+windows
+
+/ == c:\
+
+/home/bob
+
+/home/bob
+잘라봅시다.
+1/ 2home 3/  4bob
+1: 최상위디렉토리
+2. home 디렉토리
+3. 디렉토리 구분자. 
+4. bob 디렉토리 [여기 뒤에도 /가 있다. ]
+
+.   : 현재 디렉토리 /test/dir1
+..  : 상위 디렉토리 /test
+.. : 상위 디렉토리, 실행 , 이동
+. : 파일실행
+# ./run.sh : 현재 디렉토리에 존재하는 run.sh을 실행
+# pwd 
+
+cd -
+디렉토리 이동시 바로 직전으로 재이동
+
+/test/dir1
+
+# touch file1
+# cd /test/dir1
+파일의 위치 : /test/dir2/file1
+상대 경로로 생성?
+
+. .. touch 
+
+리눅스의 모든 디렉토리[폴더]에는 .과 ..이 기본 존재.
+그럼 . 과 ..의 구별은?
+inode : 
+
+pwd : 현재 디렉토리 위치를 확인
+
 
 디렉토리 생성 및 삭제
 mkdir
