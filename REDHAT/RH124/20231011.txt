@@ -12,12 +12,109 @@ https://github.com/studylabdoc/text/tree/main/REDHAT/RH124
 RHA- 
 RHCSA 11/25 
 
+webapp을 접근 :
+workstation student $ ssh root@servera
+servera # id
+root
+servera # hostname
+servera.lab.example.com
+
+크게 계정이 두개
+student / student
+root / redhat
+
+windows linux/unix..
+
+CLI 커맨드라인 : 명령어로 무언가를 입력한다.
+리눅스 : 커맨드라인에서 명령을 입력하여 무언가를 실행. 
+사용자 -> bash > kernel
+              command : 사용자 명령
+
 명령어를 알기 전에 알아야 하는 기본 : 명령어의 3대 블록
 comm opt arg
+
+[커맨드] [옵션] [인자] 
+
+1.[커맨드] :
+쉘이 제일 처음 만나는 토큰 
+쉘은 제일 처음 토큰을 명령어로 인식
+
+쉘: 사용자가 명령을 입력하기 위한 기반 
+토큰 : 쉘이 해석하는 최소 단위 : 빈칸, 탭문자
+
+mkdir /test
+touch /test/file1
+cd /test
+
+2.[옵션]
+명령어가 가지고 있는 기능을 활성화
+옵션에서 사용하는 두가지
+-a 축약어로 사용
+--all 풀네임 사용
+* 가끔 옵션들중에 풀네임만 제공 하는 경우가 있음.
+
+3.[인자] 
+위치를 이동하지 않고 특정한 파일, 디렉토리를 선택하여 명령어를 실행
+
+옵션과 인자가 붙어있는 경우가 존재
+# find / -name core -type f 
+연속해서 작성해야 문제가 없다.
 
 도움말 페이지를 확인하기
 man
 
+프로그램 개발 : 제일 잘 아는 사람. 만든사람
+이 프로그램은 이렇게 쓰세요~
+
+매ㄴ : man
+
+# ls --help
+
+# man ls
+man 프로그램 내부로 진입
+
+q : 빠져나가기
+enter: 한 라인씩 확인 
+space: 한 페이지씩 확인 
+b : 역방향을 이동
+/문자 : 패턴검색
+/-l
+n : next
+N : 역방향 next
+h: 모든 기능키 확인
+
+# man ls
+
+LS(1)                        User Commands                        LS(1)
+LS - 명령어 이름
+(1) - 섹션번호
+NAME 짧은 설명
+       ls - list directory contents
+
+SYNOPSIS 문법 
+       ls [OPTION]... [FILE]...
+
+DESCRIPTION  상세 설명 
+       List  information  about the FILEs (the current directory by de‐
+       fault).  Sort entries alphabetically if none  of  -cftuvSUX  nor
+       --sort is specified.
+
+       Mandatory  arguments to long options are mandatory for short op‐
+       tions too.
+
+>>>>>>>> 각각의 옵션을 나타낸다. 
+       -a, --all
+              do not ignore entries starting with .
+EXAMPLES : 예시 명령
+
+섹션
+1 일반 사용자 명령, 쉘 
+5 파일 포맷
+8 관리자 전용 명령
+
+# man man
+# man -s 5 comma
+# man sshd
 
 디렉토리 이동과 확인
 cd
