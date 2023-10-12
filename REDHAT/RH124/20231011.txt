@@ -681,17 +681,77 @@ lrwx------. 1 root root 64 Oct 12 06:16 2 -> /dev/pts/1
 
 configure : make : install..
 
+8:00 
+
+파이프: PIPE
+
+
+		-----------------------
+
+INPUT >>>			>>> OUTPUT
+		-----------------------
+
+
+파이프를 따라서 이동하는 데이터: 전부 X
+표준 출력으로 나가는 데이터만 이동이 가능
+
+# cmd | cmd | cmd..
+
+사용방법:
+# echo 1111 | cat
+1111
+
+bash shell..
+
+배쉬 쉘 기능
+# set -o 
+# set -o 기능 활성화
+# set +o 기능 비활성화
+
+자동 완성
+
+
+[tab] 문자 
+
+# ls
 
 
 
 
 
+변수
+
+지역변수
+# var=5
+unset var
+환경변수
+# export var=5
+# export var
+특수변수
+
+지역변수의 특징: 현재 사용중인 쉘에만 적용
+
+환경 변수 특징 : 현재 쉘을 포함하여 하위 쉘도 같이 적요
+
+메타캐릭터 :
+
+리눅스에서 파일을 생성할 때 규칙
+
+영문자. 숫자 . - _ 
+
+그럼 나머지는? 안됩니다.
+이유: 각각은 다 특정한 기능 쓰고있기 때문에 안됨
+
+영문자 - 소문자, 대문자
+특정한 기능들을 하고 있다.
 
 
+;은 위험하다. 왜냐!
+세미콜론은 명령어의 실행 결과에서 참, 거짓에 대한 응답없이 진행
+# CMD1; CMD2
 
-
-
-
+&& : 앞의 명령어가 참인 경우에만 뒤의 명령어를 실행
+|| : 앞의 명령어가 참이 아닌 경우에만 뒤의 명령어를 실행
 
 
 
@@ -717,19 +777,19 @@ configure : make : install..
 
 alias
 history
-cat file1 file2 > file3
-cat < file1
-find . -name core 2> /dev/null
-export
+cat file1 file2 > file3 *
+cat < file1 *
+find . -name core 2> /dev/null *
+export *
 ^c
 ^d
 exit
 while
 for
 [
-tee
-clear
-date
+tee *
+clear *
+date *
 
 쉘의 기록을 남기는 방법
 script
