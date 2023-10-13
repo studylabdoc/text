@@ -372,8 +372,6 @@ W 수정 Write 디렉토리에 수정을 할 수 있는가? touch rm cp ..
 X 실행 eXcute 디렉토리에 접근하는 명령어를 실행 가능한가. cd 
 이 권한들 중에 메인이 되는 한가지 W
 
-
-
 U user  소유자
 G group 그룹소유자
 O other  소유자와 그룹소유자를 제외한 나머지 
@@ -388,10 +386,10 @@ A U+G+A
 chmod의 두가지 모드
 
 심볼릭 모드
-문자열을 가지고 변경을 하는것을 심볼릭 모드
+문자열을 가지고 변경을 하는것을 심볼릭 모드 u+r u-x
 
 옥탈모드
-숫자를 가지고 한다.
+숫자를 가지고 한다.  ###   734  755 770 <<< 
 
 
 0-7
@@ -459,6 +457,10 @@ stikybit 디렉토리
 하지만 지금은 student로 프로세스(passwd)가 실행
 /etc/shadow 파일에 접근이 불가능
 
+rwxr-xr-x -> rwsr-xr-x : setuid bit가 설정되어 있는 퍼미션 
+
+                 4755 : setuid 설정되어 파일 
+                  student -> root 프로세스의 소유자는 root 파일의 소유자 root 이기 때문에 여기서 맞춰 변경
 
 
 
@@ -471,10 +473,63 @@ H/W                    run.sh
 
 설정 방법:
 
-# chmod [4|2]755 file1
+# chmod [4|2|1]755 file1
 file1에는 setuid나 setgid가 설정
 6= 둘다 설정이 가능하지만 이렇게는 사용하지 않는다. 
 
+s가 대문자인경우:
+
+[root@servera test]# touch file1
+[root@servera test]# chmod 4655 file1
+[root@servera test]# ls -l
+total 0
+-rwSr-xr-x. 1 root root 0 Oct 12 21:15 file1
+S의 경우에 원래 권한인 x를 포함하여 권한을 표시
+원래 자리는 x
+그리고 현재는 setuid의 권한으로 s가 표시
+4655 -> user 자리에는 rw-로 권한이 설정
+x가 없다 = S 로 표시
+
+권한 표시 방법은 두가지
+심볼릭 옥탈 : 권장: 심볼릭
+
+변경가능한 모드는 두가지 지만 한가지에서만 사용가능한 형식이 존재.
+
+mkdir /test
+cd /test
+rm -rf *
+mkdir ori
+mkdir ori/dir1
+mkdir ori/dir2
+touch ori/dir1/file1
+touch ori/dir2/file2
+chmod 700 ori/dir1
+chmod 600 ori/dir2
+chmod 644 ori/dir1/file1
+chmod 744 ori/dir2/file2
+cp -rp ori sample1
+cp -rp ori sample2
+
+권한을 설정하는 것중에 -R 옵션을 사용하면 디렉토리 내부의 모든 파일을 건드리게 된다. 그런데 실행 권한은 상당히 민감한부분:
+파일에 실행권한이 들어간다? = 이 파일을 권한만 있으면 누구든 실행이 가능하다.
+디렉토리 구성되어 있다 = 권한 체계가 완성 되어 있다.
+ori
+drwx------. 2 root root 19 Oct 12 21:22 dir1
+drw-------. 2 root root 19 Oct 12 21:22 dir2
+-rw-r--r--. 1 root root 0 Oct 12 21:22 file1
+-rwxr--r--. 1 root root 0 Oct 12 21:22 file2
+
+sample1
+drwx-----x. 2 root root 19 Oct 12 21:22 dir1
+drw------x. 2 root root 19 Oct 12 21:22 dir2
+-rw-r--r-x. 1 root root 0 Oct 12 21:22 file1
+-rwxr--r-x. 1 root root 0 Oct 12 21:22 file2
+
+sample2
+drwx-----x. 2 root root 19 Oct 12 21:22 dir1
+drw------x. 2 root root 19 Oct 12 21:22 dir2
+-rw-r--r--. 1 root root 0 Oct 12 21:22 file1
+-rwxr--r-x. 1 root root 0 Oct 12 21:22 file2
 
 [root@servera test]# ls -ld /tmp
 drwxrwxrw[t]. 9 root root 4096 Oct 12 04:53 /tmp
@@ -754,6 +809,7 @@ unset var
 || : 앞의 명령어가 참이 아닌 경우에만 뒤의 명령어를 실행
 
 
+history
 
 
 
