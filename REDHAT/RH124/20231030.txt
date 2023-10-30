@@ -32,15 +32,68 @@ student / student
 root / redhat
 
 랩/ 연습문제
+LINUX = kernel 
+kernel + app = 배포판
+hurd - GNU 
+
+kernel - linux 
+minix + hurd + linux 
+
+linux 커널 + 프로그램 = > 이미지 
+서브스크립션 : 법적 분쟁에 대해서는 걱정하지 않음 
+
+오픈소스 !=  무료 
+
+FEDORA RHEL CENTOS
+FEDORA CENTOS RHEL rocky ? 
+
+webapp - 기본 -> workstation
+
+$ ssh root@servera
 
 리눅스 기본 명령어
 
 명령어를 알기 전에 알아야 하는 기본 : 명령어의 3대 블록
-comm opt arg
+com opt arg
+     1        2    3
+실행할 명령
+명령의 동작을 조정하기 위한 옵션
+일반적으로 명령의 타겟이 되는 인수
+[1] 명령어 : 쉘은 제일 처음 오는 것을 명령어로 인식 인식하는 단위 ls -l /var  첫번째 토큰을 명령어로 인식 
+[2] 옵션 동일한 명령이지만 옵션에 따라서 동작 변경 
+-a  축약어
+--all 풀네임 
+옵션마다 다르지만 두개를 동시에 지원하는 경우도 있고, 또는 --all , -a  하나만 지원하는 경우도 있음
+[3] 인자 기본 인자 = . 
+확인하고자 , 저장하고자 하는 파일을 변경할때 사용 
+# ls -l = ls -l . 
+# ls -l /var
+
+# cmd -a -b -c arg 
+# cmd -abc arg
+# cmd -acb arg
+# cmd --all -cb arg
+
+주의 
+# cmd -a arg1 -b arg2
+
+옵션자체에 인자가 있는 경우에는 순서를 잘 지켜줘야 한다.
+[root@servera ~]# find /var -name core -type f 
+[root@servera ~]# find /var -name f -type core 
+find: Must separate multiple arguments to -type using: ','
+
+# 관리자 계정 0 
+$ 사용자 계정 1000 > 
+
+[root@servera ~]# ls -l /var
+
+[root@servera ~]# 쉘 프롬프트 
+ls  1
+-l 2
+/var 3
 
 도움말 페이지를 확인하기
 man
-
 
 디렉토리 이동과 확인
 cd
