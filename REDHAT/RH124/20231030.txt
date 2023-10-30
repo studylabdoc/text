@@ -268,27 +268,45 @@ cat : 텍스트 파일 확인
 cat : tac [cat의 반대로 출력]
 
 touch
--t 
+-t : 지정된 시간으로 파일을 변경 
+1. 빈 파일을 만드는 용도
+2. 파일이 있는 경우에는 시간 변경
+# touch file1
+# touch -t [월일시분] file1
 
+텍스트 파일 확인 
 more
-head
-tail
+파일이 길어서 화면을 지나가는 파일..
+첫 페이지부터 한 화면씩 보기 위한 명령어
+# more /test/file1
+# CMD | more 
 
-sort
-uniq
+head 파일의 처음부터 10줄
+# head -n 3 file
+tail 파일의 끝 부터 10줄 
+# tail -n 3 file
+-f 추가 되는 데이터를 확인 가능 
+-F 오래 켜두어야 하는 모니터링 파일의 경우에는 -F 사용
+
+sort 
+uniq < sort랑 한몸 
+
 
 파일의 복사와 삭제
-rm
-cp
-mv
+rm 삭제 
+cp 복사 
+mv 이동, 이름 변경 
 
 파일 속성 정보 변경
-chmod
-chown
-umask
+chmod 권한 변경
+chown 소유자, 그룹 소유자 
+umask 기본권한 수정 
 
 파일의 속성을 활용하는 방법
 ln 
+ln -s 
+하드 링크
+심볼릭 링크 
 
 명령어의 위치
 
@@ -371,3 +389,65 @@ dnf
 
 프로세스 
 ps
+
+
+sh -> ksh -> bash -> zsh 
+        csh -> tcsh 
+
+user
+----------------
+kernel
+---------------
+H/W
+
+ctrl + d
+
+exit 에 대한
+EOF 
+
+파일 / 디렉토리 이름 생성
+영문자, 숫자 , - , _ , . 
+영문자 대소문자 구별
+255 
+
+다른 특수문자를 넣지 말라고 되어 있음.
+
+# passwd
+
+# 
+
+자동완성
+
+ls[tab]
+ch
+rm
+
+\ 
+1 뒤에 문자가 없다면 PS2 변수를 출력하고 다음줄에서 이어진다. 
+2 뒤에 문자가 있으면 해당 문자를 해석하지 않음. 
+
+
+init 0
+poweroff
+shutdown
+systemctl poweroff
+
+런레벨
+
+init
+
+runlevel
+
+0 halt 
+1 single 
+2 multi-user full 
+3 multi-user full  CLI 
+4 multi-user full 
+5 graphical
+6 reboot 
+
+
+
+
+
+
