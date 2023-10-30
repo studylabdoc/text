@@ -1,41 +1,13 @@
 RH124
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+김기연 
+01097902540 
 
 https://github.com/studylabdoc/text
 https://github.com/studylabdoc/text/blob/main/REDHAT/RH124/20231030.txt
 
 rol.redhat.com
+RHN 
 
 RH124 - Red Hat System Administration I
 Class Starts: 일, 10월 29 2023, 06:00 오전 
