@@ -290,12 +290,25 @@ tail 파일의 끝 부터 10줄
 
 sort 
 uniq < sort랑 한몸 
-
+/bin/ls
+/usr/bin/ls
 
 파일의 복사와 삭제
 rm 삭제 
+* 삭제시 GUI에서 파일함을 이용하는 경우를 제외한 터미널에서 삭제하는 경우에는 복구가 힘들다.
+
 cp 복사 
+# cp 원본 타겟
+# cp /etc/passwd file1
+# cp -p : 소유자, 권한, 시간 정보를 그대로 가지고 온다.
+# cp -r 디렉토리 복사시 사용
+# 
+
 mv 이동, 이름 변경 
+
+# mv 원본 타겟
+# 
+-t 여러 디렉토리를 이동하는 경우  이동시킬 디렉토리를 지정 
 
 파일 속성 정보 변경
 chmod 권한 변경
@@ -446,8 +459,16 @@ runlevel
 5 graphical
 6 reboot 
 
+39p 
+
+date
+wc
+file
+tail
+history..
 
 
+90p 부터 시작 
 
 
 
