@@ -113,33 +113,140 @@ n  다음
 N 위로 다음 
 디렉토리 이동과 확인
 LS(1)
-User Commands                                                                                        
+LS - 명령어
+(1) - 섹션
+# whatis passwd
+# mandb : 인덱스생성 
+6ver   makewhatis 
+# man man 
+       1   Executable programs or shell commands
+       5   File formats and conventions, e.g. /etc/passwd
+       8   System administration commands (usually only for root)
+                                                                                 
 NAME
- ls - list directory contents
+ ls - list directory contents 간단한 설명 
 
-SYNOPSIS
+SYNOPSIS   문법 
 ls [OPTION]... [FILE]...
 
 DESCRIPTION
+------~~~
+
 -a, --all
 do not ignore entries starting with .
-
 -A, --almost-all
 
+--color[=WHEN]
+EXAMPLE
+EXAMPLES
+Example
+Examples
+/example    : 예시 
+SEE ALSO : 관련된 다른 명령어 . 
 
-cd
-pwd
+# whatis ls NAME 부분 확인 / 섹션 확인 
+# whereis l 매뉴얼 파일 확인
+# which ls : 절대경로 확인 
+
+명령어 외에 설정 파일 , 서비스 파일도 매뉴얼 파일이 존재
+
+pwd : 현재 위치 확인 : 현재 작업 디렉토리 출력 
+cd  : 디렉토리 이동
+
+.  : 현재 디렉토리  
+.. : 부모 디렉토리 
+/etc/sysconfig/network-scripts/
+^    ^                 ^
+1    2                  3
+1 : 최상위 디렉토리 
+23 : 디렉토리 구분자 
+
+# cd .  : 현재 디렉토리
+# . .bachrc 
+# ./run.sh 
+# cd ..  : 부모 디렉토리 
+
+/root
+touch ../etc/file1 
+/etc/file1
+ .. 
+
+[root@servera /]# cd /etc/sysconfig/
+절대경로 :
+시작위치: 항상 동일 / 
+# cd /etc/sysconfig/network-scripts
+파일이 변경되면 안되는 곳 
+
+상대경로 :
+시작위치 : 현재 사용자가 있는 디렉토리가 기준 pwd 
+# cd . .. dirname
+
+# 1/2/3/4/5/6/7/8/9~/40
+32
+# cd 30/31/32
+29
+cd 명령어에서 사용되는 옵션
+
+# cd -
+바로 이전의 디렉토리를 기억하고 스위칭 
+
+홈 디렉토리
+
+~
+$HOME
+/root
+
+# cd ~  : 로그인 계정의 홈 디렉토리로 이동
+# cd ~[계정] : 해당 계정의 홈 디렉토리로 이동
+
+# cd ~studnet    계정 정보에서  student의 홈 디렉토리로 이동
+# cd ~/student 자신의 홈 디렉토리에 존재하는 student 디렉토리로 이동 
 
 디렉토리 생성 및 삭제
-mkdir
-rmdir
+mkdir : 디렉토리 생성
+# mkdir test
+# mkdir test3/test4/test5 
+-p : 부모 디렉토리가 없는 경우 생성후 자식 디렉토리를 생성 
+
+rmdir : 디렉토리 삭제 
+조건 : 디렉토리가 비어 있어야 한다.
+            .과 ..을 제외한 그 어떤 파일도 존재해서는 안된다. 
+실제로 디렉토리를 삭제하는 경우:
+rm -rf test4: 위험
 
 tree
+디렉토리에 대한 구조 확인 
 
 디렉토리 확인 명령어
-ls
-stat
-file
+ls  : 디렉토리의 컨텐츠 확인
+-rw-r--r--. 1 root root 0 Oct 30 01:17 file1
+- : 파일 형식
+- 파일 text tar gz data 
+d 디렉토리
+b 블록 디바이스
+c 캐릭터 디바이스 
+l 링크 (바로가기)
+rw-r--r--
+.  acl 정보
+.  :  acl 설정이 없음
++ : acl 설정이 있음
+# getfacl 
+# setfacl 
+rw-r--r-- : 권한 정보
+rwx rwx rwx
+  U       G   O 
+1 : 링크 숫자. 
+root  사용자
+root 그룹사용자 
+0 : 용량 
+Oct 30 01:17 : 수정 시간 
+file1 : 파일 이름 
+
+stat : 파일 시간 확인
+1
+2
+3
+file : 파일의 형식 확인 
 
 파일의 생성 및 확인
 cat
