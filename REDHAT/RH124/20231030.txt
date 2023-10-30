@@ -94,8 +94,39 @@ ls  1
 
 도움말 페이지를 확인하기
 man
+프로그램의 사용법
+개발자: 이렇게 사용해야 한다.
+# man CMD
 
+# ls --help 
+# man ls   << 
+# info ls
+# pinfo ls 
+
+q : 빠져나가기 
+enter  라인씩 업데이트
+space bar 페이지 단위 업데이트  
+b : 뒤로 가기 
+/-a   -a를 검색
+/   ->  
+n  다음
+N 위로 다음 
 디렉토리 이동과 확인
+LS(1)
+User Commands                                                                                        
+NAME
+ ls - list directory contents
+
+SYNOPSIS
+ls [OPTION]... [FILE]...
+
+DESCRIPTION
+-a, --all
+do not ignore entries starting with .
+
+-A, --almost-all
+
+
 cd
 pwd
 
