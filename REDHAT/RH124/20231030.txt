@@ -11,17 +11,29 @@ https://meet.google.com/hfy-casm-eso
 rol.redhat.com
 RHN 
 
+파일, 구글 미트  
 RH124 - Red Hat System Administration I
 Class Starts: 일, 10월 29 2023, 06:00 오전 
-
 Class Ends: 금, 11월 03 2023, 05:00 오후 
                                    JOIN
 
 리소스 -> e-book download > ko(ko)
 다운로드 완료 후 파일 열어 즐겨찾기 추가
 
-랩 -> 강의싱 webapp 액세스
+랩 -> 강의실  webapp 액세스
+24시간 사용 
 
+랩의 가상머신을 삭제  -> 생성
+30분 후에 생성
+
+재설정의 경우에도 머신을 두개이상 한번에 하지 마세요.
+
+student / student
+root / redhat
+
+랩/ 연습문제
+
+리눅스 기본 명령어
 
 명령어를 알기 전에 알아야 하는 기본 : 명령어의 3대 블록
 comm opt arg
