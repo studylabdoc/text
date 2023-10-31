@@ -681,4 +681,78 @@ u
 16:30분
 
 
+useradd
+useradd -D
+/etc/default/useradd
+
+/etc/login.defs 
+passwd
+--stdin
+
+/etc/passwd
+root:x:0:0:root:/root:/bin/bash
+root 사용자 명
+x 비밀번호 
+0 UID
+0 GID
+root 코멘트 
+/root 홈디렉토리 
+/bin/bash 로그인시 사용하는 쉘 
+
+useradd > passwd > 
+
+/etc/shadow
+
+접근 : 사용자 -> su ...
+
+su
+
+$ su team01
+# su    < 뒤에 없으면 root
+
+$ su -   
+--login  
+ > consvc
+$ ssh consvc@localhost
+$ podman pull httpd..
+?
+
+su의 단점:
+
+su -> 비밀번호 필요
+
+user1 0> root 
+user2 -> root
+...
+100
+
+권한이 필요한 경우는 있다.
+
+$ sudo 
+
+비밀번호가 필요 : 사용자 자신
+사용할 수 있는 커맨드 제한
+접속하는 호스트에 따라 제한 
+
+
+/etc/sudoers : sudo를 사용할 수 있는 사용자 및 권한 
+
+189p
+
+
+
+
+usermod
+userdel
+
+/etc/group
+groupadd
+groupmod
+groupdel
+
+chage
+
+sudo
+
+
 
