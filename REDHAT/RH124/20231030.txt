@@ -542,14 +542,143 @@ remote exam
 키오스크 방문 X > 
 https://www.youtube.com/watch?v=LX3VMIAuPzg
 
+S-ATA
+SCSI
+docs.redhat.com : 매뉴얼 페이지 전체 redhat 
+https://access.redhat.com/products/
+https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9   : RHEL 제품 페이지 
+https://man.cx/   : 온라인 매뉴얼 페이지
+
+centos 3 4 5 ~
+
+표준 입력, 표준 출력 및 표준 오류
+
+0 STDIN   키보드로 입력받는다.  표준 입력 0<
+1 STDOUT 터미널로 출력한다. 표준 출력 1>
+2 STDERR 터미널로 출력한다. 표준 오류  2>
+
+입력 : 키보드 / 출력: 터미널 
+
+출력기호
+>   덮어쓰기
+>> 이어쓰기 
+
+에러 기호
+2>   덮어쓰기
+2>> 이어쓰기 
+
+> file 2>&1
+표준 에러를 표준 출력으로 전환 > 모든 내용은 표준 출력으로 저장
+
+# CMD1  | CMD2
+명령어를 연결한다.
+cmd1의 표준 출력을 cmd2의 표준 입력으로 전환 
+에러결과도 같이 봐야하는 경우
+# CMD1  2>&1 | CMD2
+
+# script  /dev/null | tee -a /dev/pts/3 | tee /dev/pts/4
 
 
+VI
 
 
+VI - VIM
+
+vi 
+텍스트 편집기
+유닉스 -> 리눅스
+
+CLI와 GUI에서 동시에 이용 가능한 텍스트 편집기
+
+emacs nano pico .. << X 
+
+프로세스 :
+
+vi의 경우에는 
+메모리상에서 쓰기작업 -> ? > DISK 저장
+메모리
+
+.file1.swp < 임시 저장 파일 
+
+vi의 세가지 모드
+
+입력 모드  : 글자를 입력하기 위한 모드 
+명령 모드 : 어떠한 기능을 하기 위한 모드 
+최 하위행 모드 : 명령어 실행/ 검색 / 추가적인 기능
+
++ 비주얼 모드 
+블록을 이용하여 작업을 하는 모드 (굳이 필요가 있을까?)
+
+입력 모드  :  i o a  
+shift + i : 커서가 있는 라인의 처음
+shift + a : 커서가 있는 라인의 끝 
+
+명령 모드 :  나머지 
+최 하위행 모드:   : w q         !    / 
+
+방향키 : HJKL
+
+삭제
+x 글자 하나 삭제 
+dd 라인 삭제 
+dw 워드 삭제 
+3dd  3라인 삭제 
+
+되돌리기 u
+되돌리기 취소 ctrl + r 
+
+r  한문자 치환
+R esc키를 입력하기 전까지 치환
+
+이동 
+#G
+3G 
+
+:set nu 
+
+:3
+
+첫번째줄 gg
+끝줄 shift + g
+복사 
+yy
+붙여넣기 p
 
 
+최하위행
+:w newfile1
+:w 저장
+:w! 강제 저장
+:q 빠져나가기
+:q! 강제로 빠져나가기
+:wq 저장하고 빠져나가기
+:wq! 강제로 저장하고 빠져나가기
+
+!cmd  명령어 실행 
+
+/패턴    검색
+패턴검색시에 대소문자 구별 없이 검색하기
+/\c패턴    
 
 
+변수 
+1 지역변수 서브 쉘에 적용되지 않는 변수
+# var=text1
+
+# export var
+2 환경변수 서브 쉘에 적용되는 변수
+# export var=text1
+
+#unset var 
+
+set 지역변수 환경변수 
+env 환경변수 
+u
+특수변수
+
+연습문제 / 랩 
+
+16:30분
 
 
 
