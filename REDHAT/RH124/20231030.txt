@@ -347,9 +347,6 @@ ln -s
 
 94p 
 
-
-
-
 명령어의 위치
 
 which
@@ -495,9 +492,64 @@ wc
 file
 tail
 history..
+복사 . 삭제. 링크..
 
 
 90p 부터 시작 
+메타캐릭터 
+
+'(작은 따옴표(single quotation))
+작은 따옴표 안의 문자들을 [해석]하지 않음.
+
+"(큰 따옴표(Double quotation))
+큰 따옴표 안의 문자들을 [해석]하지 않음.
+해석하지 않는 문자가 존재.
+` $ \ 
+
+`(역 따옴표(Back quotation))
+역 따옴표 안의 문자열을 명령어로 대치
+`문자는 따옴표랑 혼동하기 쉽다. $() 형식으
+로 사용
+
+\ (역 슬래쉬(Back slash))
+\뒤의 문자를 해석하지 않음.
+\뒤에 아무 문자가 없다면 다음 라인으로 연장
+
+; (세미콜론(Semicolon))
+명령어 격리
+;의 단점: 
+EX
+# CMD1 ; CMD2
+CMD1의 결과에 상관 없이 CMD2가 실행
+
+민감한 작업이 있다 : ; -> && 
+# CMD1 &&  CMD2
+CMD1 명령의 결과 리턴값이 0이 아니면 CMD2를 실행하지 않음.
+
+반대의 경우
+# CMD1 ||  CMD2
+CMD1 명령의 결과 리턴값이 0이 아닌 경우 CMD2를 실행.
+
+
+105p 
+
+RHCSA  RHEL 기본 기초
+
+redhat EX200
+
+remote exam 
+
+키오스크 방문 X > 
+https://www.youtube.com/watch?v=LX3VMIAuPzg
+
+
+
+
+
+
+
+
+
 
 
 
