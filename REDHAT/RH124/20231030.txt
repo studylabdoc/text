@@ -739,6 +739,12 @@ $ sudo
 
 189p
 
+https://www.baeldung.com/linux/poweroff-reboot-normal-user
+
+
+systemd > 
+systemctl --user start
+
 
 
 
