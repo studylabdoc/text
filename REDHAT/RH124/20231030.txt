@@ -769,6 +769,7 @@ https://systemd.io/UIDS-GIDS/
 
 
 /etc/group
+
 groupadd
 groupmod
 groupdel
@@ -776,6 +777,74 @@ groupdel
 chage
 
 sudo
+
+계정 관련 연습 문제
+그룹 관련 연습 문제.
+11:10분 
+
+
+user200:$6$nYeA.1knhGjM1LrB$97yANfTUoRIgIyk0YhKd779nnmqvx1RK/OmesMF.qC2pS14kvIZUpJtjrC0/ou.q1eRt38ronZdYFgTXwceGe.:19661:0:99999:7:::
+
+  test1:!!:19662:0:99999:7:::
+
+RHCSA 시험
+연습문제 잘 기억 
+
+- RWXRWXRWX root root
+205p
+209p
+
+find / grep 
+
+
+개인 
+
+기업
+
+
+16     55만
+passwd -u 계정
+
+-rw-r--r--. 1 root root 507 Oct 31 02:27 list
+
+rw-r--r-- root root 
+권한         소유자  그룹소유자
+
+chown
+# watch -n 1 CMD 
+# watch -n 1 'ls -l | grep file1'
+
+파일: 소유자 , 그룹 소유자
+file1 team01 사용자로 변경
+# chown team01 file1
+# chown .team01 file1
+# chown root.root file1
+
+# chown team01:team01 권장 
+# chown -R  team01:team01 dir
+디렉토리 내부의 모든 파일을 변경
+
+일반 사용자는 chown 사용불가
+chgrp 권장 -> 그룹만 변경
+조건
+1.파일에 대하여 소유자로 되어 있어야 하며
+2. 변경하려는 그룹에 가입이 되어 있어야 한다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
