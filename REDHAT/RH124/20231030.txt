@@ -746,10 +746,27 @@ systemd >
 systemctl --user start
 
 
+useradd
+/etc/passwd
+/etc/shadow
+
+계정 생성
+UID /GID 구성
+홈디렉토리 구성/home 아래에 구성
+SKEL 디렉토리의 파일을 복사 , 권한 이전
+메일 함 구성
 
 
 usermod
+-a
+그룹을 추가 하는 경우 기존 그룹을 보존한 상태로 새록운 그룹을 추가하기 위해사용하는 옵션
+-aG
+
 userdel
+
+https://systemd.io/UIDS-GIDS/
+
+
 
 /etc/group
 groupadd
