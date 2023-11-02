@@ -1298,6 +1298,7 @@ touch -t 08131111 file6
 수정 날짜가 3일 이상 된 파일 
 # find . -type f -mtime +3
 
+
 cd /test
 mkdir dir3
 cd dir3
@@ -1311,15 +1312,65 @@ chmod 500 file6
 chmod 600 file7
 chmod 700 file8
 
+권한 검색
+# find . -perm 600
+
+# find . -perm -400 <<
+# find . -perm -444 X 
+
+find / -perm -4000 -not -path "/proc/*" 2> /dev/null
+
+size
+파일 크기 기준으로 검색 
+
+큰 파일 찾기
+
+# find . -size 2149c
+# find . -size +600k
+
+disk full
+df 
+
+100% 
+du 
+
+du -sk  /*
+du -a / 
+
+sort -nr 
+>
+
+find . -size +1G , +100M 
+
+find . -inum 35584097 -exec rm -f {} \; 
 
 
+-exec rm -f {} \; 
+find에서 검색된 내용을 버퍼로 이용하여 명령어를 실행
 
+-exec CMD  {} \; 
 
+-exec : find의 출력 결과를 명령어로 이용한다.
 
+CMD 리눅스에서 사용가능한 명령어라면 모두 사용 가능
+{} : 명령어에서 사용하는 인자.
 
+rm {} 
+chmod 777 {}
+chown user {}
+cp {} /dir1
+\; : find에서 ; 까지가 문법 하지만 쉘에서 ;은 의미를 가진 문자.  그래서 \로 바로 다음에 오는 ;을 해석하지 못하도록 막아준다. 
 
+rm
+chown < 
+ls -lR | grep ^- | grep -v team 
 
+stu team 
+chmod
 
+터미널을 열어두고 오래 사용 , 출력이 많은 경우
+tmux : 백그라운드에서 작업을 이어 갈수 있다. 
+screen / tmux 
 
 
 
