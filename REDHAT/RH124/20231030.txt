@@ -1177,26 +1177,16 @@ find
 find 명령어
 
 # find / -name core –type f
-
- # find / -user user-1 –group class1
-
- # find / -mtime [-7|7|+7]
-
- # find / -perm [755|-755]
-
- # find / -size [-300M|300M|+300M]
-
- # find / -name core –type f –exec rm –f {} \;
-
- # find / -name core –type -ls
-
- # find / -name core –type f –ok rm {} \;
-
- # find /Log_Dir –name "*.log" –type f \
-
- > -mtime +30 –exec rm 0rf {} \;
-
- # find /Log_Dir –mtime -2 –size +1G –type
+# find / -user user-1 –group class1
+# find / -mtime [-7|7|+7]
+# find / -perm [755|-755]
+# find / -size [-300M|300M|+300M]
+# find / -name core –type f –exec rm –f {} \;
+# find / -name core –type -ls
+# find / -name core –type f –ok rm {} \;
+# find /Log_Dir –name "*.log" –type f \
+> -mtime +30 –exec rm 0rf {} \;
+# find /Log_Dir –mtime -2 –size +1G –type
 
 ## find 명령어
 
@@ -1210,62 +1200,64 @@ find 명령어
 옵션 : 설명
 
 -name : 파일 이름을 기준으로 검색
-
--iname: 대소문자를 구별하지 않고 파일 이름을 기준으로 검색
+-iname : 대소문자 구별없는 파일 이름을 기준으로 검색
 
 -perm : 파일 권한을 기준으로 검색한다.
-
 -type : 파일의 종류를 기준으로 검색
-
 b : 블록 파일
-
 c : 문자
-
 d : 디렉토리
-
 f : 파일
-
 l : 링크
-
 s : 소켓
 
 -size : 파일의 크기를 기준으로 검색
-
 +n : n보다 크다
-
 -n : n보다 작다
-
 n : n이다
 
 b : 512-byte
-
 c : Bytes (Character = Byte)
-
 k : Kilo Byte
-
 M : Mega Bytes
-
 G : Giga Bytes
-
 w : 2-byte
 
 -links : 링크의 개수를 기준으로 검색
-
 -user : 사용자 ID를 기준으로 검색
-
 -group: 그룹 ID를 기준으로 검색
 
 -atime : 특정 기간 이상 접근하지 않은 파일을 기준으로 검색
-
 -mtime : 특정 기간 이상 수정되지 않은 파일을 기준으로 검색
+-newer [path file]: 지정된 파일보다 나중에 만들어진 파일들을 검색 
 
 -inum : number 지정된 inode 번호와 파일을 찾는다.
 
 -print : 표준출력으로 검색된 파일 출력: GNU는 디펄트, Unix는 필수 입력
 
 -exec command {} ₩; :찾은 각 파일에 대해 지정된 명령을 실행
-
 -ok command {} \; : 실행여부(실행 되어 있는지 아닌지)를 사용자에게 확인 후 명령을 실행
+
+/test -+- dir1 - file1 
+			 |
+			 +- dir2 - file3
+		         |
+			 +- file1
+			 |
+			 +- file2
+
+cd /test
+rm -rf *
+mkdir dir1
+mkdir dir1/dir2
+touch file1
+touch dir1/file1
+touch dir1/file2
+touch dir1/dir2/file3
+
+
+
+
 
 
 
