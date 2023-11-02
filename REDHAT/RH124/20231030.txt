@@ -2,7 +2,7 @@ RH124
 
 김기연 
 01097902540 
-https://meet.google.com/fiy-igee-nxp
+https://meet.google.com/etu-bfzd-uoo
 
 https://github.com/studylabdoc/text
 https://github.com/studylabdoc/text/blob/main/REDHAT/RH124/20231030.txt
@@ -1063,6 +1063,72 @@ S: 프로세스 상태 (STATE)
 %MEM: 메모리 사용율
 TIME+: 프로그램 실행한시간
 h
+
+프로세스는 사용 순간에 점유
+
+
+포그라운드: 쉘을 점유하여 사용 
+shell
+백그라운드:  쉘을 점유하지 않고 사용
+
+jobs : 백 그라운드 프로세스 확인
+
+ㅍ
+
+fg : 백그라운드에 있는 프로세스를 포그라운드로 가지고 옴.
+^z : 포그라운드의 프로세스를 백그라운드로 전환 / stop으로 들어간다.
+bg : 백그라운드에 들어간 프로세스를 활성화 
+
+시그널 
+kill 
+^s - ^q 
+^c
+^z
+
+
+15 kill  메모리의 데이터를 클린업 한 뒤 종료
+9 kill    전송 즉시 강제 종료 
+
+
+
+grep find  
+
+
+NICE
+RENICE
+
+NI 0 : 프로세스의 우선순위.
+
+PR
+
+# nice [    ]   CMD 
+
+nice : 프로그램을 실행 
+renice: PID값으로 우선순위를 변경 
+
+# nice -10 sleep 5000 &
+123
+# renice --15 123 
+
+
+nice (-20  ~  19 )
+renice (-20  ~  19)
+
+백업 
+데이터 처리
+
+사용자가 직접 pr 조절해서 작성하는 경우는 아주 일부분 이기 때문에 무조건 kernel 우선 이다.
+
+top
+ps
+
+
+sar
+powertop
+
+
+
+
 
 
 
