@@ -1453,6 +1453,71 @@ ssh -o StrictHostKeyChecking no root@IP
 
 keygen -> copy-id -> eval $(ssh-agent) > ssh-add [key 비밀번호 암호화]
 
+351p 
+3:20 
+nmcli 
+nmtui 
+
+setup 
+
+OSI7
+ TCP/IP
+
+IP  DOMAIN   
+
+DNS 
+
+network L2 -> 외부 통신이 불가능
+MAC 
+
+ICMP -> ping
+
+ping6 
+127.0.0.1   localhost localhost.localdomain 
+192.168.0.1 servera server.lab.example.com
+
+
+
+nmcli
+nmtui
+
+dns 172.25.250.220 \
+ipv4  172.25.250.10/24 
+gateway 172.25.250.254
+
+/etc/NetworkManager/system-connections  <<<
+
+nmcli 
+
+dev 장치 
+con 프로파일 
+
+nmcli con mod -ipv4.dns 8.8.8.8
+
+
+dev1
+con1 dcon2
+
+
+8.8.8.8
+1.1.1.1
+168.126.63.1
+
+
+nmcli con down con1 ; nmcli con up con2
+
+eth0
+
+
+RHLS 
+
+servera.lab.example.com
+hostnamectl set-hostname test.example.com
+
+
+
+
+
 
 
 
