@@ -1514,6 +1514,11 @@ RHLS
 servera.lab.example.com
 hostnamectl set-hostname test.example.com
 
+소스 ->
+rpm ->
+yum ->
+dnf
+
 
 
 
