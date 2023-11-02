@@ -1176,27 +1176,27 @@ find
 
 find 명령어
 
-**# find / -name core –type f**
+# find / -name core –type f
 
- **# find / -user user-1 –group class1**
+ # find / -user user-1 –group class1
 
- **# find / -mtime [-7|7|+7]**
+ # find / -mtime [-7|7|+7]
 
- **# find / -perm [755|-755]**
+ # find / -perm [755|-755]
 
- **# find / -size [-300M|300M|+300M]**
+ # find / -size [-300M|300M|+300M]
 
- **# find / -name core –type f –exec rm –f {} \;**
+ # find / -name core –type f –exec rm –f {} \;
 
- **# find / -name core –type -ls**
+ # find / -name core –type -ls
 
- **# find / -name core –type f –ok rm {} \;**
+ # find / -name core –type f –ok rm {} \;
 
- **# find /Log_Dir –name "*.log" –type f \**
+ # find /Log_Dir –name "*.log" –type f \
 
- **> -mtime +30 –exec rm 0rf {} \;**
+ > -mtime +30 –exec rm 0rf {} \;
 
- **# find /Log_Dir –mtime -2 –size +1G –type**
+ # find /Log_Dir –mtime -2 –size +1G –type
 
 ## find 명령어
 
@@ -1207,29 +1207,29 @@ find 명령어
 
 [명령어 옵션]
 
-**옵션 : 설명**
+옵션 : 설명
 
-**-name :** 파일 이름을 기준으로 검색
+-name : 파일 이름을 기준으로 검색
 
-**-iname: 대소문자를 구별하지 않고 파일 이름을 기준으로 검색**
+-iname: 대소문자를 구별하지 않고 파일 이름을 기준으로 검색
 
-**-perm :** 파일 권한을 기준으로 검색한다.
+-perm : 파일 권한을 기준으로 검색한다.
 
-**-type :** 파일의 종류를 기준으로 검색
+-type : 파일의 종류를 기준으로 검색
 
 b : 블록 파일
 
 c : 문자
 
-**d : 디렉토리**
+d : 디렉토리
 
-**f : 파일**
+f : 파일
 
-**l : 링크**
+l : 링크
 
 s : 소켓
 
-**-size :** 파일의 크기를 기준으로 검색
+-size : 파일의 크기를 기준으로 검색
 
 +n : n보다 크다
 
@@ -1239,13 +1239,13 @@ n : n이다
 
 b : 512-byte
 
-**c : Bytes (Character = Byte)**
+c : Bytes (Character = Byte)
 
-**k : Kilo Byte**
+k : Kilo Byte
 
-**M : Mega Bytes**
+M : Mega Bytes
 
-**G : Giga Bytes**
+G : Giga Bytes
 
 w : 2-byte
 
