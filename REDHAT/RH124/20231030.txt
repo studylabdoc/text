@@ -1279,8 +1279,17 @@ touch file{1..6}
 watch -n date
 
 while : ; do date 08191111; sleep 1; echo "date resetting"; done
+ 파일 속성 정보
+     file6      file5       file4        file3      file2      file1
+  -----+----------+------------+----------+----------+----------+---------+   
+     0813        0814         0815       0816      0817        0818      0819
 
-
+touch -t 08181111 file1 
+touch -t 08171111 file2 
+touch -t 08161111 file3 
+touch -t 08151111 file4 
+touch -t 08141111 file5 
+touch -t 08131111 file6
 
 
 
