@@ -1237,14 +1237,13 @@ w : 2-byte
 
 -exec command {} ₩; :찾은 각 파일에 대해 지정된 명령을 실행
 -ok command {} \; : 실행여부(실행 되어 있는지 아닌지)를 사용자에게 확인 후 명령을 실행
-
-/test -+- dir1 - file1 
-			 |
-			 +- dir2 - file3
-		         |
-			 +- file1
-			 |
-			 +- file2
+/test
+├── dir1
+│   ├── dir2
+│   │   └── file3
+│   ├── file1
+│   └── file2
+└── file1
 
 cd /test
 rm -rf *
@@ -1255,7 +1254,31 @@ touch dir1/file1
 touch dir1/file2
 touch dir1/dir2/file3
 
+# find
+.
+./.file11
+./dir1
+./dir1/dir2
+./dir1/dir2/file3
+./dir1/file1
+./dir1/file2
+./file1
 
+사용자 그룹
+find / -user team01 -type f 2> /dev/null
+find / -user team01 -group team02 2> /dev/null
+# find / -user team01 -o -group team02 2> /dev/null
+
+날짜 기준 검색
+
+cd /test/dir1/dir2
+touch file{1..6}
+
+새로운 창을 하나 열기
+강제로 시간 지정
+watch -n date
+
+while : ; do date 08191111; sleep 1; echo "date resetting"; done
 
 
 
