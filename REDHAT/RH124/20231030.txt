@@ -1503,7 +1503,7 @@ con1 dcon2
 1.1.1.1
 168.126.63.1
 
-
+s
 nmcli con down con1 ; nmcli con up con2
 
 eth0
