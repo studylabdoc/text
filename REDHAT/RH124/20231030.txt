@@ -1372,10 +1372,86 @@ chmod
 tmux : 백그라운드에서 작업을 이어 갈수 있다. 
 screen / tmux 
 
+httpd
+vsftpd
+bind
+
+로그 
+
+syslogd 
+
+systemd-journal ->syslogd  -> rsyslogd.conf -> file 
+                     syslogd 
 
 
+mask 
+
+같은 포트를 이용하는 서비스
+
+bind / chroot-bind
+53       53 
+53
+
+iptables  ebtable iptables6 
+
+firewalld
 
 
+303p
+321p
+316p
+
+2:20
+
+322p
+
+ssh를 사용하여 원격 시스템에 로그인
+암호 없이키 기반 인증을 사용
+root로 직접 로그인 및 암호 기반 인증을 비활성화
+
+telnet rsh rlogin X
+
+ssh 
+# telnet host:port
+ID
+PASSWD
+
+# ssh ID@[host|IP]
+# ssh [host|IP]
+
+# ssh root@servera
+
+$ ssh-keygen -f /home/team01/.ssh/id_rsa -N '' -t rsa -b 4096 
+
+ssh-keygen 
+-f /home/team01/.ssh/id_rsa  파일 위치
+-N ''  비밀번호 
+-t rsa  알고리즘
+-b 4096  데이터 
+
+serverb 
+
+root 로 원격에서 바로 접근 하는 것을 차단
+비밀번호 / 인증키?
+
+9버전 
+설치
+
+root 비밀번호 > 
+ssh로 접근 활성화 /비활성화 
+
+비밀번호 접속
+키를 생성 
+로컬-원격지  키로 접근 하는것을 모두 테스트 >
+비밀번호 접근 금지 설정
+
+ssh root@IP
+
+ssh -p root@IP
+ssh -o StrictHostKeyChecking no root@IP
+
+
+keygen -> copy-id -> eval $(ssh-agent) > ssh-add [key 비밀번호 암호화]
 
 
 
