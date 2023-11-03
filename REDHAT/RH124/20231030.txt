@@ -1,7 +1,8 @@
 RH124
 
 김기연 
-01097902540 
+01097902540
+nsr230@studylab.xyz 
 https://meet.google.com/xzy-hhpb-bwa
 
 https://github.com/studylabdoc/text
@@ -1729,6 +1730,14 @@ mask / user perm
 cron >    systemd.timer    * 
 anacron
 
+
+rocky
+centos
+RHEL 
+
+로컬 설치 
+
+nfs *   서버구성
 
 
 
