@@ -2,7 +2,7 @@ RH124
 
 김기연 
 01097902540 
-https://meet.google.com/etu-bfzd-uoo
+https://meet.google.com/xzy-hhpb-bwa
 
 https://github.com/studylabdoc/text
 https://github.com/studylabdoc/text/blob/main/REDHAT/RH124/20231030.txt
@@ -1514,10 +1514,22 @@ RHLS
 servera.lab.example.com
 hostnamectl set-hostname test.example.com
 
-소스 ->
-rpm ->
-yum ->
+소스 -> configure -> make -> install 
+rpm -> 의존성 
+yum -> 의존성 문제 해결 
 dnf
+
+yum = dnf = dnf3
+
+word
+
+set   
+
+work ppt 
+
+
+dnf yum 단점:
+리포지토리에 있는 최신 파일만 제공
 
 
 
