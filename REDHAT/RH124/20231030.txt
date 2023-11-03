@@ -9,6 +9,8 @@ https://github.com/studylabdoc/text/blob/main/REDHAT/RH124/20231030.txt
 
 
 
+
+
 rol.redhat.com
 RHN 
 
@@ -1530,6 +1532,76 @@ work ppt
 
 dnf yum 단점:
 리포지토리에 있는 최신 파일만 제공
+
+# cd /etc/yum.repos.d/
+.repo
+
+/var/log/dnf.log
+
+
+
+dnf clean all  > repolist all
+
+456 p
+간
+
+dnf config-manager --add-repo "URL"
+/etc/yum.repos.d/
+.repo
+file gpgcheck=0
+
+파일시스템
+
+ext3,ext4
+
+btrfs X
+xfs   LVM 
+
+마운트 디렉토리
+
+장치  - 디스크
+
+디렉토리--------디스크
+                  연결
+
+마운트 
+파일시스템
+파티션  논리적 
+디스크  물리적
+
+표준 파티션: 용량이 한번 지정되면 변경이 힘들다.
+10G 10G --> 20G
+
+RAID
+LVM : 용량이 한번 지정 되더라도 추가 디스크를 사용하여 변경이 가능.
+
+
+s-ata scsi sas ...
+
+마운트 mount
+파일시스템 mkfs 
+파티션  fdisk parted
+디스크 lsblk 
+
+gpt? fdisk / parted 편한거 사용하시면 됩니다.
+ansible -> parted 
+
+
+lsof  -> 
+
+mount / umount 임시 
+
+fstab
+
+/dev/sda1 
+
+/dev/sdb1
+
+
+473p
+486p
+
+
 
 
 
