@@ -1709,7 +1709,25 @@ ntp서버 주소를 다음처럼 수정한다.
 ntp서버와 연결이 되면, 즉각 동기화를 시작한다.
 
 
+124 134 종합문제.
 
+RH200  <<< 시험 포함 
+RH199  <<< 
+
+RH294
+RH295
+
+210/300
+
+
+getfacl
+setfacl
+
+mask / user perm
+
+
+cron >    systemd.timer    * 
+anacron
 
 
 
