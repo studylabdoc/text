@@ -68,7 +68,47 @@ https://man.cx/
 
 man
 # man [search command]
+
+기능키
 q: 빠져나가기
+enter: 라인단위 이동
+space bar : 페이지단위 이동
+/[검색어] : 패턴 검색
+n : 검색된 내용의 다음으로 이동
+N : 역방향으로 검색
+/example
+b : 페이지를 역방향으로 이동
+h: 전체 도움말 확인
+
+매뉴얼의 구성
+LS(1)                       User Commands                      LS(1)
+명령어(섹션번호)
+1   Executable programs or shell commands
+사용자/ 관리자가 공통으로 사용하는 명령어 /usr/bin
+5   File formats and conventions, e.g. /etc/passwd
+파일의 형식을 설명
+/etc
+8   System administration commands (usually only for root)
+관리자 전용 명령어
+/usr/sbin
+
+NAME
+       ls - list directory contents
+짧은 설명
+SYNOPSIS
+       ls [OPTION]... [FILE]...
+문법
+
+DESCRIPTION
+       List  information  about  the FILEs (the current directory by
+... 상세한 설명
+       -a, --all
+              do not ignore entries starting with .
+옵션
+       -A, --almost-all
+              do not list implied . and ..
+SEE ALSO
+참고해야하는 명령어
 
 디렉토리 이동과 확인
 cd
