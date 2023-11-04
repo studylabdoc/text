@@ -180,14 +180,37 @@ pwd
 cd ~/student   : 접속한 계정의 홈 디렉토리 아래에 student 디렉토리로 이동
 cd ~student    : student계정의 홈 디렉토리 이동
 
+두가지 명령어 체계
+내장 명령어 : bash shell 자체에 등록되어 있는 명령어
+BASH_BUILTINS
+# type cd
+cd is a shell builtin
 
-
+외장 명령어 : 설치형 명령어 /usr/bin /usr/sbin.. 
+[root@servera ~]# type fdisk
+fdisk is hashed (/usr/sbin/fdisk)
 
 pwd
+현재 위치한 디렉토리 확인
 
 디렉토리 생성 및 삭제
-mkdir
+mkdir : 디렉토리 생성
+-p : 부모 디렉토리가 없는 경우 생성
+-v : 작업과정을 상세하게 확인
+
 rmdir
+
+mk- > 생성
+ls -> 확인
+rm -> 삭제
+ch -> 수정
+과거
+현재
+명령어 세트
+CMD [add del mod show..]
+
+
+
 
 tree
 
