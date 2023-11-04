@@ -198,7 +198,8 @@ mkdir : 디렉토리 생성
 -p : 부모 디렉토리가 없는 경우 생성
 -v : 작업과정을 상세하게 확인
 
-rmdir
+rmdir : 비어있는 디렉토리를 삭제
+조건: .과 ..을 제외한 그 어떤 파일도 존재해서는 안된다.
 
 mk- > 생성
 ls -> 확인
@@ -209,13 +210,44 @@ ch -> 수정
 명령어 세트
 CMD [add del mod show..]
 
-
-
-
 tree
 
 디렉토리 확인 명령어
-ls
+ls - 디렉토리의 컨텐츠를 확인 
+
+cd /test
+rm -rf *
+touch file1
+
+# ls -l
+-rw-r--r--. 1 root root 0 Nov  4 01:36 file1
+
+- : 파일의 형식
+- 일반 파일
+d 디렉토리
+c 캐릭터 디바이스
+b 블록 디바이스
+l 링크 파일(바로가기)
+
+rw-r--r-- : 권한
+. : ACL 정보
+. : acl  설정 정보가 없다.
++: acl 설정 정보가 있다.
+setfacl / getfacl 
+
+1 : 링크 개수
+inode에 연결되어 있는 파일 이름이 몇개나 있는가?
+
+root UID 소유자
+root  GID 그룹소유자
+0 용량
+Nov  4 01:36  시간
+수정 시간 
+file1 파일 이름 
+
+
+
+
 stat
 file
 
