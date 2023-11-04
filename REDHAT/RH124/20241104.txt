@@ -117,6 +117,68 @@ SEE ALSO
 디렉토리 이동과 확인
 cd  : 디렉토리 변경
 
+디렉토리를 이해하기 위한 두가지
+
+.   : 현재 디렉토리
+..  : 부모 디렉토리
+
+# cd .. : 부모 디렉토리
+# cd ../.. 
+
+상대경로
+시작점 pwd 기준
+이동 방법
+이동하려는 디렉토리 명을 작성 
+.. > 부모 디렉토리로 올라가서 이동
+dir1 > 하위 디렉토리로 내려가서 이동
+
+절대경로
+시작점 /  : 항상 /  / = 최상위 디렉토리
+이동 방법
+디렉토리 지정시 제일먼저 / 입력하고
+나머지 경로를 차례대로 입력 
+
+/etc/sysconfig/network-scripts
+^     ^                ^
+1     2                 3
+1 = 최상위 디렉토리
+23 = 디렉토리 구분자.
+
+# cd /etc/sysconfig/network-scripts
+
+/
+etc/
+sysconfig/
+network-scripts/
+
+mkdir /test
+mkdir -p /test/dir1/dir2
+cd /test/dir1/dir2
+pwd
+
+/test/dir1
+
+/test/dir2 상대 경로
+# pwd
+/test/dir1
+# mkdir ../dir2
+
+/test/dir3 절대 경로 
+# mkdir /test/dir3
+
+옵션 
+# cd -  디렉토리 두개를 스위칭할때 
+
+홈 디렉토리 이동 방법
+# cd
+# cd ~
+# cd /root
+# cd $HOME
+
+~ : 홈 디렉토리
+
+cd ~/student   : 접속한 계정의 홈 디렉토리 아래에 student 디렉토리로 이동
+cd ~student    : student계정의 홈 디렉토리 이동
 
 
 
