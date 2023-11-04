@@ -308,16 +308,61 @@ cat 단점 : 출력물이 한순간에 지나간다.
 # more filepath
 # CMD | more 
 
-head
-tail
+# cat -n /etc/passwd | head -30 > file1
+
+head : 파일의 처음부터 원하는 라인까지 출력기본값은 10줄
+# head file1
+# head -n 3 file1
+# head -3 file1
+tail : : 파일의 끝부터 원하는 라인까지 출력기본값은 10줄
+# tail file1
+# tail -n 3 file1
+# tail -3 file1
+-f 파일에 저장되는 데이터를 실시간으로 출력
 
 sort
 uniq
 
 파일의 복사와 삭제
 rm
+삭제
+주의점: GUI의 Files를 제외하면 삭제 명령을 내린후 되돌릴 수 없다.
+-i 응답형으로 동작
+-f 질문을 무시하고 동작
+-v 자세하게 확인하기 위함
+-r 디렉토리 삭제 
+
+DISK -> 10K 15K 
+
 cp
+파일의 구조
++--------+
+|               |   < inode 
++--------+
+|               |   <data block
+|               |
++--------+
+-i
+-r
+-f
+-v
+-p : 소유자, 그룹 소유자, 시간, 권한 정보를 그대로 복사한다.
+
+# cp file1 file2 file3 dir1
+
 mv
+inode 번호를 변경하지 않고 파일의 이름만 변경 한다.
+같은 파일 시스템 내에서만 inode 번호가 변경되지 않는다.
+다른 파일 시스템으로 이동을 한다면 파일을 복사하고 원본 파일은 삭제.
+# mv file1 file2 file3 dir
+여러개의 파일을 이동 할 때 마지막에는 디렉토리를 작성
+# mv file1 file2
+동일한 아이노드를 가지고 있지만 파일 이름만 변경
+# mv file1 dir1
+dir1으로 file1 이름을 유지한채 이동
+# mv file1 dir1/file10
+dir1으로 이름을 file10번으로 변경하며 이동
+-t 이동에 사용할 디렉토리를 지정 
 
 파일 속성 정보 변경
 chmod
@@ -326,7 +371,6 @@ umask
 
 파일의 속성을 활용하는 방법
 ln 
-
 
 명령어의 위치
 
@@ -421,9 +465,36 @@ root / redhat
 
 $ ssh root@servera
 
+리눅스 배포판
+
+RHEL fedora centos rocky
+
+SUSE - opensuse 
+debian - ubuntu
+
+IBM - AIX
+HP - HP_UX  x86
+sun - solaris x86
+
+FEDORA-RHEL-CENTOS
+매입
+FEDORA-CENTOS stream-RHEL -> rocky
+
+$  일반 사용자
+# root 
+문자를 보고 100% 믿으면 안된다.
+
+wc  word count 
+파일의 문자수 단어수 라인수를 확인
+# wc /etc/passwd
+# wc -l /etc/passwd
+
+자동완성 :
+명령어 ,
+디렉토리 이동, 디렉토리 파일 인자 
 
 
-
+head -n 3/usr/share/dict/words /usr/share/dict/linux.words
 
 
 
