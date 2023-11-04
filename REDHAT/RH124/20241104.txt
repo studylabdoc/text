@@ -302,8 +302,12 @@ touch
 stat로 확인하게 되면 나노초가 00000 으로 찍혀있는것을 확인
 이는 누군가가 임의로 건드린 파일이다.
 
-
 more
+cat 단점 : 출력물이 한순간에 지나간다.
+한 페이지씩 걸어서 확인하는 용도 
+# more filepath
+# CMD | more 
+
 head
 tail
 
