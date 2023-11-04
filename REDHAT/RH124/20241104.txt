@@ -496,6 +496,17 @@ wc  word count
 
 head -n 3/usr/share/dict/words /usr/share/dict/linux.words
 
+date
+
+시간을 표시하는 명령
+timedatectl / date
+
+date
+시간을 확인한다.시간을 설정한다.
+
+파일을 작성할때는 다음과 같이 한다.
+touch file$(date +%m%d_%H%M_%s)
+
 
 
 
