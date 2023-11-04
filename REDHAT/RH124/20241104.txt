@@ -3,3 +3,159 @@
 nsr230@studylab.xyz 
 
 https://github.com/studylabdoc/text
+https://rha.ole.redhat.com/rha/app/classes  :vt lab 접속 사이트
+
+RH124 -> 시작 > 실습환경 > create
+
+
+RHCSA 자격증 취득 
+
+RH199 시험 대비용 
+
+RH124  기본 명령어 학습 
+RH134 네트워크 / 스토리지 / 로컬 관리 
+
+1 2 : 기본 명령어 
+3  시험 대비 
+4  시험 대비 
+5 시험 대비 
+6 최종 
+7
+8 시험
+
+명령어를 알기 전에 알아야 하는 기본 : 명령어의 3대 블록
+comm opt arg
+
+도움말 페이지를 확인하기
+man
+
+
+디렉토리 이동과 확인
+cd
+pwd
+
+디렉토리 생성 및 삭제
+mkdir
+rmdir
+
+tree
+
+디렉토리 확인 명령어
+ls
+stat
+file
+
+파일의 생성 및 확인
+cat
+touch
+
+more
+head
+tail
+
+sort
+uniq
+
+파일의 복사와 삭제
+rm
+cp
+mv
+
+파일 속성 정보 변경
+chmod
+chown
+umask
+
+파일의 속성을 활용하는 방법
+ln 
+
+
+명령어의 위치
+
+which
+whereis
+
+쉘을 잘 쓰기 위한 세트
+
+bash
+
+alias
+history
+cat file1 file2 > file3
+cat < file1
+find . -name core 2> /dev/null
+export
+^c
+^d
+exit
+while
+for
+[
+tee
+clear
+date
+
+쉘의 기록을 남기는 방법
+script
+tmux
+tlog
+
+
+원격 접근
+ssh
+scp
+scftp
+
+텍스트에디터
+vi
+
+계정관련
+useradd
+passwd
+
+id
+su -
+
+who
+last
+lastb
+w
+
+네트워크 
+ping
+ifconfig
+mail
+wall
+
+시스템의 기본 제어와 정보확인
+poweroff
+reboot
+shutdown
+
+uname
+
+init
+systemctl
+
+디스크 관련
+df
+du
+
+검색
+grep
+find
+locate
+
+프로그램 설치
+dnf
+
+프로세스 
+ps
+
+
+
+
+
+
+
+
