@@ -276,8 +276,32 @@ ln -s file1 file3
 mkdir dir1
 
 파일의 생성 및 확인
-cat
-touch
+cat : 텍스트 파일을 병합하고 출력한다.
+# cat file2 file1
+# cat file3
+2
+1111111
+
+# cat > file1
+1111111111
+2222222222
+3333333333
+
+-n 라인 넘버 확인
+tac : cat의 반대방향으로 출력
+
+touch 
+1 빈 파일 생성
+2 파일 시간 변경
+시간을 지정하여 변경하기
+# touch -t 월일시분
+# touch -t 08161300 file1
+[root@servera test]# touch -t 08161300.30 file1
+[root@servera test]# touch -t 200108161300.30 file1
+-t옵션으로 변경시 문제점 :
+stat로 확인하게 되면 나노초가 00000 으로 찍혀있는것을 확인
+이는 누군가가 임의로 건드린 파일이다.
+
 
 more
 head
