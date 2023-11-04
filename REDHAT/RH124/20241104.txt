@@ -23,11 +23,52 @@ RH134 네트워크 / 스토리지 / 로컬 관리
 7
 8 시험
 
+windows    ms-dos > GUI  server : core/nano [CMD]
+unix / linux console : terminal 명령어 
+
+GUI
+CLI / TUI 
+
+server에서 CLI로 서버를 작업하는 이유:
+성능 이슈
+사용자  GUI> 메모리사용량 / 그래픽 사용량 증가. 
+속도
+
+태국
+
 명령어를 알기 전에 알아야 하는 기본 : 명령어의 3대 블록
-comm opt arg
+CMD opt arg
+# [1] [2] [3]
+[1] CMD 항상 쉘의 처음에 와야한다. , 다음 옵션과 인자를 분리 하기위하여 빈칸 입력이 필수 
+[2] opt 명령의 결과를 조정하기 위한 옵션 > 명령어의 개수를 최대한 줄이기 위한 트릭 
+옵션에 형식
+-a   짧은 형식
+--all 긴 형식
+명령어 옵션에 따라서 긴형식만 존재 할 수 도 있고, 짧은 형식만 존재 할수도 있다. 꼭 매뉴얼을 확인! 
+a EX:  tar cvf fiel.tar  ps aux ps -aux
+주의  사항!
+옵션을 사용하는 방법
+# ls -al
+# ls -a -l
+# ls --all -l
+# ls -l --all 
+옵션에 인자가 붙어있는 경우
+# find / -name f -type core
+find: Must separate multiple arguments to -type using: ','
+op1 a op2 b op3 c
+# CMD -op1 a -op2 b -op3 c
+
+[3] arg : 기본값 현재 디렉토리
+위치를 변경하기 위함. 사용자가 원하는 파일이나 디렉토리에 어떠한 작업을 하기 위함.
+# ls  = ls . 
+# ls /var
 
 도움말 페이지를 확인하기
+https://man.cx/
+
 man
+# man [search command]
+q: 빠져나가기
 
 디렉토리 이동과 확인
 cd
@@ -150,6 +191,19 @@ dnf
 
 프로세스 
 ps
+
+workstation 
+
+servera << 
+
+접속시 servera 이동
+공통 계정 :
+student / student
+root / redhat 
+
+$ ssh root@servera
+
+
 
 
 
