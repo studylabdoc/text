@@ -467,16 +467,46 @@ ln: failed to create hard link '/boot/file1' => 'file1': Invalid cross-device li
 하드링크 -> device
 심볼릭링크->  file path
 
-
-
 명령어의 위치
+which 명령어의 절대 경로 확인
+# which ls
 
-which
-whereis
+/usr/bin/ls
+whereis 도움말 파일의 위치 
+# whereis ls
+ls: /usr/bin/ls /usr/share/man/man1p/ls.1p.gz /usr/share/man/man1/ls.1.gz
+
+whatis  섹션 확인 짧은 설명
+# whatis ls
+ls (1p)              - list directory contents
+ls (1)               - list directory contents
+mandb 명령을 처음에 이용해야 한다. 
 
 쉘을 잘 쓰기 위한 세트
 
-bash
+쉘 확장
+글로빙
+# bash --version
+
+bash 
+sh ksh bash zsh
+     csh tcsh
+/etc/shells << 시스템에서 이용가능한 쉘의 목록
+
+USER  
+KERNEL
+H/W
+
+- 리다이렉션(Redirection)
+- 파이프(Pipe)
+- 배쉬쉘 기능(Bash Shell Funtion)
+- 변수(Variable)
+- 메타캐릭터(Metacharcter)
+- 히스토리(History)
+- 환경 파일(Environmnet File)
+
+쉘은 명령행에서 입력되거나 스크립트 파일에서 읽어 들이는 명령어들을 해석함으로써 사용자와 커널의 중계(Interface) 역할을 담당한다. 사용자가 로그인하면 쉘이 시작되고 사용자가 명령어를 입력하면 쉘은 명령행의 구문을 분석하고, 리다이렉션, 파이프, 와일드 카드, 작업 제어등을 처리하고, 명령어를 PATH변수에서 검색하고 존재하면 실행한다. 쉘의 주요 기능들 중 하나는 명령행 프롬프트에서 입력된 명령어들을 해석하는 대화형 기능이다. 쉘은 명령행에서 입력된 명령어들을 분석해서 '토큰'이라는 단어 단위로 해석한다. 토큰은 탭이나 빈칸, 개행문자 등 [공백]으로 구분한다. 입력된 명령어들에 메타문자들이 포함되어 있으면 적절하게 처리한다. 쉘은 파일 입출력과 백그라운드 작업을 처리하며, 명령행에서 입력이 정상적으로 분석되었을 경우 해당 명령어를 찾아 실행한다.
+
 
 alias
 history
@@ -484,8 +514,12 @@ cat file1 file2 > file3
 cat < file1
 find . -name core 2> /dev/null
 export
-^c
-^d
+
+^c : 인터럽트
+진행되고 있는 프로세스를 강제 종료 하는 기능
+^d : 1.EOF 2. logout
+
+
 exit
 while
 for
@@ -493,6 +527,9 @@ for
 tee
 clear
 date
+특수 변수
+메타 파일..
+
 
 쉘의 기록을 남기는 방법
 script
