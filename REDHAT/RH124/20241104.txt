@@ -604,6 +604,41 @@ CMD  2>> filename /* 표준에러출력 */
 # CMD 2> /dev/null
 # find 
 
+표준 출력과 표준 에러를 동시에 저장하기
+# ls file1 nofile1
+ls: cannot access 'nofile1': No such file or directory
+file1
+# ls file1 nofile1 > list    :  표준 출력만 저장
+ ls: cannot access 'nofile1': No such file or directory
+
+# ls file1 nofile1 2> list   : 표준 에러만 저장
+file1
+
+[root@servera test]# ls file1 nofile1 > list  2> list1  정상, 비정상 결과를 따로 저장하는 경우
+
+[root@servera test]# cat list
+file1
+[root@servera test]# cat list1
+ls: cannot access 'nofile1': No such file or directory
+[root@servera test]#
+
+# l
+s file1 nofile1 > list 2>&1  : 모든 출력을 하나의 파일로 저장
+[root@servera test]# cat list
+ls: cannot access 'nofile1': No such file or directory
+file1
+
+cat list
+ls: cannot access 'nofile1': No such file or directory
+file1
+[root@servera test]# > list      : list 파일의 데이터를 삭제 
+[root@servera test]# cat list
+[root@servera test]# ls -ls list
+0 -rw-r--r--. 1 root root 0 Nov  5 00:48 list
+
+
+
+
 쉘 - 해석기 
 alias
 history
@@ -615,6 +650,25 @@ export
 ^c : 인터럽트
 진행되고 있는 프로세스를 강제 종료 하는 기능
 ^d : 1.EOF 2. logout
+# 파이프(PIPE)
+명령어와 명령어를 연결할 때 사용
+- CMD | CMD
+# ps – ef | more
+# ps –ef | grep systemd
+# CMD > file.log (# CMD >> file.log )
+# CMD | tee file.log (# CMD | tee –a file.log)
+
+파이프
+
+파이프(Pipe)란? 앞에 실행한 명령어의 출력 결과를 뒤에 실행하는 명령어의 입력 값으로 넣어 준다. 앞의 출력 결과를 뒤에 실행하는 명령어의 입력 결과로 보내줌으로 인해 파이프(|)를 사용하면 여러 명령을 동시에 연결하여 사용 할 수가 있다.
+
+ls -al 명령을 사용하게 되면 모든 파일을 보여주므로 한 화면을 넘는 많은 파일을 보여 주게 될 때 "ls -al | more" 를 쓰게 되면 ls 명령에 대한 결과를 more 명령을 통해 확인해 볼 수 있다.
+
+
+첫 번째 CMD로 출력된 내용을 화면에 그대로 출력하지 않고 파이프 버퍼에 data를 저장 해 두었다가 버퍼에 저장된 결과 값을 가지고 뒤에 있는 CMD의 입력 값으로 넘겨 뒤에 있는 명령어가 실행한 결과를 출력해 주게 된다
+
+
+
 
 
 exit
