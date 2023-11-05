@@ -667,8 +667,168 @@ ls -al 명령을 사용하게 되면 모든 파일을 보여주므로 한 화면
 
 첫 번째 CMD로 출력된 내용을 화면에 그대로 출력하지 않고 파이프 버퍼에 data를 저장 해 두었다가 버퍼에 저장된 결과 값을 가지고 뒤에 있는 CMD의 입력 값으로 넘겨 뒤에 있는 명령어가 실행한 결과를 출력해 주게 된다
 
+# CMD1 | CMD2
+CMD1의 표준 출력 결과를 pipe를 통해ㅡ CMD2의 표준 입력으로 사용
+에러? X 
+# cmd; cmd
+
+파이프의 한계
+표준 에러는 넘기지 못한다.
+# ls file1 file2 file3 file4 file5 | grep file
+ls: cannot access 'file4': No such file or directory
+ls: cannot access 'file5': No such file or directory
+file1 <
+file2 <
+file3 < 결과만 나온다.
+에러를 검색 하지 못한다.
+
+표준 에러를 표준 출력으로 변환 시키는 작업을 해야함.
+# ls file1 file2 file3 file4 file5 2>&1 | grep file
+ls: cannot access 'file4': No such file or directory <
+ls: cannot access 'file5': No such file or directory <
+file1 <
+file2 <
+file3 <
+
+tee -> 파이프를 넘어오는 데이터를 복제 시키는 방법
+
+tail -> log 
+
+# echo 111
+# echo 1111 >> file1
+화면으로 출력 되거나 저장되거나 둘 중 하나만 작업이 가능 
+# echo 1111 | tee -a file1
+화면 출력과 저장을 동시에 수행하는 명령
+
+tee 를 사용하는 또 다른 방법
+조건 : 같은 서버에서 실행
+# script -a /dev/null | tee /dev/pts/3 
+
+bash 쉘의 기능(bash Shell Function)
+
+# set -o/* 쉘 자체의 기능 전체 목록 확인 */
+# set -o vi /* 쉘 자체의 기능 중 vi 기능을 ON */
+# set +o vi /* 쉘 자체의 기능 중 vi 기능을 OFF */
+
+# set -o 
+
+ignoreeof   : ^D로 로그아웃 방지
+[root@servera test]# ps
+    PID TTY          TIME CMD
+   2090 pts/2    00:00:00 bash
+   2385 pts/2    00:00:00 ps
+[root@servera test]# bash
+[root@servera test]# bash
+[root@servera test]# bash
+[root@servera test]# set -o ignoreeof
+ctrl + d 입력
+[root@servera test]# 
+Use "exit" to leave the shell.
+
+noclobber : 덮어쓰기 방지
+[root@servera test]# echo 11111 > file2
+[root@servera test]# cat file2
+11111
+[root@servera test]# echo 33333 > file2
+bash: file2: cannot overwrite existing file
+
+echo 33333 >| file2   기능 무시하고 사용하기 
+
+메타캐릭터(Metacharacter)
+특수문자
+파일 생성시
+- 영문자 숫자 _ - . 
+
+- ''(작은 따옴표(single quotation))
+쉘이 해석하지 못하도록 막는다.
+# echo $HOME
+/root
+# echo '$HOME'
+$HOME
+# echo 11111 2 
+11111 2
+# echo 11111         2 
+11111 2
+# echo '11111         2' 
+11111         2
+
+- ""(큰 따옴표(Double quotation))
+쉘이 해석하지 못하도록 막는다.
+해석이 가능한 문자들이 존재 ` \ $
+# echo "HOME"
+HOME
+# echo "$HOME"
+/root
+
+# echo "\$HOME"
+$HOME
+
+# echo "=======$(date)=========="
+=======Sun Nov  5 01:42:16 AM EDT 2023==========
 
 
+- ``(역 따옴표(Back quotation))
+역따옴표 내의 문자들을 명령어로 치환 
+# echo ls
+ls
+# echo `ls`
+file1 file2
+# ls -l `which fdisk`
+-rwxr-xr-x. 1 root root 115424 Feb 24  2022 /usr/sbin/fdisk
+`의 문제점 : 따옴표랑 비슷하게 생겼다. 인쇄물 정확하게 판별이 안되는 경우도 많다. 권장 사항 $(text)
+# echo $(date)
+Sun Nov 5 01:38:55 AM EDT 2023
+
+- \ (역 슬래쉬(Back slash))
+바로 뒤에 오는 하나의 문자를 해석하지 않음.
+# echo $HOME
+/root
+# echo \$HOME
+$HOME
+
+역슬래시 뒤에 문자가 없다면 다음 줄로 이어서 명령을 진행
+# echo 111111 2222 \
+> 22222222 33333333 \
+> 33333 
+111111 2222 22222222 33333333 33333
+
+- ; (세미콜론(Semicolon))
+명령어를 세미콜론을 기준으로 하여 격리
+# cmd ; cmd
+# echo ls date
+ls date
+# echo ls ; date
+ls
+Sun Nov  5 01:43:08 AM EDT 2023
+
+세미콜론의 단점
+# ls
+file1
+# pwd
+/test1
+# cd /test3 ; rm -rf * 
+bash: cd: /test3: No such file or directory
+# ls
+# 
+앞의 명령어가 실패한 경우에 뒤의 명령어는 이런 조건에 상관 없이 실행
+# touch file1
+# ls
+file1
+# cd /test3 &&  rm -rf * 
+bash: cd: /test3: No such file or directory
+# ls
+file1
+&& : 앞의 명령어가 정상 종료인 경우만 뒤의 명령어를 실행 
+$? == 0 
+
+# cd /test3 || rm -rf * 
+bash: cd: /test3: No such file or directory
+# ls
+|| : 앞의 명령어가 비정상 종료인 경우에만 뒤의 명령어를 실행
+$? !== 0
+
+# echo 1 > /dev/null 2>&1 && echo 10 || echo 20 
+10
 
 
 exit
