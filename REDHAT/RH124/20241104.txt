@@ -545,13 +545,64 @@ fd (파일 기술자, File Descriptor)
 [1] 예약되어진 파일 기술자(File Descriptor)
 파일기술자 : 축약의미 :설 명
 0 : stdin : Standard Input, 표준입력, 특별히 입력이 지정되지 않은 경우 키보드에서 입력을 받는다.
-1 : stdout : Standard Ouput, 표준출력, 특별히 출력이 지정되지 않은 경우 정상적인 출력 결과를 모니터로 출력된다.
-2 : stderr : Standard Error, 표준에러, 특별히 출력이 지정되지 않은 경우 에러의 출력 결과를 모니터로 출력된다.
+1 : stdout : Standard Ouput, 표준출력, 특별히 출력이 지정되지 않은 경우 정상적인 출력 결과를 터미널로 출력된다.
+2 : stderr : Standard Error, 표준에러, 특별히 출력이 지정되지 않은 경우 에러의 출력 결과를 터미널로 출력된다.
 
+표준입력(0, stdin) -----> SHELL(bash) -----> 표준출력(1, stdout)
+(EX: keyboard)                         |                                (EX: terminal)
+			                            |
+				                    V
+				 표준에러(2, stderr)
+				     (EX: terminal)
 
+표준 출력과 표준 에러의 기준?
+$?
+명령어가 실행, 파일을 실행 할 때  결과값을 참조 : 0-255
+0 -> 정상
+1-255 -> 비정상
 
+리디렉션 : 기본 입 출력 장치가 아닌 파일 , 다른 장치를 통하여 입출력을 진행하는 것
 
+# echo 11111 > file1
+# cat > file1
+ 
+입력 리디렉션
+입력 재지정은 표준입력(Stdin)에서 입력을 받지 않고, 다른쪽에서 입력을 받는 것을 입력 재지정 (Redirection stdin)이라고 한다. 원래 특별한 지정이 없다면, 키보드에서 입력을 받지만 다른쪽 방향에서 입력을 받는 것을 말한다. 파일 기술자 0번은 생략 가능하다.
 
+[형식]
+CMD   <  filename (표준입력)
+CMD  0<  filename(표준입력 - 파일 기술자 0번)
+[root@servera test]# cat file1
+linux   file1 [linux] ---> stdout 
+[root@servera test]# cat 0< file1
+linux
+[root@servera test]# cat < file1
+               file1 [linux] --> stdin --> cat >  stdout 
+
+출력 재지정(출력 리다이렉션, Redirection stdout)
+
+출력 재지정은 정상정인 출력 결과를 표준출력(모니터)으로 출력을 하지 않고, 다른 쪽으로 출력하는 것을 출력 재지정(Redirection stdout)이라고 한다. 원래 특별한 지정이 없다면, 모니터로 출력되지만 다른 쪽 방향으로 출력하는 것을 말한다. 파일 기술자 1번은 생략 가능하다.
+
+[명령어 형식]
+
+CMD   >  filename /* 표준출력, 덮어쓰기 기능 */
+CMD  1>  filename /* 표준출력, 덮어쓰기 기능 */
+CMD   >> filename/* 표준출력, 이어쓰기 기능 */
+CMD  1>> filename/* 표준출력, 이어쓰기 기능 */
+
+# echo 1111 > file1 
+# echo 222222 >> file2
+
+[2] 에러 재지정(에러 리다이렉션, Redirection stderr)
+
+에러 재지정은 표준 에러로 출력하지 않고, 다른 쪽으로 출력하는 것을 에러 재지정(Redirection stderr)이라고 한다. 원래 특별한 지정이 없다면, 모니터로 출력을 하지만 다른 쪽으로 출력하는 것을 말한다. 파일 기술자 2번은 생략 불가능하다. 방향 재지정자를 1번과 동일하게 사용하여 1번 파일 기술자와 구별하기 위해 생략 불가능하다.
+
+[명령어 형식]
+CMD  2>  filename/* 표준에러출력 */
+CMD  2>> filename /* 표준에러출력 */
+
+# CMD 2> /dev/null
+# find 
 
 쉘 - 해석기 
 alias
