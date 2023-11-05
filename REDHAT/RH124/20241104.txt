@@ -1118,6 +1118,11 @@ touch file$(date +%m%d_%H%M_%s)
 파일 이름:
 파일은 대 소문자를 구별!
 
+과정 대상 동영상 강의 ! <<<
+책 내용 읽고 
+https://www.redhat.com/ko/services/training/ex200-red-hat-certified-system-administrator-rhcsa-exam?section=%EB%AA%A9%ED%91%9C   
+REDHAT EX200 정보 페이지
+
 
 
 
