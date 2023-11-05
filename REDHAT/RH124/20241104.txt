@@ -516,6 +516,42 @@ H/W
 - 쉘은 명령어 자동 완성 기능을 사용하여 입력한 명령어를 기록한다.
 - 쉘은 사용자 환경 정의 파일을 가지고 사용자의 환경을 초기화 한다.
 
+ 쉘의 기능
+
+- 명령어 해석기(Command interpreter)
+- 프로그램 언어(Programable Language) ---> 쉘 스크립트(쉘 프로그램)
+
+- 파일기술자
+# ps
+    PID TTY          TIME CMD
+   1065 pts/0    00:00:00 bash
+   1669 pts/0    00:00:00 ps
+/proc 라는 디렉토리 존재
+# cd /proc/1065/fd
+# ls -l
+total 0
+lrwx------. 1 root root 64 Nov  4 21:35 0 -> /dev/pts/0
+lrwx------. 1 root root 64 Nov  4 21:35 1 -> /dev/pts/0
+lrwx------. 1 root root 64 Nov  4 21:35 2 -> /dev/pts/0
+
+fd (파일 기술자, File Descriptor)
+
+각 프로세스를 위한 파일 기술자(File Descriptor)가 쉘에 의해 만들어 진다. 한 개의 파일을 열면 그 연 파일을 나타내는 특별한 숫자를 쉘이 만들어 내는데 이것이 파일 기술자이다. 이런 번호들 중 미리 예약 되어져서 파일을 열 때 주어지지 않는 번호가 있는데 아래 표와 같다.
+
+파일 기술자(File Description)란?
+	프로세스가 파일을 열때 할당되는 번호
+	프로세스의 열린 파일을 구분할 때 사용하는 식별 번호
+
+[1] 예약되어진 파일 기술자(File Descriptor)
+파일기술자 : 축약의미 :설 명
+0 : stdin : Standard Input, 표준입력, 특별히 입력이 지정되지 않은 경우 키보드에서 입력을 받는다.
+1 : stdout : Standard Ouput, 표준출력, 특별히 출력이 지정되지 않은 경우 정상적인 출력 결과를 모니터로 출력된다.
+2 : stderr : Standard Error, 표준에러, 특별히 출력이 지정되지 않은 경우 에러의 출력 결과를 모니터로 출력된다.
+
+
+
+
+
 
 쉘 - 해석기 
 alias
