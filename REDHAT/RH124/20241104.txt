@@ -830,6 +830,80 @@ $? !== 0
 # echo 1 > /dev/null 2>&1 && echo 10 || echo 20 
 10
 
+지역변수
+현재 쉘에만 할당되며 자식 쉘에서 적용되지 않는다.
+# var=5
+# echo $var
+5
+
+환경변수
+현재 쉘을 포함하여 자식 쉘에도 적용된다.
+
+# export var
+# export var=5
+
+set : 환경변수와 지역변수를 모두 출력
+env : 환경 변수를 출력
+
+# unset var
+# unset var1
+# export var=1
+# var1=2
+# set | grep ^var
+var=1
+var1=2
+# env | grep ^var 
+var=1
+
+특수변수
+시스템 지역변수
+PS1 명령어 프롬프트에 나타내는 시스템 환경 변수
+
+
+사용자 환경 파일(Bash Initialization)
+[1] 환경 파일이 읽혀 지는 순서
+ [1-1] 로그인시에 읽혀 지는 환경 파일
+
+■ /etc/profile
+	■ /etc/profile.d/*.sh
+
+■ ~/.bash_profile (~/.bash_profile -> 파일이 없으면 -> ~/.bash_login -> 파일이 없으면 -> ~/.profile)
+	■ ~/.bashrc
+		■ /etc/bashrc
+
+쉘이 실행 될때 마다 읽혀 지는 환경 파일
+
+■ ~/.bashrc
+	■ /etc/bashrc
+		■ /etc/profile.d/*.sh
+로그아웃 할 때 마다 읽혀 지는 환경 파일
+
+■ ~/.bash_logout
+
+사용자로 로그인
+[root@server1 ~]# ssh root@localhost
+root@localhost's password: 
+Activate the web console with: systemctl enable --now cockpit.socket
+
+Last login: Thu Dec 10 18:37:17 2020 from 192.168.10.1
+|---> /etc/profile read
+|---> /etc/profile.d/*.sh test.sh read
+|---> /etc/bashrc read
+|---> /etc/bashrc out
+|---> ~/.bash_profile read
+|---> ~/.bashrc read
+|---> /etc/bashrc read
+|---> /etc/bashrc out
+|---> ~/.bashrc out
+|---> ~/.bash_profile out
+
+
+⑧ 하위 쉘(Sub Shell) 실행
+# bash
+|---> ~/.bashrc read
+|---> /etc/bashrc read
+|---> /etc/profile.d/*.sh read
+
 
 exit
 while
