@@ -10,6 +10,12 @@ https://docs.google.com/spreadsheets/d/1iSNN72hKCM5nvnRLDulRnhi7AyhzzJJmUdYt66Zs
 https://drive.google.com/file/d/1Vku3pd_gN3mW8GDq1_26wbljpPQI6Nti/view?usp=sharing
 RH124 -> 시작 > 실습환경 > create
 
+vm 압축 파일 
+https://drive.google.com/drive/folders/1_6Jep6TBcX6HZ7mwmSosFtMeqwwZrMdZ?usp=sharing
+
+
+
+
 수업을 주말마다만 진행
 토 요리 월-금  reset > 토 일 
 
@@ -1365,3 +1371,69 @@ $ su
 $ su -   < 권장
 그런데 모든 것을 만족시키지는 못한다.
 
+sudo
+su ? 문제점?
+
+계정 관리
+
+1 useradd  계정 생성
+# useradd team01 
+team01 계정 생성
+# useradd -D
+GROUP=100
+HOME=/home
+INACTIVE=-1
+EXPIRE=  만료일자. 
+SHELL=/bin/bash   기본 할당할 쉘
+# cat /etc/shells 
+/bin/sh
+/bin/bash
+/usr/bin/sh
+/usr/bin/bash
+
+SKEL=/etc/skel 계정 생성시 필요한 기본 파일의 저장소
+CREATE_MAIL_SPOOL=yes
+
+# cd /var/spool/mail/ : 사용자가 메일을 읽기 전까지 보관하는 장소
+-u uid 지정
+-N 그룹 디렉토리 생성 X
+-M 홈디렉토리를 생성하지 않음.
+
+2 usermod 계정 수정
+-aG 옵션에 대하여
+
+[root@servera skel]# groupadd -g 60001 g1
+[root@servera skel]# groupadd -g 60002 g2
+[root@servera skel]# groupadd -g 60003 g3
+[root@servera skel]# id team02
+uid=1002(team02) gid=1002(team02) groups=1002(team02)
+
+[root@servera skel]# usermod -aG g1 team02
+[root@servera skel]# usermod -aG g2 team02
+[root@servera skel]# id team02
+uid=1002(team02) gid=1002(team02) groups=1002(team02),60001(g1),60002(g2)
+# usermod -G g3 team02 
+[root@servera skel]# id team02
+uid=1002(team02) gid=1002(team02) groups=1002(team02),60003(g3)
+
+-aG 의 필요성  -G만 사용한다면 기존 그룹을 삭제하고 새로운 그룹만을 업데이트 
+하지만 -a 옵션으로 인해 기존 그룹을 유지한 상태로 새로운 그룹을 추가.
+
+[root@servera etc]# ls -l | grep [-]$
+-rw-r--r--.  1 root root       899 Nov 11 16:45 group-
+----------.  1 root root       717 Nov 11 16:45 gshadow-
+-rw-r--r--.  1 root root      2195 Nov 11 16:35 passwd-
+----------.  1 root root      1296 Nov 11 16:35 shadow-
+-rw-r--r--.  1 root root        61 Nov 11 16:35 subgid-
+-rw-r--r--.  1 root root        61 Nov 11 16:35 subuid-
+
+3 userdel  계정 삭제
+
+-r 
+기본 삭제
+홈 디렉토리와 , 메일 
+
+
+
+-r 옵션 삭제가 다름.
+전체 파일을 모두 삭제.
