@@ -6,6 +6,8 @@ https://github.com/studylabdoc/text
 https://rha.ole.redhat.com/rha/app/classes  :vt lab 접속 사이트
 https://docs.google.com/spreadsheets/d/1iSNN72hKCM5nvnRLDulRnhi7AyhzzJJmUdYt66ZsSkY/edit?usp=sharing
 
+정리 파일
+https://drive.google.com/file/d/1Vku3pd_gN3mW8GDq1_26wbljpPQI6Nti/view?usp=sharing
 RH124 -> 시작 > 실습환경 > create
 
 수업을 주말마다만 진행
@@ -1255,6 +1257,18 @@ cmd > route print
 네트워크 구성까지 완료가 되었다면 컴퓨터를 재부팅 하는 것을 권장.
 
 
+설치 -> rockylinux iso 파일을 가지고 있다.
+
+사용자 : 계정
+계정 :  프로그램간의 보안 경계
+
+인증 / 인가 
+
+A컴퓨터 -> B 애플리케이션
+ 
+로그인 / 로그인X
+UID - username 
+0 - root
 
 
 
@@ -1262,12 +1276,18 @@ cmd > route print
 
 
 
+설치
 
+설치 언어 선택 
+english US
 
+disk - auto > done
+network > 활성화 상태만 확인
 
+root - redhat
+student / student
 
-
-
+t
 
 
 
