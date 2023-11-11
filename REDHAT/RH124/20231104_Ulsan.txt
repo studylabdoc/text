@@ -1147,10 +1147,10 @@ Section 9.4: 연습 가이드: 파티션, 파일 시스템, 영구 마운트 추
 Section 9.6: 연습 가이드: 스왑 공간 관리
 Section 10.3: 개방 실습: 스토리지 스택 관리
 
+
 Section 11.7: 루트 암호 재설정
 
 Section 12.10: 연습 가이드: 정확한 시간 유지 관리
-
 
 Section 13.4: 연습 가이드: 명령줄에서 네트워킹 구성
 
@@ -1174,6 +1174,69 @@ https://www.vmware.com/content/vmware/vmware-published-sites/us/products/worksta
 rockylinux
 
 https://download.rockylinux.org/pub/rocky/9/isos/x86_64/Rocky-9.2-x86_64-dvd.iso
+
+설치
+lab 시간이 다돼서..?
+RHCSA 수업이 종료 이후?
+
+vmware 설치
+vmware
+hyper-v 
+virtualbox X 
+
+vmware player : 개인용
+vmware workstation pro : 개인용 상업용 
+
+vmware ESXI vsphere 서버용 
+
+라이센스 입력 부분에서  skip 
+30
+
+데스크탑에서 가상화 
+I3 I5 I7 I9 
+작업관리자  > 성능 > CPU > 가상화 : 사용 
+가상화 기능을 메인보드에서 활성화
+
+랩을 대신할 가상머신이 필요. 
+servera
+serverb
+
+가상머신 -> 격리된 운영체제
+
+USER
+----------
+KERNEL
+------
+H/W
+
+CPU    vcpu
+MEM   vmem
+DISK  vdisk
+NIC     vnic 
+
+가상 머신  껍데기 -> 운영체제
+
+가상머신 만들기
+File > New virtual Machine
+> Custom
+virtual machine hardware compatibility > workstation 17.x >
+I will the operating system later >
+Linux : Other Linux 5.x kernel 64 bit > 
+virtual machine name : servera
+Location : D\:VMs\servera>
+Number of processors : 1
+Number of core per processor:2 >
+4096 >
+NAT>
+LSI Logic>
+
+
+
+
+
+
+
+
 
 
 
