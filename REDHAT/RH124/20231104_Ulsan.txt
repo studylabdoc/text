@@ -1162,9 +1162,18 @@ Section 15.4: 연습 가이드: SELinux 포트 레이블 지정 제어
 Section 16.4: 연습 가이드: 컨테이너 배포
 Section 16.8: 연습 가이드: 컨테이너를 시스템 서비스로 관리
 
+vmware - rocky linux
+vm1 vm2
 
+chmod
+chown 
+vmware download 
 
+https://www.vmware.com/content/vmware/vmware-published-sites/us/products/workstation-pro/workstation-pro-evaluation.html.html.html
 
+rockylinux
+
+https://download.rockylinux.org/pub/rocky/9/isos/x86_64/Rocky-9.2-x86_64-dvd.iso
 
 
 
