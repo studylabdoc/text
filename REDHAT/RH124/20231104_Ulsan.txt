@@ -1229,6 +1229,35 @@ Number of core per processor:2 >
 4096 >
 NAT>
 LSI Logic>
+SCSI >
+create a new virtual disk >
+100G , single file  > 
+기본값 > 
+finish
+
+edit virtual machine setting >
+CD/DVD
+device status :
+  [V]connect at power on 
+Connection:
+   Use ISO image FILE: rockylinux.iso.
+
+네트워크 구성
+전체 동일한 구성으로 설정
+Edit > virtual network editor > change setting
+
+VMnet8 선택
+SubnetIP : 192.168.10.0
+NAT Setting : Gateway IP : 192.168.10.2>
+
+cmd > route print
+
+네트워크 구성까지 완료가 되었다면 컴퓨터를 재부팅 하는 것을 권장.
+
+
+
+
+
 
 
 
