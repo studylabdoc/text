@@ -1287,12 +1287,56 @@ network > 활성화 상태만 확인
 root - redhat
 student / student
 
+
+
+
 t
+ping www.google.com
 
+DVD 연결 해제
+디스크 추가 장착
+add 0->  hard disk > SCSI > new disk > 10G single file 
 
+이렇게 디스크 두개를 추가 장착
+부팅 이후에 터미널에서 다음 명령어 입력
+# lsblk
+sda
+sdb
+sdc
 
+# poweroff
 
+1. OVF 파일 생성
+CPU / MEM 조절 1core 1G
 
+File > export to OVF
+
+import 
+File > open
+name : serverb
+location : D:\VMs\serverb
+
+클론 
+vm > manage > clone
+
+full clone 형식으로 해야 한다.
+
+네트워크 설정
+ipv4
+manual 
+
+IP servera: 192.168.10.210  serverb 192.168.10.220
+Subnet 255.255.255.0
+gateway 192.168.10.2
+dns 8.8.8.8
+
+servera
+# hostnamectl set-hostname servera.example.com
+
+serverb
+# hostnamectl set-hostname serverb.example.com
+
+putty
 
 
 
