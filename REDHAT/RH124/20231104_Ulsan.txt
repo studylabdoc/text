@@ -1433,7 +1433,60 @@ uid=1002(team02) gid=1002(team02) groups=1002(team02),60003(g3)
 기본 삭제
 홈 디렉토리와 , 메일 
 
-
-
 -r 옵션 삭제가 다름.
 전체 파일을 모두 삭제.
+
+
+
+
+redhat -> SHA-512  + salt[.GhLHwtzpA9neSIJ]
+uC44dLcABXgnscX
+
+redhat -> SHA-512 +  salt[/VxFSD/yQ95CV9a/]
+UuvhD5LtLMVA8u8bS
+
+ssh team11@localhost
+cc
+passwd : redhat
+
+redhat + sha-512 +  /VxFSD/yQ95CV9a/
+UuvhD5LtLMVA8u8bS
+
+파일시스템 권한 
+chown
+소유자 , 그룹 소유자 변경
+-R 디렉토리 내부의 파일까지 변경
+-v 자세히 확인
+
+# chown [소유자, 그룹소유자] [파일디렉토리]
+소유자 변경
+# chown student file1
+그룹 소유자
+# chown .student file1
+
+# chown root.root file1
+# chown root:root file1  >> 권장 
+
+사용자
+/etc/passwd
+그룹 사용자
+/etc/group
+
+chgrp
+# chgrp student file1
+
+일반 사용자 > 파일 그룹 변경
+# chgrp g1 file2
+일반 사용자가 파일의 그룹을 변경하는 경우 다음과 같은 조건이 맞아야 한다.
+1. 변경하려는 파일의 소유자 일것
+2. 변경하려는 그룹에 그룹원으로 가입 되어 있을것
+
+chmod
+권한 변경
+
+
+
+
+
+
+
