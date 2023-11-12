@@ -1673,11 +1673,197 @@ SSD nvme
 디스크의 내부구조:
 https://gsk121.tistory.com/260
 
+스핀들 모터
+플래터
+헤드
+액츄에이터 암
+
+내부구조?
+섹터
+트랙
+실린더
+
+# lsblk
+NAME       MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTSsda          8:0    0  100G  0 disk 
+├─sda1       8:1    0    1G  0 part /boot
+└─sda2       8:2    0   99G  0 part 
+  ├─rl-root
+  │        253:0    0 61.2G  0 lvm  /
+  ├─rl-swap
+  │        253:1    0  7.9G  0 lvm  [SWAP]
+  └─rl-home
+           253:2    0 29.9G  0 lvm  /home
+sdb          8:16   0   10G  0 disk 
+sdc          8:32   0   10G  0 disk 
+sr0         11:0    1 1024M  0 rom 
+
+hda  : IDE
+sda : scsi sata..
+nvme0 :nvme
+
+fdisk : 디스크 파티션 작성 프로그램
+parted : 신형 
+
+# fdisk -l
+# fdisk /dev/sdb
+
+# fdisk /dev/sdb
+쓰기 작업에 대한 명령을 내리기 전까지는 저장되지 않는 장점
+Command (m for help): m
+Help:
+  Generic
+   d   delete a partition 파티션 제거
+   n   add a new partition 파티션 생성
+   p   print the partition table  현재 작성중, 작성된 테이블을 확인
+   t   change a partition type 파티션 타입 변경
+
+  Save & Exit
+   w   write table to disk and exit 저장 + 빠져나가기
+   q   quit without saving changes 나가기
+
+  Create a new label
+   g   create a new empty GPT partition table gpt 구성
+   o   create a new empty DOS partition table  mbr 구성
+Command (m for help): 
+
+mbr   
+주 파티션    4-1
+확장 파티션 1
+논리 파티션 5-15
+gpt   128 
+
+파티션을 나누는 이유:
+백업
+데이터 관리
+
+데이터 격리 : 파티션을 나누게 되면 시스템이 이상해서 부팅이 되지 않더라도 데이터 영역의 디스크를 다른 서버에 마운트시켜 데이터를 활성화 가능
+
+파일시스템 체크 : 체크에 대한 시간을 줄일수 있다.
+
+Command (m for help): n
+Partition type
+   p   primary (0 primary, 0 extended, 4 free)
+   e   extended (container for logical partitions)
+Select (default p): 
+
+Using default response p.
+Partition number (1-4, default 1): 
+First sector (2048-20971519, default 2048): 
+Last sector, +/-sectors or +/-size{K,M,G,T,P} (2048-20971519, default 20971519): +1G
+
+Created a new partition 1 of type 'Linux' and of size 1 GiB.
+
+리눅스의 파티션
+
+kernel
+vfs
+fs
+partition
+-------------
+H/W
+
+EX:
+
+/dev/sdb
+
+1 1G
+2 ex 전체
+3 나머지 용량
+
+1  확장 
+2 논리 5
+3 주 3G
+
+1 1G 83
+2 2G  83
+
+4
+
+같은 파티셔닝을 여러 디스크에 해야 하는 경우
+# sfdisk -d /dev/sdb | sfdisk /dev/sdc
+-d sdb 디스크의 정보를 덤프 
+
+디스크 초기화
+# dd if=/dev/zero of=/dev/sdc 
+
+파일 시스템 생성
+# mkfs.
+mkfs.cramfs  mkfs.ext3    mkfs.fat     mkfs.msdos   mkfs.xfs
+mkfs.ext2    mkfs.ext4    mkfs.minix   mkfs.vfat    
+
+mkfs.xfs /dev/sdb1
+lsblk --fs
+
+파일시스템 생성 = 파일을 저장할 구조 만들었다.
+
+마운트 :
+블록디바이스와 디렉토리 연결하여
+사용자가 파일시스템화된 디스크를 사용 할 수 있도록 하는것
 
 
+임시적인 상태
+
+부팅을한 이후에 다시 마운트 작업을 해야 한다.
+
+ /etc/fstab
+
+swap
+가상 메모리 : 
+메모리의 부족한 용량을 대체한다.
+하지만 부족하다면 언젠가는 증설을 고려해야한다.
+
+Device     Boot   Start     End Sectors Size Id Type
+/dev/sdb1          2048 2099199 2097152   1G 83 Linux
+/dev/sdb2       2099200 4196351 2097152   1G 83 Linux
+/dev/sdb3       4196352 6293503 2097152   1G 82 Linux swap / Solaris
+/dev/sdb4       6293504 8390655 2097152   1G 82 Linux swap / Solaris
+
+스왑을 생성할때는  Linux swap 82 코드로 변경
+[root@servera ~]# mkswap /dev/sdb3
+Setting up swapspace version 1, size = 1024 MiB (1073737728 bytes)
+no label, UUID=8fc24131-2b30-4a8d-bfcc-9896307b1d89
+[root@servera ~]# mkswap /dev/sdb4
+Setting up swapspace version 1, size = 1024 MiB (1073737728 bytes)
+no label, UUID=5960f0b3-27e7-4654-a35f-83791aab0d9d
+
+[root@servera ~]# free -h
+메모리 상태를 보여준다.
+스왑 메모리도 존재
+               total        used        free      shared  buff/cache   available
+Mem:           3.5Gi       948Mi       2.4Gi        15Mi       444Mi       2.6Gi
+Swap:          7.9Gi          0B       7.9Gi
+
+swapon 스왑 메모리 활성화
+# swapon /dev/sdb3
+
+# swapon -s
+현재 스왑의 상태
+
+Filename                                Type            Size         Used             Priority
+/dev/dm-1                               partition       8245244      0-2
+/dev/sdb3                               partition       1048572      0-3
+/dev/sdb4                               partition       1048572      0-4
+
+파일로 생성하기 
+# dd if=/dev/zero of=swapfile bs=1M count=1024
+
+[root@servera test]# mkswap swapfile 
+mkswap: swapfile: insecure permissions 0644, fix with: chmod 0600 swapfile
+Setting up swapspace version 1, size = 1024 MiB (1073737728 bytes)
+no label, UUID=26055d2e-e218-4fc0-9e6f-e85e0c3a8027
+권한을 변경하자.
+# chmod 0600 swapfile
+
+mkswap 스왑 생성
+swapon 
+-a fstab 파일에서 스왑 파티션을 찾아 활성화
+-s 현재 상태 확인
+swapoff
+/etc/fstab -> op,pri=##
 
 
-
+swapoff  스왑 메모리 비활성화
+# swapoff /dev/sdb3
 
 
 
