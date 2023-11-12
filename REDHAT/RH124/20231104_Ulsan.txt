@@ -1865,6 +1865,131 @@ swapoff
 swapoff  스왑 메모리 비활성화
 # swapoff /dev/sdb3
 
+LVM
+마운트 /etc/fstab
+------------------
+파일시스템
+---------------   LVM
+파티션
+---------------------
+DISK H/W
+
+PV PV는 하나의 물리적인 Disk에 LVM을 사용할 수 있도록 LVM 데이터 구조를 생성한 것
+을 말한다
+VG VG는 하나 또는 그 이상의 PV를 포함하며, LV를 생성할 수 있는 Volume Group의 집
+합이다.
+LV LV는 하나 또는 그 이상의 PV로 구성되어 있는 VG 공간을 전체 또는 분할하여 일반 파
+일시스템, swap or dump area,raw disk로 사용할 수 있도록 논리적으로 할당한공간이다
+LE[LG]-PE[Vg]
+
+표준 파티션 : 디스크를 한번 파티셔닝 하면 끝
+LVM: 여러 디스크를 결합 가능
+
+disk ->
+sdb
+sdb1 5
+sdb2 5
+sdc
+sdc1 10G
+PV-VG-LV
+
+주의 사항:
+파티션 작업시 LVM 구성으로 변경 8E
+
+Device     Boot    Start      End  Sectors Size Id Type
+/dev/sdb1           2048 10487807 10485760   5G 8e Linux LVM
+/dev/sdb2       10487808 20971519 10483712   5G 8e Linux LVM
+
+# pvcreate /dev/sdb1 : 파티션을 LVM에 추가
+# pvs
+  PV         VG Fmt  Attr PSize   PFree
+  /dev/sda2  rl lvm2 a--  <99.00g    0 
+  /dev/sdb1     lvm2 ---    5.00g 5.00g
+추가된 파티션 확인
+
+[root@servera ~]# vgcreate vg0 /dev/sdb1 
+  Volume group "vg0" successfully created
+[root@servera ~]# pvs
+  PV         VG  Fmt  Attr PSize   PFree 
+  /dev/sda2  rl  lvm2 a--  <99.00g     0 
+  /dev/sdb1  vg0 lvm2 a--   <5.00g <5.00g
+  /dev/sdb2      lvm2 ---   <5.00g <5.00g
+[root@servera ~]# vgcreate vg0 /dev/sdb2
+  A volume group called vg0 already exists.
+[root@servera ~]# vgextend 
+rl   vg0  
+[root@servera ~]# vgextend 
+rl   vg0  
+[root@servera ~]# vgextend vg0 /dev/sdb2
+  Volume group "vg0" successfully extended
+[root@servera ~]# vgs
+  VG  #PV #LV #SN Attr   VSize   VFree
+  rl    1   3   0 wz--n- <99.00g    0 
+  vg0   2   0   0 wz--n-   9.99g 9.99g
+[root@servera ~]# lvcreate -n lv0 -L 7G vg0
+  Logical volume "lv0" created.
+[root@servera ~]# lvs
+  LV   VG  Attr       LSize   Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+  home rl  -wi-ao---- <29.90g                                                    
+  root rl  -wi-ao----  61.23g                                                    
+  swap rl  -wi-ao----   7.86g                                                    
+  lv0  vg0 -wi-a-----   7.00g            
+
+
+lv 생성시 옵션
+-l LE 개수
+-L 용량 1G 100m
+
+
+[root@servera ~]# lvextend -l +256 /dev/vg0/lv1
+  Size of logical volume vg0/lv1 changed from 1.00 GiB (256 extents) to 2.00 GiB (512 extents).
+  Logical volume vg0/lv1 successfully resized.
+[root@servera ~]# lvextend -L +1G /dev/vg0/lv2
+  Size of logical volume vg0/lv2 changed from 1.00 GiB (256 extents) to 2.00 GiB (512 extents).
+  Logical volume vg0/lv2 successfully resized.
+
+ext   resize2fs
+
+xfs  xfs_growfs
+
+ 5mW675-dVss-DzSm-ag5V-X56f-Hujv-X2UJUF
+dNLwKl-B9JF-F2kt-KTDy-xqe3-Bg29-xkRVka
+
+dnf -y install stratis-cli stratisd
+
+systemctl enable --now stratisd
+
+man systemd.mount
+
+# yum search stratis
+# yum -y install stratis-cli stratisd
+# systemctl enable --now stratisd
+# lsblk
+# stratis pool create pool1 /dev/vdc
+# stratis pool list
+# stratis blockdev list
+# stratis filesystem create pool1 pool1_fs1
+# cd /stratis/pool1/
+# mkdir /disk1
+stratis filesystem list 에서 장치명을 확인한뒤 마운트 시도
+# mount /dev/stratis/pool1/pool1_fs /disk1# umount /disk1
+# vi /etc/fstab
+UUID를 보기 위해 blkid 명령을 사용
+:!man systemd.mount
+스페이스바 X 4~5
+x-systemd.requires= 옵션을 복사
+vi로 돌아와서 붙여넣기
+:! systemctl status stratisd
+stratisd.service를 복사
+vi로 돌아와서 붙여넣기
+UUID=7d7 /disk1 xfs    defaults,x-systemd.requires=stratisd.service        0 0 최종 완성 형태
+# mount -a
+# df
+# reboot
+
+
+ 
+
 
 
 
