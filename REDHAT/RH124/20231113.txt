@@ -192,46 +192,167 @@ alias ls='ls --color=auto'
 # whereis ls
 ls: /usr/bin/ls /usr/share/man/man1p/ls.1p.gz /usr/share/man/man1/ls.1.gz
 
-
 디렉토리 이동과 확인
-cd
-pwd
+pwd : 현재 경로의 디렉토리 명을 출력 
+# pwd
+/root
+
+cd : 작업 디렉토리 변경
+모든 디렉토리에는 . 과 ..이 있다.
+
+.   : 현재 디렉토리
+# cd .
+# ./run.sh
+..  : 부모 디렉토리 
+# cd ..
+# cd ../..
+# touch ../../file1
+
+절대경로 
+시작점: 항상 동일하다. / 
+진입 경로: cd 시작은 항상 / 부터 하고 나머지 모든 경로를 작성
+# cd /etc/sysconfig
+
+/etc/sysconfig/
+^     ^                ^
+1      2               3
+
+1 최상위 디렉토리
+2,3 디렉토리 구분자.
+/ etc/ sysconfig/
+
+상대경로
+시작점: 항상 다름. pwd 명령으로 확인.
+# pwd
+/etc
+진입 경로: 진입하려는 디렉토리 명을 작성.
+# cd sysconfig
+
+바로 직전 디렉토리 이동하기
+# cd -
+
+홈 디렉토리
+# cd
+# cd ~
+# cd $HOME
+# cd /root
+
+mk 생성
+ls   확인
+rm 삭제
+ch 변경
 
 디렉토리 생성 및 삭제
-mkdir
-rmdir
+mkdir 디렉토리 생성
+# mkdir -p dir1/dir2/dir3
+없는 디렉토리까지 한꺼번에 생성.
 
-tree
+rmdir 디렉토리 삭제 : 비어있어야 가능
+#  rmdir -p dir3/dir4/dir5
+내부에 파일이 있다면?
+# rm -rf dir1
+
+tree  : 디렉토리 구조를 확인
 
 디렉토리 확인 명령어
-ls
+ls : 디렉토리 내의 파일 확인
+# ls -l
+total 0
+-rw-r--r--. 1 root root 0 Nov 13 02:08 file1
+
+- 파일의 형식
+- 일반파일
+d 디렉토리 
+b  블록 디바이스 4K
+c  캐릭터 디바이스 512byte
+l 링크
+rw-r--r--  권한
+.  acl 
+. acl 정보가 없다.
++ acl 정보가 있다.
+setfacl 
+getfacl
+
+1 링크 개수.
+
+root 소유자 UID
+root  그룹소유자 GID
+0  용량
+Nov 13 02:08  수정시간 
+file1 파일명.
+
+
 stat
+파일에 대한 자세한 시간 정보
+Access: 파일의 접근 시간 
+Modify: 데이터를 수정한 시간
+Change: inode 데이터를 수정한 시간
+
 file
+# file file1
+file1 : text
 
 파일의 생성 및 확인
 cat
+# cat -n file1 : 라인넘버 확인
+
 touch
+1 파일이 없다면 빈 파일 생성
+2 파일이 있다면 시간 정보를 변경 
 
-more
-head
-tail
+# touch -t 월일시분 file1
 
-sort
-uniq
+# touch -t 08111300 file2
+-rw-r--r--. 1 root root   4 Aug 11 13:00 file2
+
+more : 출력이 긴 경우에 사용
+기능키는 man 동일
+# more /etc/services
+# ps -ef  | more 
+
+head 파일의 첫 부분부터 출력
+기본값 10줄
+# head -3 file1
+# ps -ef | head -5
+
+tail 파일의 끝 부분 부터 출력
+기본값 10줄
+-f 추가되는 데이터를 확인위한 옵션
+# tail -f FILENAME
+-f 5M 미만으로 데이터를 추가 하고  종료할때는 -f 사용
+-F 5M이상으로 데이터를 추가 하고 오랜 기간 모니터링을 해야 한다. 
+
+sort : 정렬
+uniq : sort 와 한몸 : 같은 데이터 제거
 
 파일의 복사와 삭제
-rm
-cp
-mv
+rm 삭제
+GUI에서 Files 탐색기를 이용한 삭제를 제외한 나머지는 삭제 이후 복구가 불가능.
+# rm -i 삭제를 할때 물어본다.
+# rm -f 삭제를 할때 물어보지 않고 강제 삭제
+# rm -rf 디렉토리 삭제.
+# rm -v 삭제되는 파일을 확인
+
+cp 복사
+# cp 원본 타겟
+# cp file1 file2
+# cp -p file1 file2 권한, 소유자, 시간정보를 변경하지 않고 복사. 
+# cp -r dir1 dir2 디렉토리 복사시 사용. 
+
+mv 이동+이름바꾸기 
+# mv file1 file2
+ mv -v file2 file3 dir1 : 마지막에 지정된 디렉토리로 내용 이동
+# mv -t 타겟디렉토리 디렉토리 디렉토리
 
 파일 속성 정보 변경
-chmod
-chown
-umask
+chmod 파일 권한 변경
+chown 파일 소유자 변경
+umask 파일의 기본 권한 변경
 
 파일의 속성을 활용하는 방법
 ln 
-
+# ln file1 file2 하드링크
+# ln -s file1 file2 심볼릭링크 
 
 명령어의 위치
 
@@ -275,6 +396,10 @@ vi
 계정관련
 useradd
 passwd
+usermod
+groupadd
+groupmod
+
 
 id
 su -
@@ -286,14 +411,15 @@ w
 
 네트워크 
 ping
-ifconfig
-mail
+ifconfig > ip a
+mail > s-nail
 wall
 
 시스템의 기본 제어와 정보확인
 poweroff
 reboot
 shutdown
+# shutdown -h +15   < 예약 재부팅, 종료가 가능
 
 uname
 
