@@ -1,6 +1,7 @@
 RH124
 https://meet.google.com/
 fwn-yxem-idx
+https://github.com/studylabdoc/text
 
 
 
@@ -124,11 +125,72 @@ manual + basic command
 
 70
 
-명령어를 알기 전에 알아야 하는 기본 : 명령어의 3대 블록
-comm opt arg
-
 도움말 페이지를 확인하기
 man
+
+# man [명령어]
+EX : # man ls , # ls --help
+
+# man ls
+q : 빠져나가기
+enter : 한 라인씩 이동
+space bar : 페이지 단위 이동
+/[검색어]  검색어 패턴에 맞추어 이동
+n : 검색된 내용의 다음 패턴으로 이동
+N: 역방향으로 검색 패턴으로 이동
+
+매뉴얼 페이지 내용
+LS(1)                   User Commands                  LS(1)
+명령어(1섹션)
+
+NAME : 짧은 설명 
+       ls - list directory contents
+
+SYNOPSIS : 문법
+       ls [OPTION]... [FILE]...
+[] 선택사항. []가 없다면 필수입력 사항
+
+DESCRIPTION 자세한 설명..
+ -a, --all  < 둘중 무엇을 사용하더라도 같은 의미다.
+              do not ignore entries starting with .
+--author   < 이렇게 하나만 있는 경우에는 해당 옵션을 정확히 입력해야 한다.
+
+example
+EXAMPLES
+       Create  a striped LV with 3 stripes, a stripe size of
+       8KiB and a size of 100MiB.  The LV name is chosen  by
+       lvcreate.
+       lvcreate -i 3 -I 8 -L 100m vg00
+명령어 아래에 존재. 실제 사용을 어떻게 해야하는가?
+SEE ALSO : 참조해야 하는 명령어.
+
+# man man
+       1   Executable programs or shell commands
+             사용자 명령 일반적으로 사용되는 명령어. 
+              섹션을 지정하지 않으면 기본 1번 파일을 열게 된다.
+
+       5   File formats and conventions, e.g. /etc/passwd
+             파일의 형식을 보여준다. 
+              설정 파일이 많다.
+       8   System  administration commands (usually only for
+             관리자 전용 명령어.
+
+# man passwd
+# man -s 5 passwd
+
+섹션 번호 확인하기
+# whatis passwd 
+passwd: nothing appropriate.
+[root@servera ~]# mandb
+
+명령어의 절대 경로 확인
+# which ls
+alias ls='ls --color=auto'
+        /usr/bin/ls
+
+매뉴얼의 위치를 확인
+# whereis ls
+ls: /usr/bin/ls /usr/share/man/man1p/ls.1p.gz /usr/share/man/man1/ls.1.gz
 
 
 디렉토리 이동과 확인
