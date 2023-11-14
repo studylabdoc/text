@@ -443,6 +443,51 @@ ps
 
 파일 간 링크 만들기
 90p
+하드링크
+# ln file1 file2
+# ls -li
+total 0
+23490 -rw-r--r--. 2 root root 0 Nov 13 20:07 file1
+23490 -rw-r--r--. 2 root root 0 Nov 13 20:07 file2
+같은 inode 번호를 가지고 있다.
+왜 ?
+하드링크는 파일에 접근 할 수 있는 길이 두개로 나뉘것뿐 
+
+심볼릭 링크 < windows 바로가기 
+# ln -s file1 file3
+# ln -s file1 file3 
+[root@servera test]# ls -l
+total 8
+-rw-r--r--. 2 root root 13 Nov 13 20:13 file1
+-rw-r--r--. 2 root root 13 Nov 13 20:13 file2
+lrwxrwxrwx. 1 root root  5 Nov 13 20:16 file3 -> file1
+
+inode 번호가 틀림 : 파일 자체가 다른것
+파일의 형식 : l > 링크파일
+권한 부분 : 전체 모든 권한이 있다.
+해당 권한을 조작해도 의미가 없다.
+원본 파일의 권한으로 동작.
+
+file3 -> file1 : file3을 액세스 하면 file1에 액세스 하는 것
+* inode로 표시되지 않고 파일 명
+링크 생성시 usb등 이동식 장치에서 구성하는 경우:
+# ln -s /test1/file1 file2
+원본 파일은 절대 경로로 구성해 주는 것이 좋다.
+
+링크:
+하드링크 : inode 
+심볼릭링크: filename 
+
+
+44분
+
+
+
+
+
+
+
+
 
 
 
