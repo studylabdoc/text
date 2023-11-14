@@ -1,6 +1,5 @@
 RH124
-https://meet.google.com/
-fwn-yxem-idx
+https://meet.google.com/vht-qnbg-mkv
 https://github.com/studylabdoc/text
 
 
@@ -441,6 +440,9 @@ dnf
 프로세스 
 ps
 
+
+파일 간 링크 만들기
+90p
 
 
 
