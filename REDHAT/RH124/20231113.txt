@@ -660,6 +660,43 @@ ctrl -r : 되돌리기 취소
 쉘 명령어 실행
 :!CMD
 
+명령어를 찾는 순서.
+
+1.  hash 에서 사용 [메모리상에 등록되어 있는 정보를 가지고 실행]
+삭제할 경우 -> hash -r
+2. alias 에서 명령어 있는지 확인
+3. $PATH 변수에서 명령 검색
+/root/.local/bin
+/root/bin
+/usr/local/sbin
+/usr/local/bin
+/usr/sbin
+/usr/bin
+path 변수에서는 처음 등록된 디렉토리부터 찾아 나가며 명령어가 찾아지는 즉시 실행.
+
+
+환경파일
+로그인시
+|---> /etc/profile read
+|---> /etc/profile.d/*.sh test.sh read
+|---> /etc/bashrc read
+|---> /etc/bashrc out
+|---> ~/.bash_profile read
+|---> ~/.bashrc read
+|---> /etc/bashrc read
+|---> /etc/bashrc out
+|---> ~/.bashrc out
+|---> ~/.bash_profile out
+서브쉘 실행시
+---> ~/.bashrc read
+|---> /etc/bashrc read
+|---> /etc/profile.d/*.sh test.sh read
+|---> /etc/bashrc out
+|---> ~/.bashrc out
+로그아웃시
+logout
+|---> ~/.bash_logout read
+
 
 
 
