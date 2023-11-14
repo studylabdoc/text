@@ -3,6 +3,8 @@ https://meet.google.com/
 vht-qnbg-mkv
 https://github.com/studylabdoc/text
 
+명령어 PDF
+https://drive.google.com/file/d/1X-g1pHmON007-HY2BpT55B-EwOHO1DNA/view?usp=drive_link
 
 LAB 실습환경
 https://rol.redhat.com
