@@ -1,7 +1,7 @@
 RH124
-https://meet.google.com/vht-qnbg-mkv
+https://meet.google.com/
+vht-qnbg-mkv
 https://github.com/studylabdoc/text
-
 
 
 LAB 실습환경
@@ -478,8 +478,57 @@ file3 -> file1 : file3을 액세스 하면 file1에 액세스 하는 것
 하드링크 : inode 
 심볼릭링크: filename 
 
+변수 관련 명령어
+# echo $변수명
+# echo $HOME
+지역 변수: 현재 쉘에서만 적용
+환경 변수: 서브 쉘에도 적용
+set : 지역변수 + 환경 변수 둘다 출력
+env : 환경 변수 출력
 
-44분
+메타캐릭터
+' ' : 문자열을 해석하지 않는다.
+# echo '$HOME'
+$HOME
+
+" "
+` ` : 역따옴표 내부의 문자열을 명령어로 치환
+# echo `date`
+Mon Nov 13 09:25:33 PM EST 2023
+`` > $() 형식을 사용합시다.
+
+\ 
+1 역슬래시 뒤에 입력이 없다면 다음 줄로 연장
+# echo 111111 \
+>
+2바로 뒤에 오는 하나의 문자를 해석하지 않음.
+# echo \$HOME
+$HOME
+; : 명령어를 격리 두개 이상의 명령을 사용할 때 
+민감한 명령에는 맞지 않는다.
+&& 앞의 명령이 $? = 0 에만 뒤의 명령을 실행
+|| 앞의 명령이 $? != 0 에만 뒤의 명령을 실행
+
+105p  랩 
+/proc
+
+/proc/[PID]/fd/0  -->  /dev/pts/#
+/proc/[PID]/fd/1  -->  /dev/pts/#
+/proc/[PID]/fd/2  -->  /dev/pts/#
+표준 입력
+표준 출력
+표준 오류
+
+
+<
+
+>
+>>
+
+2>
+2>>
+
+
 
 
 
