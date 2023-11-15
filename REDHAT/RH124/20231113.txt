@@ -871,6 +871,180 @@ umask
 
 211p  lab   2:20 
 
+-rw-r--r--. 1 root root 0 Nov 14 15:29 file1
+  ----------     ----------
+  권한             소유자 
+                       UID : GID
+                       소유자:그룹소유자
+chown 
+
+변경 하려는 계정, 그룹계정이 존재해야 한다.
+
+# chown [계정] file1
+# chown .[그룹계정] file1
+# chown [계정].[그룹계정] file1
+# chown [계정]:[그룹계정] file1 권장사항
+계정명에 .이 가능하기 때문에 원하지 않는 반응을 얻을수도 있다.
+
+# chown -Rv [계정] file1
+# chown -Rv  [계정] dir | tee -a ch.log
+# find etc -type f -name *ssh* -exec chown root -v {} \;
+
+> chgrp : 그룹만 변경
+사용자가 그룹을 변경할 때 사용
+제한사항 :
+1 파일을 변경하려는 계정이 소유하고 있을것.
+2 변경하려는 그룹에 해당 계정이 소속되어 있을것
+
+chmod 권한을 변경하는 명령
+rw-r--r--  <<<<
+rwx rwx rwx
+---- ---- -----
+ U      G     O
+
+RWX
+
+R   read 읽기
+W write 수정
+X execute 실행
+
+파일과 디렉토리의 권한은 다름.
+
+F 파일
+R  파일을 읽을수 있는 권한  * 기본권한
+W 파일을 수정 할 수 있는 권한
+X 파일을 실행 할 수 있는 권한.
+
+D 디렉토리 권한 -> 디렉토리의 액세스  특정한 명령어 권한.
+R ls  디렉토리 파일들을 조회 할 수 있는 권한
+W cp touch rm  디렉토리정보에 대한 업데이트 권한 
+X  cd  디렉토리로 접근 권한 *기본권한
+
+chmod ->
+두가지 : 심볼릭 , 옥탈
+심볼릭 - 문자로 변경
+옥탈 - 숫자 
+
+심볼릭 모드에서 사용되는 문자들
+
+U  user 소유자
+G group 그룹소유자
+O other 소유자와 그룹소유자를 제외한 나머지 계정 [개인 계정]
+A all U+G+O 동시에 작업하는 경우에 사용
+
+R 읽기
+W 수정
+X 실행
+[x,X]
+
++ 권한을 추가 하는 경우 사용
+- 권한을 제거 하는 경우 사용
+= 기존 권한을 무시하고 새로운 권한으로 업데이트 
+
+권장 사항은 심볼릭 모드
+
+
+옥탈 : 숫자로 변경
+chmod ### file1
+숫자 -> 0-7
+R W X 
+4 2  1
+
+0 ---
+1 --x
+2 -w-
+3 -wx
+4 r--
+5 r-x
+6 rw-
+7 rwx
+
+F 기본권한 R
+0 ---    O
+1 --x    X
+2 -w-   X
+3 -wx  X
+4 r--   O
+5 r-x  O
+6 rw- O
+7 rwx O
+
+D 기본 권한 X 
+0 ---   O
+1 --x    X
+2 -w-    X
+3 -wx   X
+4 r--     X
+5 r-x  O
+6 rw-   X
+7 rwx O
+
+# chmod ### file1
+                  UGO
+# chmod 7 file1
+
+ 346  ls
+  347  mkdir ori
+  348  cd ori
+  349  mkdir dir1
+  350  mkdir dir2
+  351  touch file1
+  352  touch dir1/file1
+  353  touch dir2/file2
+  354  ls -l
+  355  chmod 666 dir1
+  356  chmod 770 dir2
+  357  chmod 776 dir2
+  358  chmod 644 dir1/file1
+  359  chmod 550 dir2/file2
+# ls -lR ori
+ori:
+total 0
+drw-rw-rw-. 2 root root 19 Nov 15 15:20 dir1
+drwxrwxrw-. 2 root root 19 Nov 15 15:20 dir2
+-rw-r--r--. 1 root root  0 Nov 15 15:20 file1
+
+ori/dir1:
+total 0
+-rw-r--r--. 1 root root 0 Nov 15 15:20 file1
+
+ori/dir2:
+total 0
+-r-xr-x---. 1 root root 0 Nov 15 15:20 file2
+
+rwsr-xr-x
+rwxr-sr-x
+rwxrwxrwt
+
+user ---------- root
+                             |
+                             |
+                             |
+user  << --------
+
+
+4000
+
+2000
+
+1000
+
+
+
+
+
+               F              D
+              666       777
+umask 022       022
+              ---------------
+              644      755
+
+
+
+umask -> default perm 
+
+
+
 
 
 
