@@ -1,5 +1,5 @@
 RH124
-https://meet.google.com/jen-byuy-xec
+https://meet.google.com/kmg-ousu-bun
 https://github.com/studylabdoc/text
 
 명령어 PDF
@@ -788,6 +788,90 @@ team01 사용자는 오늘 저녁에 재부팅 작업을 위한 설정만 해주
 team01 ALL=(ALL)       /usr/sbin/reboot,/usr/sbin/poweroff
 
 $ sudo -i
+
+user 관련 명령어
+
+useradd
+ /etc/default/useradd
+-D
+GROUP=100 -N 옵션 사용시 계정 이름으로 그룹이름이 생성되지 않는다 -> 주 그룹을 생성하지 않는다면 기본 부여되는 그룹의 GID
+HOME=/home : 계정생성시 계정에 대한 디렉토리가 생성되는 부모 디렉토리를 정의.
+INACTIVE=-1 : 계정 이용 기간 -1이면 무제한
+EXPIRE= : 계정의 만료일 shadow 파일에 보통 정의
+SHELL=/bin/bash : 계정 생성시 부여되는 기본 쉘
+SKEL=/etc/skel : 계정 생성시 필요한 기초 파일의 모음
+CREATE_MAIL_SPOOL=yes   : 메일함 생성/var/spool/mail/
+
+# useradd team01
+-> 메일 함
+-> 홈 디렉토리
+-> 스켈디렉토리로 인해 기본 파일도 구성
+-> /etc/passwd 
+-> /etc/group
+-> /etc/shadow
+
+usermod 수정
+-aG
+계정에 그룹을 추가 하는 경우 사용
+# usermod -aG g1 team01 : team01의 부 그룹에 g1을 추가한다.
+
+userdel
+-r
+# userdel team01 홈 디렉토리와 메일함이 남는다.
+> 남은 파일을 root만 사용가능한 파일시스템에 이동
+ 
+# userdel -r team01 시스템에 있는 모든 파일을 삭제한다.
+
+계정을 삭제 한뒤 해야 하는것:
+find / -nouser -or -nogroup 
+
+find / -nouser -or -nogroup -type f -exec rm -f {} \;
+find / -nouser -or -nogroup -type d -exec rm -rf {} \;
+
+passwd : 비밀번호를 변경하는 명령
+
+관리자 
+root + 나머지 모든 계정의 비밀번호를 관리 가능
+이전 비밀번호를 묻지 않고 변경 가능
+
+사용자
+본인의 비밀번호만 관리 가능
+이전 비밀번호를 알고 있어야 변경 가능.
+# passwd
+Changing password for user 변경하려는 계정
+New password: 
+Retype new password: 
+
+# echo redhat | passwd --stdin root
+# chage -d 0 계정
+
+계정  생성
+비밀번호 입력
+강제 변경
+
+192p 
+
+그룹 생성
+# groupadd
+-g  GID 
+# groupadd -g 60001 g1
+
+# groupdel 
+개인 계정의 주 그룹이 삭제하려는 그룹이라면 삭제가 불가능.
+
+/etc/shadow
+team01:$6$CSB$7RR/:19676:0:99999:7:::
+
+chmod
+chown
+
+setuid setgid stikybit
+
+umask
+
+211p  lab   2:20 
+
+
 
 
 
