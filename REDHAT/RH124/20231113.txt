@@ -1012,26 +1012,70 @@ ori/dir2:
 total 0
 -r-xr-x---. 1 root root 0 Nov 15 15:20 file2
 
-rwsr-xr-x
-rwxr-sr-x
-rwxrwxrwt
+x < 일반적으로 사용되는 권한
+X  <<< 특이한 권한 
+대문자 X를 심볼릭에서 사용시:
+1 디렉토리를 실행권한을 추가.
+2 파일의 경우에는 이미 실행권한이 u g o에 어느 한곳이라도 존재 하는 경우에만 실행 권한을 추가.
 
+SELINUX 에서도 동일하게 이용
+
+슈퍼비트
+추가 권한.
+rwsr-xr-x  setuid    파일
+rwxr-sr-x setgid     디렉토리
+rwxrwxrwt stikybit  디렉토리
+
+유저 -> 실행 
+파일 실행 -> 2차 작업
+EX: passwd 
+/etc/shadow update 
+실행하는 유저가 아닌 소유자의 권한을 빌리는 것
+
+            passwd 
 user ---------- root
                              |
                              |
-                             |
-user  << --------
+                             |   /etc/shadow udpate 
+user  << --------    passwd 종료 
 
+chmod @### file1
+
+4 2 1
+U G  T
+
+소유자 - 4
+그룹 소유자 - 2
+디렉토리 -1
+
+# chmod 4755 file1
+# chmod 0755 file1
+s S > 대문자 S?
+원래 자리의 권한이 없는 상태. 
+
+setgid bit - 공유 디렉토리
+# chmod 2770 dir1
+# chmod 00770 dir1
+
+chmod !@###
+
+stikynbit - 웹 게시판 
+A b 악평 ~~~~
+
+B
 
 4000
 
 2000
 
 1000
+# find / -perm -4000 -o -2000 -type f
 
 
+기본 권한.
 
-
+파일은 666
+디렉토리는 777
 
                F              D
               666       777
@@ -1039,10 +1083,28 @@ umask 022       022
               ---------------
               644      755
 
-
-
 umask -> default perm 
+기본 권한에서 제거할 권한을 지정.
 
+666  777
+003  003
+663  774
+ 
+# umask 003 >
+
+666  777
+003  003
+663  774
+
+rwx -wx
+
+rw-    rwx
+-wx    -wx
+r --     r--
+umask에서 설정하는 숫자는 숫자가 아니다. 권한에 대한 매핑
+
+umask 003
+umask o-wx
 
 
 
