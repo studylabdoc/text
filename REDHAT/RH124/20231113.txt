@@ -1106,6 +1106,114 @@ umask에서 설정하는 숫자는 숫자가 아니다. 권한에 대한 매핑
 umask 003
 umask o-wx
 
+프로세스 : 
+
+(ps -ef 명령어 출력 결과 해석)
+----------------------------------------------------------------------------
+UID,   프로세스를 실행시킨 사용자, 프로세스의 주인
+PID,   프로세스 아이디, 프로세스 식별 번호
+PPID,  부모 프로세스 아이디
+C,     현재 사용되지 않는 필드
+STIME(Start Time), 프로세스 실행 시작 시간
+TTY,   제어 터미널, 프로세스가 실행된 터미널    
+TIME,  CPU 사용 누적 시간
+CMD,   명령어(옵션 + 인자 포함)
+----------------------------------------------------------------------------
+
+
+[참고] ps aux를 통해 명령어 출력시 나오는 헤더부분 설명
+user는 프로세스 소유자의 이름, ( u 옵션 )
+PID는 프로세스 식별자 번호
+%CPU : 마지막 1분 동안 프로세스가 사용한 CPU 점유율 ( u 옵션 )
+%MEN : 마지막 1분 동안 프로세스가 사용한 메모리의 점유율 ( u,v 옵션 )
+       -u 옵션으로 사용자의 ID나 이름을 지정하여 지정한 사용자의 프로세스만을 살펴 볼수 있다.
+VSZ : 가상 메모리에 적재된 프로세스의 kb단위 크기
+START는 프로세스가 시작된 시간
+
+STAT 필드의 상태
+-D : 디스크 입출력 대기 상태로 interrupts를 걸 수 없는 상태
+-R : 실행중
+-S : 짧은 sleep 상태
+-T : 정지 상태
+-Z : 좀비 상태
+-W : 상주한 페이지가 없는 프로세스
+-< : 높은 우선권 프로세스
+-N : 낮은 우선권 프로세스
+-L : 페이지가 락이 걸린 상태
+
+https://nicolargo.github.io/glances/
+top
+
+load average: 시스템 부하정도를 나타내는
+                        1분, 5분, 15분 시스템 부하평균값(EMA)
+                                               EMA ==  지수이동평균값
+
+    'R' 실행중인 프로세스와
+    'D' 디스크 I/O 처리완료를 기다리는 프로세스
+
+* CPU 싱글코어 기준(load avg 예시):
+1.0 -> 100%
+0.5 -> 50%
+1.7 -> 170%
+
+Task 프로세스 상태:
+
+total: 전체 프로세스
+running: 실행 중 프로세스
+sleeping: I/O 나 event 기다리는 프로세스
+stopped: 컨트롤 + z 와같은 STOP 시그널 받은 프로세스
+zombie: 프로세스가 종료되었지만 OS 내부 시스템 자원
+              해지가 안된 프로세스
+
+CPU 사용율 %:
+
+us: user-mode (높은 우선순위 nice 0또는 음수)
+sy: kernel-mode
+ni: user-mode (낮은 우선순위 nice 양수)
+id: idle (시스템 얼마나 여유롭나 ?)
+wa: I/O wait (처리완료를 기다린 시간)
+hi: hard irq (인터럽트 전반부처리(빠른처리))
+si: soft irq (인터럽트 후반부처리(지연처리))
+st: 가상 CPU 구동 (Guest OS를 위한 VM 처리)
+
+
+MEM 사용율 % (free 명령 동일결과)
+
+total: 총 메모리 공간 KB
+free: 남는 메모리 공간 KB
+used: 사용중인 메모리 공간 KB
+buff/cache: 디스크 데이터을 메모리에 캐시 KB
+available: 프로세스가 처음시작시 사용가능한 메모리공간 KB
+             (회수하면 얻을수있는 공간 포함)
+swap: 메모리의 내용을 저장해둘수있는 Disk 공간 KB
+
+PID: 프로세스 ID
+PR: 20 + nice
+NI: nice (친절도)
+VIRT: 가상메모리공간
+RES: 실제 사용중인 물리메모리 공간
+SHR: 공유메모리 공간
+S: 프로세스 상태 (STATE)
+    'D' = uninterruptible sleep (예시: 디스크I/O처리대기)
+    'R' = running
+    'S' = sleeping (예시: 네트워크 I/O 처리대기)
+    'I' = idle (예시: sleep 중인 kernel thread)
+    'T' = stopped by job control signal
+    't' = stopped by debugger during trace
+    'Z' = zombie
+%CPU: CPU 사용율
+%MEM: 메모리 사용율
+TIME+: 프로그램 실행한시간
+
+
+fg   bg
+
+프로세스 : 쉘을 점유 
+-----------bash-------------
+프로세스 : 쉘을 점유하지 않음.  
+
+
+
 
 
 
