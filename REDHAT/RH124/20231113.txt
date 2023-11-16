@@ -4,6 +4,8 @@ https://github.com/studylabdoc/text
 
 명령어 PDF
 https://drive.google.com/file/d/1X-g1pHmON007-HY2BpT55B-EwOHO1DNA/view?usp=drive_link
+nmtui PDF
+
 
 LAB 실습환경
 https://rol.redhat.com
@@ -1611,4 +1613,36 @@ network manager
 9  network manager  메인
 
 d
+네트워크 설정
+nmcli / nmtui
+nmcli con add con-name static-addr \
+ifname eth0 type ethernet ipv4.method manual ipv4.dns 172.25.250.220 \
+ipv4.addresses 172.25.250.10/24 ipv4.gateway 172.25.250.254
 
+nmcli 
+con 설정 파일에 대한 작업
+add 설정 파일 추가
+con-name static-addr  프로파일 명static-addr 설정
+ifname eth0 물리 디바이스 이름
+type ethernet 
+ipv4.method manual 기본값 DHCP 수동 설정을 위해 manual 
+ipv4.dns 172.25.250.220 domain > IP
+ipv4.addresses 172.25.250.10/24 연결에 사용할 주소/서브넷 
+ipv4.gateway 172.25.250.254 라우터 주소
+autoconnect yes  부팅시 자동 활성화 
+
+# nmcli con add con-name static-addr ifname eth0 type ethernet ipv4.method manual ipv4.dns 172.25.250.220 ipv4.addresses 172.25.250.10/24 ipv4.gateway 172.25.250.254 autoconnect yes 
+
+Connection 'static-addr' (c696e0b4-d28c-4d23-8db8-6b596028d68f) successfully added.
+
+NAME                UUID                                  TYPE      DEVICE 
+Wired connection 1  ec3a15fb-2e26-3254-9433-90c66981e924  ethernet  eth0   
+static-addr         c696e0b4-d28c-4d23-8db8-6b596028d68f  ethernet  --     
+
+연결은 여러개를 생성 가능
+하지만 한번에 하나의 디바이스에만 연결 가능
+
+네트워크 - > 실습
+
+
+호스트네임
