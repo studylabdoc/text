@@ -1506,4 +1506,64 @@ rhellinux$
 43-#MaxSessions 10
 검색한 라인을 기준으로 3줄 추가. 위 아래 같이.
 
+locate : 파일명만을 기준으로 검색
+주의 사항: updatedb라는 명령을 통해 인덱스를 생성
+updatedb > locate filename 
+# alias locate='updatedb; locate $*'
+# locate file1
+/home/student/dir1/file1
+
+find
+# find 
+현재 디렉토리를 기반으로 모든 파일을 검색한다.
+
+-type : 파일 타입을 결정하여 필터링
+f d l
+
+-name 이름검색
+
+-iname 대소문자를 구별하지 않고 검색
+
+# find -type f -name 'file*'
+./file1
+./file2
+와일드카드를 이용할 경우에는 따옴표로 묶어주세요.
+
+-inum : inode number를 기반으로 검색
+
+-user   계정명, 계정 UID
+-group 그룹명, 그룹 GID
+find는 기본 and 연산이기 때문에 하나만 맞아도 출력되도록 or 연산으로 변경해야 한다.
+# find / -user root -o -group student
+
+-nouser / -nogroup 
+실제 로그인명은 존재 하지않는 UID GID만 존재하는 계정.
+
+-links 링크 개수를 기반으로 검색
+
+-perm 권한 검색
+471 해당하는 정확한 권한을 검색
+-400 user 자리는 r 권한이 있어야 하며 나머지는 0-7까지 포함 
+ -471 각 자리에 맞는 권한을 포함
+
+-mtime 
+-3 3일이 안된 파일
+3 3일지난 파일
++3 3일 이상 된 파일
+
+# find . -newer file11 
+.
+./file100
+newer옵션에 지정되는 파일보다 이후에 생성된 파일을 찾는 경우
+
+-size 
+-1M 1메가 이하인 파일
+3333c 3333byte인 파일
++1M 1메가 이상인 파일
+
+
+-exec ,  -ok 
+-print 
+
+
 
