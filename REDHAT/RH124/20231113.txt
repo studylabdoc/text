@@ -1,4 +1,8 @@
 RH124
+김기연
+01097902540
+nsr230@studylab.xyz
+
 https://meet.google.com/tue-awxm-yif
 https://github.com/studylabdoc/text
 
@@ -1738,10 +1742,112 @@ word
 power..
 
 
+mount / fstab -> 디바이스 사자가 바로 접근 할 수 없음.
+                                디렉토리 ---연결---> /dev/sda1 
+-------------
+FileSystem   -> 자료를 저장하기 위한 자료구조
+                       ext2,3,4 xfs    vfat    exfat      fat32 >ntfs > refs 
+-------------
+partition 
+
+sda 
+   ㄴ sda1
+   ㄴ sda2
+     msdos MBR 15 / GPT 128 2T 
+fdisk /gdisk> parted 
+fdisk에서 두가지를 모두 지원하고 있기 때문에 일반적인 상황에서는 fdisk 
+자동화 ansible은 parted 
+sfdisk > 파티션 정보 dump 
+하나의 디스크에 파티션 작업을 실시 > 나머지 디스크에 파티션 정보를 복제.
+
+                                hda IDE 
+                                sda scsi /s-ata sas ssd 
+                                vda virt-io
+                                xvda xen 
+sda -> sdz -> sdaa
+-------------
+H/W                  disk   IDE , SCSI, SAS, S-ATA, SSD , nvme, PCI-SSD 인터페이스 
+
+user
+----------------
+kernel   base io
+   VFS io전환 
+----------
+H/W
+
+표준파티션 -> 한번 정해진 용량을 변경이 불가능.
+논리파티션 논리볼륨 -:> 정해진 용량이 있지만 추가 가능. 제거 가능
 
 
+기본 명령어는 사용 할 줄 안다는 가정하에 아래 내용을 공부 하시면 됩니다.
 
 
+로컬 사용자 계정 관리
+사용자 암호 관리
+
+명령줄에서 파일 시스템 권한 관리
+기본 권한 및 파일 액세스 관리
+
+SELinux 문제 조사 및 해결
+httpd -> 82   selinux port -a -t 82/tcp
+
+
+튜닝 프로파일 조정
+tuned
+
+반복 실행 사용자 작업 예약
+
+crond -> 사용자에게 명령얼 등록.
+
+DNF 소프트웨어 리포지토리 활성화
+
+disk -> part -> fs -> /etc/fstab -> mount 숙지 *
+LVM
+LVM 생성
+LVM 확장
+swap 생성
+
+시스템 저널 항목 검토
+
+journalctl 명령어에 익숙
+
+nmcli nmtui << 요거 익숙해지기
+IP
+netmask
+gw
+dns
+
+nic 장치 설정
+
+root 비밀번호 초기화
+컨테이너 배포
+컨테이너 빌드.
+
+컨테이너 스토리지 및 네트워크 리소스 관리
+-p -v 
+
+컨테이너를 시스템 서비스로 관리
+
+podman container file -?
+runtime
+
+systemctl > service 등록
+podman 
+podman generate systemd --name webserver1
+
+systemctl --user start container-webserver1.service
+ loginctl enable-linger
+
+210/300 만점
+
+EX200 등록
+
+redhat remote exam < 
+카메라 2
+마이크 1
+노트북 / 데스크탑
+
+책상 
 
 
 
