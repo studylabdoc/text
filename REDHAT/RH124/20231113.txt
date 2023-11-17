@@ -1,5 +1,5 @@
 RH124
-https://meet.google.com/qea-ooem-wjf
+https://meet.google.com/tue-awxm-yif
 https://github.com/studylabdoc/text
 
 명령어 PDF
@@ -1647,3 +1647,63 @@ static-addr         c696e0b4-d28c-4d23-8db8-6b596028d68f  ethernet  --
 
 
 호스트네임
+컴퓨터 이름: 서버 
+www.example.com 
+host |  domain
+
+hostname <--> IP
+
+IP가 여러개면? hostname?
+호스트가 항상 물리적인 컴퓨터를 뜻하는것은 아니며
+서버에 적용되어 있는 하나하나의 IP 일 수도 있다.
+       
+L4 : 식별자 - port
+L3 : 식별자 - IP -> hostname
+L2 : 식별자 - mac
+
+[root@servera ~]# 
+             --------
+             hostname
+# hostname
+servera.lab.example.com
+# hostnamectl
+ Static hostname: servera.lab.example.com
+       Icon name: computer-vm
+         Chassis: vm 🖴
+      Machine ID: ace63d6701c2489ab9c0960c0f1afe1d
+         Boot ID: ca34e74351fa4dd5add8aefe461046a1
+  Virtualization: kvm
+Operating System: Red Hat Enterprise Linux 9.0 (Plow)     
+     CPE OS Name: cpe:/o:redhat:enterprise_linux:9::baseos
+          Kernel: Linux 5.14.0-70.13.1.el9_0.x86_64
+    Architecture: x86-64
+ Hardware Vendor: Red Hat
+  Hardware Model: OpenStack Compute
+
+# cat /etc/hostname 
+servera.lab.example.com
+# uname -a
+Linux servera.lab.example.com 5.14.0-70.13.1.el9_0.x86_64 #1 SMP PREEMPT Thu Apr 14 12:42:38 EDT 2022 x86_64 x86_64 x86_64 GNU/Linux
+
+1.  hostname 파일 설정
+# vi /etc/hostname 
+호스트네임을 변경.
+2. hostnamectl
+# hostnamectl set-hostname [변경할 호스트 이름]
+3. nmtui 에서 hostname 설정
+
+1 /etc/hosts : 신뢰할 수 있는 내부 호스트들을 정의.
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+IP                  hostname   FQDN
+
+2 DNS 
+lab.example.com -> zone -> servera -> host : IP
+
+
+
+
+
+
+
+
+
