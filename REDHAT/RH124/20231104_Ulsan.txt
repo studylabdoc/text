@@ -2140,8 +2140,300 @@ Wired connection 1  ec3a15fb-2e26-3254-9433-90c66981e924  ethernet  --
 
 # nmtui
 
+리포지토리 구성
+
+windows 프로그램 설치 ->
+copy ->
+플로피디스크 -> CD / CD-RW > DVD -> 
+usb 1.0 2m
+usb 2.0 40-50
+usb 3.0 100m  
+usb 3.1 1.5G
+
+리눅스 - 온라인 상에 존재하는 리포지토리 [저장소]
+
+windows path : ms 
+
+윈도우 : exe , msi 
+리눅스 : ? 파일의 확장자가 가지는 의미는 의미없음.
+file1.txt file1
+
+하지만 설치 프로그램, 파일에 뒤에는 다음과 같은 확장자 명[파일명]이 들어간다.
+.rpm
+
+소스 설치
+소스코드 자체를 압축 배포
+configure > make > install 
+장점수정이 쉽다.  버전별 설치를 하는 경우에 소스코드로 구성 하는 경우가 많다.
+단점 설치가 어렵다.
+
+rpm 
+소스코드 설치의 단점을 해결한 설치 마법사.
+장점소스코드 설치처럼 3단계에 설친 설치를 하지 않아도 된다.
+
+단점종속성이 있는 파일에 대한 관리가 힘듬.
+
+dnf
+장점종속성이 있는 파일을 같이 설치하기 때문에 종속성 문제를 해결했다.
+
+단점항상 최신버전만을 유지하고 있다. 
+구 버전을 따로 설치하기 위해서는 미러사이트, rpm 파일로 구성해야한다.
+
+소스코드 / rpm / dnf 
+
+# rpm 
+# rpm -qa
+현재 설치된 모든 프로그램 목록
+# rpm -qa | wc -l
+
+# rpm -qa openssh-clients
+openssh-clients-8.7p1-8.el9.x86_64
+openssh-clients 패키지에 대한 확인
+* 이름을 정확하게 사용
+# rpm -qa | grep ssh
+
+# rpm -ql openssh-clients 
+프로그램 설치시 배포되는 
+파일 , 실행 파일, 설정 파일, 문서의 위치를 절대경로로 표시
+# rpm -qlc openssh-clients  설정 파일만 확인
+# rpm -qld openssh-clients  매뉴얼파일만 확인
+
+# rpm -qi openssh-clients
+패키지에 대한 정보 확인
+URL         : http://www.openssh.com/portable.html
+
+# rpm -qf 
+ rpm -qf /etc/passwd
+setup-2.13.7-6.el9.noarch
+설치되어 있는 파일이 어느 패키지에 속해 있는 확인.
+
+# rpm -ivh 설치
+# rpm -Uvg 업그레이드
+# rpm -e 삭제
+--nodeps 종속성 확인을 하지 않고 설치하는 경우
+
+현장 
+rpm 패키지를 만드는 작업..
+
+dnf
+/etc/yum.repos.d : 저장소에 대한 정의
+
+# dnf list 리포지토리에서 설치 가능한 패키지 리스트 확인
+# dnf clean all 리포지토리 메타데이터 초기화
+# dnf repolist 사용가능한 리포지토리 확인
+# dnf repolist --all 사용불가능한 리포지토리도 같이 출력 
+
+# telnet ?
+# dnf install telnet 
+Last metadata expiration check: 0:02:09 ago on Sat 18 Nov 2023 12:10:55 AM EST.
+Dependencies resolved.
+====================================================================
+ Package
+      Arch   Version       Repository                          Size
+====================================================================
+Installing:
+ telnet
+      x86_64 1:0.17-85.el9 rhel-9.0-for-x86_64-appstream-rpms  66 k
+
+Transaction Summary
+====================================================================
+Install  1 Package
+
+Total download size: 66 k
+Installed size: 121 k
+Is this ok [y/N]: 
+Downloading Packages:
+telnet-0.17-85.el9.x86_64.rpm       1.1 MB/s |  66 kB     00:00    
+--------------------------------------------------------------------
+Total                               1.1 MB/s |  66 kB     00:00     
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                            1/1 
+  Installing       : telnet-1:0.17-85.el9.x86_64                1/1 
+  Running scriptlet: telnet-1:0.17-85.el9.x86_64                1/1 
+  Verifying        : telnet-1:0.17-85.el9.x86_64                1/1 
+
+Installed:
+  telnet-1:0.17-85.el9.x86_64                                       
+
+Complete!
+
+# dnf install telnet
+# dnf remove telnet
+
+# dnf -yinstall telnet
+# dnf -y remove telnet
+
+# dnf info telnet 정보 확인
+# 
+# dnf -y localinstall
+rpm 파일이 있는 경우 dnf를 통하여 설치 가능하다.
+종속성이 필요한 파일의 경우에는 dnf를 통하여 내려받기 후 설치를 같이 진행
 
 
+리포지토리
+/etc/yum.repos.d : 리포지토리 정의 파일
+파일명 : .repo 끝나야 한다.
+[dnf list를 입력할때 나오는 이름] - repo id
+name: repolist 에서 출력되는 이름
+baseurl:실제 원격지에 존재하는 주소 http
+enabled: 활성화 유무  1: 활성 0:비활성
+
+리포지토리 추가하기
+>
+1 수동 설정
+
+2 명령어 설정
+# dnf config-manager --add-repo="URL"
+URL이름을 기반으로 /etc/yum.repos.d 디렉토리에 파일명.repo 로 구성되며
+[] name baseurl enabled 구성 완료
+
+# dnf history
+
+# dnf history undo 5
+# dnf history redo 5
+
+스케쥴러
+at / cron / timer
+at : 1회성 : atd 서비스 활성화 
+cron : 트리거에 따라 시간에 맞춰 실행 무한반복
+            crond 서비스 활성화  
+timer : systemd 에서 사용하는 스케쥴러 
+cron : anacron timer  > 적용 
+
+/etc/crontab
+
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name  command to be executed
+* * * * * [계정 이름] [명령어.] 과거 형식
+* * * * * [명령어.] 
+[1][2][3][4][5]
+
+[1] 분 0-59 권장 사항 : 0분 피해야 한다. 5분 정도부터 출발.
+[2] 시 0-23 0시 피해야 한다.
+[3] 일 1-31  1일과 31,30일은 피해야 한다. 
+[4] 월 1 -12  
+[5] 주 0-7 0,7 같은 의미.  0,7을 피해야 한다.
+
+5 12 * * * 
+5-10 12 * * *
+5 12 4-13,17-22 * * 
+15 23 * * 1-5
+*/2 * * * * 2분마다.
+서비스가 시작한 시점을 기준으로 2분
+*/10 * * * *
+10 20 30 40 50 0 10 20 30 40 > crontab restart : 11:34
+44 544 4 
+로그 스탬프 가 정확하지 않다.
+
+* * * * * 계속 1분마다
+크론탭의 최소 동작 기준은 1분.
+/var/spool/cron/* 모든 파일을 읽어서 동작.
+메모리 >
+저장 > install 
+
+사용자별로 분류해서 사용자의 crontab 파일에 저장.
+# crontab 
+-l 크론탭 리스트 확인
+-r 크론탭 내용을 삭제
+-u -u team01 team01의 크론탭에 대하여 작업
+-e 크론탭 수정
+
+* 주의사항
+크론탭은 파일을 작성할 때 -e 사용하면 임시파일로 열린다. 저장 즉시 install이 되면서 바로 적용
+20 3 * * * 리눅스에서 사용되는 쉘,실행파일 
+
+anacron : 시스템에서 사용하는 스케쥴러.
+차이점 : 크론의 경우 실행 시간이 되었을때 어떠한 이유로 실행이 취소. anacron은 실행이 취소가 되면 최대한 빠른시간안에 다시 작업을 시도.
+
+
+NTP 구성
+시간 서버의 필요성:
+인증 : 로그 : 타임스탬프
+
+서버 시간 ->
+서버들은 시간을 유지하는 설정 필요.
+rdate -> 시간 구성
+ntp : ntpd > chronyd 
+# dnf -y install chrony
+
+# vi /etc/chrony.conf
+server classroom.example.com iburst
+# systemctl enable --now chronyd
+
+
+iburst : 중간에 drop되는 패킷을 염려하여 한번에 16개의 요청을 동시에 보낸다.
+
+아카이브 구성
+데이터를 현재상태로 보관하기 위한 목적 tar
+tar 
+
+f  장치가 아닌 파일로 구성하게끔 해주는 옵션 
+v 자세하게 보기
+c 아카이빙을 생성 
+t 아카이빙을 확인 view 
+x 아카이빙 해제 
+
+z gzip 형식으로 압축
+j bzip2 형식으로 압축
+
+용량을 줄이기 위한 압축
+gz 
+bzip2
+
+root 비밀번호
+1. 비밀번호 교체후 머리 리셋
+2. 해킹
+3. 테스트 비밀번호 관련된 파일 shadow..
+
+비밀번호를 리셋
+무조건 한번에 성공 !
+이유: 서버운영
+PC 부팅시간 ? 5? 
+서버 -> 20분 길면 40분
+
+boot과정
+poweron
+POST 
+PC : 문제가 생기면 무시 기동
+서버: 
+스크립트화
+한번에 하나씩 처리한다.
+25분 -> passwd reset 5분 >
+30분 > 30> 30분 
+
+명령어 하나 치고 ?
+절차 정확히 지켜야 하는게 문제
+시험 구현
+
+암기영역
+
+boot media > boot > login
+
+---------------------
+로그인 > 로그인 실패 > 부팅 커널 명령줄 제어
+강제 재부팅
+커널
+레스큐  커널 * : 비밀번호 작업
+
+커널 명령줄 수정 : rd.break    : 피벗 전에 중지 [init ramfs -> kernel로 데이터를 변경하는 작업.]
+> sh
+
+mount -o rw,remount /sysroot
+chroot /sysroot
+echo redhat | passwd --stdin root
+touch /.aurlrelabel
+exit
+exit
 
 
 
