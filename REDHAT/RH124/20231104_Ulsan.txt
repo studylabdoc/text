@@ -2428,14 +2428,67 @@ boot media > boot > login
 커널 명령줄 수정 : rd.break    : 피벗 전에 중지 [init ramfs -> kernel로 데이터를 변경하는 작업.]
 > sh
 
+재부팅
+레스큐 커널 선택 > e
+linux 라인을 찾아서 내려간 다음 end > ctrl + x
+엔터 >sh이 뜸
 mount -o rw,remount /sysroot
 chroot /sysroot
 echo redhat | passwd --stdin root
-touch /.aurlrelabel
+touch /.autorelabel
 exit
 exit
+재부팅 > login창이 뜨게 된다. 
+
+SELINUX 
+보안계층 한단계 더 생성
+
+SELINUX -> 컨텍스트 /  시간 
+----------------------
+소유자 권한 /etc/shadow 
+----------------
+FILE
 
 
+내일 오실때 : 노트북 맥X[2019 이전버전 intel]
+
+노트북 < 컴퓨터 
+
+IPTIME : 
+SK U+
+원격데스크탑 집 공유로 구성
+DDNS / 포트포워딩 / windows -> 원격 데스크톱 설정ㄹ
+
+PC에 고정 IP 구성
+
+DDNS
+호스트:
+test.iptime.org
+메일 : xxxx@yyyy.xxx
+등록 >
+
+CMD > nslookup test.iptime.org 
+IP번호가 나와야 한다.
+
+실행> mstsc 
+
+모바일 > rdp 
+
+팀뷰어 -> 
+계정 
+컴퓨터 teamv ; 모바일 
+
+내일 실습시간을 사용하고 나면 아마
+시간이 더이상 없는분이 대다수.
+일주일간 연습
+
+vmware -> file
+배포 > + 랩 설정
+
+디스크 구성 ,
+nfs 통해서 계정 접근 , ldap 
+
+내일만이라도 노트북을 다 가져오세요.
 
 
 
