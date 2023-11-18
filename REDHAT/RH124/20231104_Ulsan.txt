@@ -14,6 +14,8 @@ RH124 -> 시작 > 실습환경 > create
 vm 압축 파일 
 https://drive.google.com/drive/folders/1_6Jep6TBcX6HZ7mwmSosFtMeqwwZrMdZ?usp=sharing
 
+nmtui PDF
+https://drive.google.com/file/d/1Irn4MF0UtnZ66sRHC3yPOu1EGmgbvprz/view?usp=drive_link
 
 
 
@@ -2009,7 +2011,7 @@ VDI
 시험에서 나오는것:
 RH124 + RH134 -> RH199
 
-s네트워크 설정 구성
+네트워크 설정 구성
 리포지토리 구성
 SELINUX 디버그
 사용자 계정 생성
@@ -2031,6 +2033,120 @@ root 비밀번호초기화
 스왑 파티션 추가
 논리 볼륨 만들기
 시스템 조정[tuned]
+
+210/300 합격점
+
+3:00
+주의할점 : 
+
+시험 -> reboot -> ssh -> check 
+
+네트워크 ->
+NIC - network config 
+
+TCP/IP---OSI 7L
+
+model  모델
+layer 계층 
+
+layer / module
+layer - 층져 있음. 각 부분이 붙어있음. -> 붙어있는 부분이 떨어지게 된다면? 기능 동작 -> 오동작 
+module - 층져있지 않음. 각 부분이 붙어있는 경우도 있지만 보통은 떨어져 있음.  떨어져 있는 부분이 없어진다면? A --> B
+A의 기능 자체는 정상
+B로 이동만 불가능 
+B는 독자적으로 기능 수행
+
+TCP/IP---OSI 7L
+
+미국vs소련-러시아
+핵전쟁 ? 두려움..
+당시 네트워크
+혼용
+회사마다 다 다른 네트워크를 사용
+프로토콜 다 다르다.
+선점 하면 그만.
+네트워크 단절로 인하여 생기는 문제점 상당.
+Department of Defense 에서 TCP/IP에 대한 필요성 느끼고 개발 착수.
+1. 자가 학습: 새로 생기는 장비의 업데이트, 라인에 대한 경로학습을 자동
+2. 셀프 힐링 : 기존 통신 라인에 장애가 생긴 경우 자동으로 백업 라인을 통하여 통신을 재개.
+
+L5-7 서비스 http tls[ssl] dns
+L4 식별자 : TCP : port : IP 
+동일한 호스트에서 여러 서비스를 통시에 이용하기 위함. 
+L3 식별자 : IP : 호스트
+호스트는 단순히 컴퓨터를 뜻한다.
+네트워크의 호스트 개념 - port 
+L2 식별자 : MAC
+                 00-50-56-C0-00-08
+                  -----------  -----------
+                      OUI             comp
+* 모든 통신은 L2에서 이루어진다. 
+
+L1 전기적인 신호
+
+OSI 7계층
+완벽한 상호작용을 위한 7개의 절차.
+
+DNS
+domain - IP 
+
+네트워크 구성
+
+# nmcli 
+
+물리 장치 eth0 
+연결 정보 [프로파일] Wired connection 1
+두가지를 연결해야 네트워크가 구성
+
+[root@servera ~]# nmcli con show 
+NAME                UUID                                  TYPE      DEVICE 
+Wired connection 1  ec3a15fb-2e26-3254-9433-90c66981e924  ethernet  eth0   
+[root@servera ~]# nmcli dev status
+DEVICE  TYPE      STATE      CONNECTION         
+eth0    ethernet  connected  Wired connection 1 
+
+nmcli 네트워크 매니저를 사용하기 위한 명령줄
+con  프로파일을 위한 명령어 세트
+add  프로파일 추가
+con-name static-addr  프로파일 명 지정
+ifname eth0  물리 장치 명
+type ethernet  통신을 위한 종류.
+ipv4.method manual * 방식 구성 -> 수동
+ipv4.dns 172.25.250.220 dns 주소 설정
+ipv4.addresses 172.25.250.10/24  IP주소 설정
+ipv4.gateway 172.25.250.254 외부 통신을 위한 주소를 작성
+autoconnect yes 부팅시에 자동으로 연결
+
+# nmcli con add con-name static-add ifname eth0 type ethernet ipv4.method manual ipv4.dns 172.25.250.220 ipv4.addresses 172.25.250.10/24 ipv4.gateway 172.25.250.254 autoconnect yes
+Connection 'static-add' (7bcd0fae-9117-450c-91b3-b1a25f774596) successfully added.
+
+참고사항: 프로파일은 여러개 구성 가능
+하지만 한번에 하나의 프로파일에 하나의 장치만 연결 가능.
+
+[root@servera ~]# nmcli con up static-add 
+Connection successfully activated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/2)
+[root@servera ~]# nmcli con show 
+NAME                UUID                                  TYPE      DEVICE 
+static-add          7bcd0fae-9117-450c-91b3-b1a25f774596  ethernet  eth0   
+Wired connection 1  ec3a15fb-2e26-3254-9433-90c66981e924  ethernet  --    
+
+# nmcli con show static-add
+소문자 :  설정 파일 정보.
+대문자 : 활성화 정보
+
+# nmcli con mod static-add +ipv4.dns 8.8.8.8
+연결 정보에 dns를 추가로 등록
+# nmcli con mod static-add -ipv4.dns 8.8.8.8
+
+# nmtui
+
+
+
+
+
+
+
+
 
 
 
