@@ -2699,13 +2699,99 @@ port 에서 만약 변경해야 하는 경우.
 systemctl restart httpd 
 journalctl -f
 sealert -l 95a1ab78-7e86-4d45-9ab9-379c07d3c966
-
 semanage port -l | grep http
 semanage port -a -t http_port_t -p tcp 82
 semanage port -l | grep http
 systemctl restart httpd
 firewall-cmd --permanent --add-port=82/tcp
 firewall-cmd --reload
+
+NFS
+
+network file system
+
+파일 시스템
+
+로컬 파일시스템
+ext3 4
+xfs btrfs..
+로컬 서버에 물려져있다.
+PCI 장치
+보드에 연결
+internal
+서버 내부에 연결되는 스토리지 장치
+메인보드에 연결해야 하는 문제로 갯수의 제한이 생김.
+
+external
+서버 외부에 연결되는 스토리지 장치 
+PCI형태로 되어 있는 장치를 이용
+s-ata
+HBA 카드
+
+원격지 파일시스템
+네트워크를 사용하는 파일 시스템
+OS가 필요.
+F/S까지 미리 구성해야 한다.
+
+NAS -> 네트워크를 사용하는 스토리지 
+NFS sun > oracle > NFS * 
+NFS * windows > samba > NFS
+
+NFS 3 X > NFS 4 4.1 4.2
+
+연결 방법:
+1. 서버에서 먼저 스토리지 장치에 대한 설정 : 완료
+2. 클라이언트서 연결
+# mount [-t nfs] HOST|IP:/test/dir1 /stage
+# df
+
+서버사이드: 서버측에서 구성되는 내용
+클라이언트사이드: 클라이언트측에 측에서 구성되는 내용
+
+원격지 자원 확인하기
+
+# mount -t nfs serverb:/ /mnt/dir1
+최상위 디렉토리를 마운트하면 공개 가능한 자원의 디렉토리만 보여준다.
+# cd /mnt/dir1
+# ls
+shared
+# umount /mnt/dir1
+# 
+
+
+/mnt/dir1
+
+mount serverb:/shares/public /public/
+/etc/fstab
+serverb:/shares/public  /public nfs     rw,sync,_netdev 0       0
+_netdev 네트워크가 연결된 다음에 작업을 하세요. 
+주의점: 서버를 켤때 항상 serverb가 먼저 올라와 있어야 한다.
+
+autofs : 
+nfs 단점 해결.
+
+자동으로 마운트를 구성하고 자원을 가져오는 서비스.
+필요할 때만 사용 , 요청시에만 마운트
+일정 시간 사용을 하지 않으면 자동으로 마운트 해제.
+
+nfs를 사용하지만 다른 프로토콜도 사용 가능.
+
+[nfs-utils + autofs]
+
+autofs -> 클라이언트 구성
+사용자는 mount 작업 X
+autofs를 통해서 가능
+
+수많은 자원을 일일이 등록하는것이 아니라. 정의 파일을 통하여 필요한 경우에만 사용.
+
+EX: 네트워크 연결 -> 5K 사용자 -> 1M
+15000 
+df
+
+
+
+
+ 
 
 
 
