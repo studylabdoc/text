@@ -2587,6 +2587,74 @@ systemctl is-active [servicename]
 systemctl is-enabled [servicename]
 부팅시에 활성화 정보.
 
+SELINUX 
+SELinux 정책은 특정 프로세스가 관련 파일, 디렉터리, 포트에 액세스하는 방법을 정의하는 보안 규칙
+
+ls -Z
+ ls -Z
+unconfined_u:object_r:default_t:s0 file1
+                                            -----------
+컨텍스트 부분을 제어하여 사용
+ps -Z
+
+왜 사용하는가?
+apache
+웹 서버 -> 
+/var/www/html *
+/etc *
+/var * 
+...온갖 정보들을 모두 확인이 가능.
+
+SELINUX : 강제 조치 
+프로세스, 계정이 이용가능한 위치, 파일들을 제한.
+apache
+웹 서버 -> 
+/var/www/html *
+/etc
+/var
+...허용된 위치만 이동 가능, 파일만 제어 가능.
+
+named > chroot-named
+
+서버 방화벽 X
+SELINUX 
+
+가이드
+설치 >
+firewall x
+selinux x
+
+ftp : 익명 사용자 설정
+> 
+귀찮음. 보안 
+
+SELINUX 사용하려면?
+/etc/selinux/config
+
+SELINUX=enforcing : 부팅시에 적용할 selinux mode 결정
+enforcing  -> 강제 모드
+
+permissive -> 허용 모드
+작업은 진행되지만 로그로 남겨준다. 디버깅 
+disabled -> 사용하지 않음.
+9버전 SELINUX가 강제 활성화
+grubby --update-kernel ALL --args selinux=0
+grubby --update-kernel ALL --remove-args selinux
+
+# getenforce
+현재 selinux 구성상태 확인
+# setenforce 
+usage:  setenforce [ Enforcing | Permissive | 1 | 0 ]
+현재  selinux 구성상태 변경
+# setenforce 0 ; getenforce 
+Permissive
+# setenforce 1 ; getenforce 
+Enforcing
+
+semanage fcontext, restorecon, chcon
+selinux ? 
+
+
 
 
 
