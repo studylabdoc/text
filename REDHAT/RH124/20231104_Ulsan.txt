@@ -2651,14 +2651,61 @@ Permissive
 # setenforce 1 ; getenforce 
 Enforcing
 
-semanage fcontext, restorecon, chcon
+-------------------------------------------
+semanage fcontext
+restorecon
+---------------------------------------
+chcon 임시적으로 컨텍스트를 변경 : test 
+chcon -t admin_home_t index.html 
+chcon -t [지정할 컨텍스트] 파일
+
+현재 시스템에 존재하는 컨텍스트 확인하기 
+# semanage fcontext -l
+
+# semanage fcontext -a -t httpd_sys_content_t '/web(/.*)?'
+
+ '/web(/.*)?' > /web 
+(/.*)? : 해적표시web이라는 디렉토리에 존재하는 모든 파일 및 디렉토리의 컨텍스트를 동일하게 변경한다.
+
+슬래시로 시작하고 그 뒤에 임의의 수의 문자가 있는 문자 집합
+ 이 구문은 비어 있는 경우에도 디렉터리 자체와 일치하지만 해당
+디렉터리 내에 생성된 거의 모든 파일 이름과 일치
+# restorecon -Rv /web 
+	
+작업 방향
+context 찾기
+# semanage fcontext -l | grep 찾을컨텍스트
+# semanage fcontext -a -t 컨텍스트 '디렉토리(/.*)?'
+-------------------------------------------
+semanage fcontext
+restorecon
+---------------------------------------
+chcon
+
 selinux ? 
 
+	
+# semanage boolean : 기능에 대한 on off
+# semanage boolean -l | grep ftpd_anon_write
+setsebool ftpd_anon_write on
+semanage boolean -l | grep ftpd_anon_writ
+ftpd_anon_write                (on   ,  off)  Allow ftpd to anon write
+(현재상태,부팅시상태)
+
+port 에서 만약 변경해야 하는 경우.
+웹서버 82 port 
 
 
+systemctl restart httpd 
+journalctl -f
+sealert -l 95a1ab78-7e86-4d45-9ab9-379c07d3c966
 
-
-
+semanage port -l | grep http
+semanage port -a -t http_port_t -p tcp 82
+semanage port -l | grep http
+systemctl restart httpd
+firewall-cmd --permanent --add-port=82/tcp
+firewall-cmd --reload
 
 
 
