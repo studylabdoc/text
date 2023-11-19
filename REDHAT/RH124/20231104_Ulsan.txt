@@ -2490,9 +2490,102 @@ nfs 통해서 계정 접근 , ldap
 
 내일만이라도 노트북을 다 가져오세요.
 
+tuned
+커널 튜닝 -> sysctl 
+커널에 존재하는 파라미터 값을 변경
+기능 on / off
+limit 변경
+NAT TCP/IP 1/0
+
+파라미터를 직접 건드리는것이 힘들다.
+리눅스 유저가 늘어나고 있다.
+
+개발자.
+
+사용하는 OS에 대한 설정들을 쉽게 하는것에 대한 목마름.
+
+tuned << 
+파라미터 값을 저장 > load 
+dev / con 
+
+프로파일
+
+지금사용하는 시스템에 맞추어 로드 > 커널 파라미터 값을 변경
+
+systemctl 
+
+init > systemd
+      7ver
+
+systemctl 
+서비스 : 
+# rpm -qa | grep tuned
+tuned-2.18.0-1.el9.noarch
+# systemctl status tuned
+
+동적 설정 / 정적 설정
+cat /etc/tuned/tuned-main.conf
+dynamic_tuning = 1
+
+# tuned-adm profile virtual-host
+프로파일 정보 로드
+# tuned-adm active 
+현재 상태 확인/ 시작
+
+# tuned-adm off
+종료
+# tuned-adm recommend 
+현재 시스템에 맞는 튜닝 프로파일을 추천
+# tuned-adm profile $(tuned-adm recommend) 
+튜닝 프로파일을 추천받아 profile 옵션으로 한번에 지정.
+
+# cd /usr/lib/tuned/
 
 
+[servicename]
+서비스 관련 :
+systemctl start [servicename]
+서비스 시작
+systemctl stop [servicename]
+서비스 중지	
+systemctl restart [servicename]
+서비스 중지->시작
+systemctl reload [servicename]
+서비스를 멈추지 않고 설정 파일만 다시 읽음.
+systemctl reload-or-restart [servicename]
+재구성으로 시도하고 만약 재구성이 안되면 그때 재시작으로 시도.
+systemctl enable [servicename]
+서비스를 부팅시에 시작
+systemctl enable --now [servicename]
+부팅시 시작 + 현재 상태 시작
+systemctl disable [servicename]
+서비스를 부팅시에 시작하지 않음.
+systemctl disable --now [servicename]
+systemctl mask [servicename]
+서비스를 사용하지 않음.
+서비스가 하나만 존재하는게 아니라 여러개의 서비스가 동시에 존재 가능.
+EX: apache , eginx 
+                80     80
 
+bind < DNS
+          named    chroot-named
+                    53    53
+LDAP   ipa         ldap365
+            365          365
+bind-----connect 
+mask -> 설정된 서비스를 /dev/null로 링크
+수동/ 자동 해당 서비스는 이때부터 이용 불가능.     
+systemctl unmask [servicename]
+사용되지 않는 서비스를 다시 활성화.
+umask =  default perm - umask
+
+systemctl status [servicename]
+현재 상태 확인
+현재 활성화 상태, 부팅시 활성화 상태
+systemctl is-active [servicename]
+온라인상태에 활성화 정보
+systemctl is-enabled [servicename]
+부팅시에 활성화 정보.
 
 
 
