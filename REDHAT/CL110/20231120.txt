@@ -299,19 +299,49 @@ json 형식으로 구현
 
 15분 > 30분 
 
+OVN  -   OVS
 
+용어 데이터 센터 더 많이 이용
+남북 : 데이터센터와 클라이언트
+동서 - 데이터센터 내부에서 발생하는 네트워크 
 
+OVN 제공하는 기능
+분산 논리 라우터
+분산 논리 스위치
+접근 제어
+DHCP
+DNS 
 
+네트워크 추상화 제공
 
+ovn
+전체 네트워크를 구현
+ovs
+가상의 스위치. 
 
+상위 개념이라고 보기에는 힘듬.
+ovs는 ovn을 이용한 네트워크 구성이 가능
+ovn은 ovs의 데몬
 
+CMS
+OVN / CMS plugin  
+OVN northbound DB
 
+OVN northd
+ 
+OVN southboundDB
 
+compute 
+      OVN- controller
+         ㄴ ovs-vswitchd , ovsdb-server
 
+DHCP[ovn]-> TAP --LB---TAP ---ACL ---| ---R ----ext-net, VM
 
+140  146
+nova
 
-
-
+156p 
+네트워크 설명 다시 한번. 그림 설명. 다시 한번.
 
 
 
