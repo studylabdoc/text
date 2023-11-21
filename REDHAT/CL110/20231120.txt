@@ -20,6 +20,9 @@ https://cplatform99.blogspot.com/2018/08/rhosp-red-hat-openstack-11-deployment.h
 
 https://access.redhat.com/documentation/ko-kr/red_hat_openstack_platform/11/html/director_installation_and_usage/chap-introduction#sect-Overcloud
 
+network-image [동서남북의 의미.]
+https://drive.google.com/file/d/1oHR62TYjkKCvFN4V-YzYsYMg6L0fWEDD/view?usp=sharing
+
 rol.redhat.com > 랩 환경 
 RHLS 
 
@@ -263,8 +266,38 @@ json 형식으로 구현
 사용자,그룹: 실제 사용자. 최종 사용자.
 역할: 접근 권한 정도. 
 
+도메인 만들기 
+# openstack domain create --descripton 'first domain' mydomain 
+도메인에 할당된 사용자
+# openstack user create --domain mydomain --password 11111 [계정명]
+# openstack user list --domain mydomain 
+
+사용자 - role 
+
+프로젝트 만들기
+# openstack project create --description "first domain project " --domain mydomain myproject 
 
 
+도메인
+프로젝트
+---------------------
+계정 생성 / 역할 할당
+-------------------------
+리소스 사용
+--parents 1pro  -domain mydomain 2project
+10분
+
+계정=사용자
+
+리소스 제한 
+
+컴퓨터 자원에는 한계가 존재.
+사용자. 그룹. 도메인 관리자.  조금이라도 더 많이 보유, 사용
+
+102p 
+107p
+
+15분 > 30분 
 
 
 
