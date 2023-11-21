@@ -2788,6 +2788,54 @@ EX: 네트워크 연결 -> 5K 사용자 -> 1M
 15000 
 df
 
+# dnf -y install nfs-utils autofs
+마운트 테스트 
+# mount serverb.lab.example.com:/shares/direct/external /mnt
+# df /mnt
+serverb.lab.example.com:/shares/direct/external
+# umount /mnt
+
+설정 >
+/etc/auto.master.d/*.autofs
+디렉토리에 파일 생성시 확장자 .autofs 끝나야한다.
+마스터 맵 파일은 크게 두가지다.
+1. 다이렉트 맵 파일
+2. 인다이렉트 맵 파일
+다이렉트 맵 파일
+절대 경로로 파일을 구성하고 위치를 정의
+인다이렉트 맵 파일
+상대 경로로 파일을 구성학 위치를 정의
+사용 방법 : master file
+/etc/auto.master.d/direct.autofs
+/- /etc/direct.nfs
+
+/mnt -rw,sync serverb.lab.example.com:/shares/direct/external
+
+-> mount -o rw,sync  serverb.lab.example.com:/shares/direct/external /mnt 
+
+#  vi indirect.autofs
+/internal /etc/indirect.nfs
+----------  -----------------
+디렉토리    정의 파일
+# vi /etc/indirect.nfs
+central -rw,sync  serverb.lab.example.com:/shares/indirect/central
+
+인다이렉트로 디렉토를 구성하는 궁극적인 이유:
+대량의 디렉토리를 마운트하기 위함.
+와일드 카드 사용
+
+* -rw,sync  serverb.lab.example.com:/shares/indirect/&
+
+cd /internal/west 
+mount serverb.lab.example.com:/shares/indirect/west /internal/west 
+
+디렉토리의 변화가 심한 공유디렉토리
+
+
+
+
+
+
 
 
 
