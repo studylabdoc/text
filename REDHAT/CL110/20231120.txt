@@ -1,18 +1,24 @@
-
-혹시 안들리시는분은 블루진 창에 setting 메뉴에서 
-스피커 부분을 변경 해주시면 됩니다. 
-(노트북의 경우에)
-
-회사 보안 방화벽안에 계신 경우에는 위와 같이해도 안들릴 가능성이 있기 때문에 이런 경우에는 
-프로그램 설치 말고 : 웹 브라우저 사용하시면 거의가능.
-
-이렇게 해도 안들리시면 다른 장치 , 네트워크(핫스팟 이용해주시면 됩니다.)
-
-본인 성함으로 변경
-
 CL110 
 월 - 금
 10:00 -  18:00 
+
+김기연
+01097902540
+nsr230@studylab.xyz  daum naver 
+github text
+
+https://github.com/studylabdoc/text/tree/main/REDHAT/CL110
+
+openstack  image
+https://docs.openstack.org/install-guide/_images/openstack-arch-kilo-logical-v1.png
+
+KVM infra
+https://drive.google.com/file/d/1Oqgnu0VX5I3zLyrqtA2fu3KLMvnCuVie/view?usp=sharing
+
+over/under cloud
+https://cplatform99.blogspot.com/2018/08/rhosp-red-hat-openstack-11-deployment.html?m=1
+
+https://access.redhat.com/documentation/ko-kr/red_hat_openstack_platform/11/html/director_installation_and_usage/chap-introduction#sect-Overcloud
 
 rol.redhat.com > 랩 환경 
 RHLS 
@@ -27,10 +33,6 @@ RHLS
 
 수업이 종료된 후 45일간 추가 사용 가능.
 
-김기연
-01097902540
-nsr230@studylab.xyz  daum naver 
-
 CL110
 
 워크스테이션의 계정
@@ -39,10 +41,6 @@ root / redhat
 
 echo 'CL110 GUI copy'
 오픈스택 랩의 경우에는 부팅 > 30분 정도는 기다려 주셔야 합니다.
-
-RH
-CL
-DO
 
 삭제 - 화면상으로 완료가 된것으로 보임.
 삭제 -> 
@@ -56,7 +54,7 @@ triple o 이해
 
 구성도 >
 오픈스택의 구성도를 눈으로 따라가며 이해할수 잇음.
-https://docs.openstack.org/install-guide/_images/openstack-arch-kilo-logical-v1.png
+
 
 클라우드 / 가상화 /..
 
@@ -95,8 +93,6 @@ KERNEL  KVM    kvm.ko >  pass thought
 --------------------------------
 H/W [CPU : machine]
 
-https://drive.google.com/file/d/1Oqgnu0VX5I3zLyrqtA2fu3KLMvnCuVie/view?usp=sharing
-
 쿠버네티스  : 컨테이너를 생성 
 오픈스택 - 가상화된 리소스를 이용 : 가상머신 
 
@@ -127,9 +123,6 @@ Triple O
 openstack on openstack
 오픈스택을 위한 오픈스택
 
-https://cplatform99.blogspot.com/2018/08/rhosp-red-hat-openstack-11-deployment.html?m=1
-
-https://access.redhat.com/documentation/ko-kr/red_hat_openstack_platform/11/html/director_installation_and_usage/chap-introduction#sect-Overcloud
 
 undercloud
 -> 배포를 위한 오픈스택 
