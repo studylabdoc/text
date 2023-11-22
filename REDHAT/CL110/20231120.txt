@@ -358,9 +358,8 @@ ovn-controller , ovs-vswitchd ,  ovsdb-server : 실제 가상머신을 위한 OV
 
 
 이미지와 플레이버를 지정하여 가상 시스템 정의
-2:10
-nova  
->
+
+
 
 
 
