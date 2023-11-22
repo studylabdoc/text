@@ -23,6 +23,10 @@ https://access.redhat.com/documentation/ko-kr/red_hat_openstack_platform/11/html
 network-image [동서남북의 의미.]
 https://drive.google.com/file/d/1oHR62TYjkKCvFN4V-YzYsYMg6L0fWEDD/view?usp=sharing
 
+OVN ARCHITECTURE
+https://www.ovn.org/en/architecture/
+
+
 rol.redhat.com > 랩 환경 
 RHLS 
 
@@ -215,7 +219,7 @@ PKI -> 인증 / 인가.
 문제 : 각 서비스는 모듈[프로젝트]별로 분리되어 있기에 ID/PASS를 사용하여  http를 통한 모듈로 인증.
 
 서비스들간의 인증을 하나로 통합하기 위하여,
-대시보드 서비스가 나오면서 이제 한번의 인증로 모든 작어비 [권한만 존재한다면] 가능하도록 만들어야 한다.
+대시보드 서비스가 나오면서 이제 한번의 인증로 모든 작업이 [권한만 존재한다면] 가능하도록 만들어야 한다.
 
 one shot login 
 중앙 집중식 인증 관리 
@@ -285,7 +289,6 @@ json 형식으로 구현
 -------------------------
 리소스 사용
 --parents 1pro  -domain mydomain 2project
-10분
 
 계정=사용자
 
@@ -294,16 +297,12 @@ json 형식으로 구현
 컴퓨터 자원에는 한계가 존재.
 사용자. 그룹. 도메인 관리자.  조금이라도 더 많이 보유, 사용
 
-102p 
-107p
-
-15분 > 30분 
-
 OVN  -   OVS
 
 용어 데이터 센터 더 많이 이용
 남북 : 데이터센터와 클라이언트
 동서 - 데이터센터 내부에서 발생하는 네트워크 
+
 
 OVN 제공하는 기능
 분산 논리 라우터
@@ -336,15 +335,5 @@ compute
          ㄴ ovs-vswitchd , ovsdb-server
 
 DHCP[ovn]-> TAP --LB---TAP ---ACL ---| ---R ----ext-net, VM
-
-140  146
-nova
-
-156p 
-네트워크 설명 다시 한번. 그림 설명. 다시 한번.
-
-
-
-
 
 
