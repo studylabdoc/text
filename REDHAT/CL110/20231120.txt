@@ -26,6 +26,8 @@ https://drive.google.com/file/d/1oHR62TYjkKCvFN4V-YzYsYMg6L0fWEDD/view?usp=shari
 OVN ARCHITECTURE
 https://www.ovn.org/en/architecture/
 
+https://insinuator.net/2023/08/steampipe-plugin-openstack/
+https://upload.wikimedia.org/wikipedia/commons/8/82/Openstack-conceptual-arch-folsom.jpg
 
 rol.redhat.com > 랩 환경 
 RHLS 
@@ -360,6 +362,36 @@ ovn-controller , ovs-vswitchd ,  ovsdb-server : 실제 가상머신을 위한 OV
 이미지와 플레이버를 지정하여 가상 시스템 정의
 
 
+테넌트 / 프로바이더 / 익스터널
+USER        -------admin----------
+
+
+테넌트 : 사전적 의미 : 세압자. 클라우드 서비스 이용자가 가지게 되는 자신만의 환경 
+
+가상 네트워크 기능을 사용하여 독립된 네트워크 환경을 갖추기 위해 네트워크 세그먼트를 분할 하기도 한다.
+
+163p
+169p
+
+30분에 다시 시작.
+
+랩을 실행 할때 마다  필요한 파일을 구성,  삭제를 하기 때문에 랩마다 파일들이 있다가 없어집니다.
+
+178p
+182p
+
+3:15분
+
+nova 
+compute service 
+nova-api
+nova-console
+nova-cert
+nova-compute
+nova-consoleauth
+nova-conductor
+nova-database
+nova-scheduler
 
 
 
