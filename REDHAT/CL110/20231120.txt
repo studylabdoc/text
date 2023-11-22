@@ -322,18 +322,70 @@ ovs
 ovs는 ovn을 이용한 네트워크 구성이 가능
 ovn은 ovs의 데몬
 
-CMS
-OVN / CMS plugin  
-OVN northbound DB
+CMS  OVN의 클라이언트 
 
-OVN northd
- 
-OVN southboundDB
+OVN/CMS Plugin CMS의 데이터베이스
 
-compute 
-      OVN- controller
-         ㄴ ovs-vswitchd , ovsdb-server
+OVN Northbound DB
+[OVN/CMS Plugin]에 의해 전달된 논리 네트워크 설정
 
-DHCP[ovn]-> TAP --LB---TAP ---ACL ---| ---R ----ext-net, VM
+ovn-northd
+CMS에서전달 받은 내용을 DB에 저장 및 논리적 네트워크에서 필요한 구성요소를 연결해주는 기능.
+오픈스택 ML2 계층이 northd와 통신하면서 물리적/ 논리적 네트워크 자원을 관리 
+
+OVN Southbound DB 
+실시간 상태 정보.  물리 네트워크와 논리 네트워크의 테이블 정보. 
+
+OVN Southd
+OVNDB에서 OVN에서 관리하는 물리적/ 논리적 네트워크 정보를 관리 
+hypervisor에서생성된 가상머신은 OVS를 통해서 연결이 되고. 물리적 네트워크의 통신은 OpenFlow를 통해서 구현이 된다.
+
+ovn-controller , ovs-vswitchd ,  ovsdb-server : 실제 가상머신을 위한 OVS의 구성요소.
+
+오버레이 네트워크
+물리 네트워크 위에 구성되는 가상의 네트워크 
+오버레이 네트워크 안의 노드는 가상 링크로 연결될 수 있고. 이는 물리적 링크를 고려하지 않은 상태로 실행된다.
+
+기존 네트워크의 바탕을 다른 네트워크가 덮어쓰는 개념으로 이해.
+가상 네트워크 : 오버레이에서의 엔드 포인트들은 논리적인 노드
+
+플레이버 - 사이즈 템플릿
+이미지 - 부팅사양 템플릿
+
+# echo 'redhat' | passwd --stdin root
+# echo 'root:redhat' | chpasswd
+
+
+
+이미지와 플레이버를 지정하여 가상 시스템 정의
+2:10
+nova  
+>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
