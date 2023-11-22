@@ -382,16 +382,90 @@ USER        -------admin----------
 
 3:15분
 
-nova 
+nova : 가상머신 생성기.
+
 compute service 
-nova-api
-nova-console
-nova-cert
-nova-compute
-nova-consoleauth
-nova-conductor
-nova-database
-nova-scheduler
+nova-api : 인증 된 사용자의 API 요청에 대한 응답.
+nova-console :  console proxy를 이용하여 화면 제공 
+nova-consoleauth : console proxy에서 제공하는 사용자에 대한 인증.
+nova-cert : X509  인증서를 이용한 nova 인증 EC2
+nova-compute :  가상화 API를 이용한 인스턴스에 생성, 종료 kvm xen vm 
+nova-conductor : 데이터베이스와의 상호작용 
+nova-database : nova 컴퓨트에 대한 데이터 
+nova-scheduler : 호스트가 여러개 있는 경우 어느 호스트에서 명령을 수행할지 [가상머신을 어디서 만들지] 결정
+
+이미지 생성 방법:
+
+KVM 을 이용한 구성 방법 : 추천
+오픈스택을 이용한 구성 방법:
+ISO 파일을 업로드
+가상머신 파일 구성 -> 설치 > 스냅샷 > 이미지 
+
+
+199 p
+
+임시 볼륨
+부팅 가능 디스크 
+
+영구 볼륨
+데이터 저장 
+부팅 가능 디스크 전환 
+
+cinder block
+블록 스토리지 
+하드디스크 
+특징: 인스턴스에 연결과 해제가 가능하다.
+새로 생성한 인스턴스에 기존 볼륨을 연결하여 원하는 형태로 포맷, 사용.
+
+cinder-volume : 프로세스의 요청을 받아서 컨테이너 및 파일에 대한 저장소.
+cinder-scheduler : 볼륨 생성, 이동 요청시 어디다가? 저장할지 결정.
+cinder-api: REST API로 요청을 받아 명령에 대한 처리
+cinder-backup : 볼륨의 데이터에 대한 백업 .
+
+swift object
+파일 / 디렉토리에 대한 저장소.
+사용자마다 구분된 컨테이너를 통해 데이터 저장 
+오브젝트에 저장된 파일들은 key=value 형태로 저장되는 경우게 많으며 REST API 이용하여 업/ 다운로드 
+
+proxy : 하위의 모든 요소를 관리. 
+account : 사용자 정보에 대한 저장, 구분
+container : 하위 파일의 개수. 정보 저장
+object : 파일 자체의 정보 저장. 구분
+ring : 데이터의 논리적/물리적 위치의 매핑 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
