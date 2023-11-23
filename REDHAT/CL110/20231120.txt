@@ -29,7 +29,7 @@ https://www.ovn.org/en/architecture/
 https://insinuator.net/2023/08/steampipe-plugin-openstack/
 https://upload.wikimedia.org/wikipedia/commons/8/82/Openstack-conceptual-arch-folsom.jpg
 
-driver_handles_share_servers  true / fail 
+driver_handles_share_servers  true / false 
 https://access.redhat.com/documentation/ko-kr/red_hat_openstack_platform/16.1/html-single/security_and_hardening_guide/index
 
 rol.redhat.com > 랩 환경 
@@ -526,109 +526,34 @@ manila : 공유 서비스
 ganesha : 접근 제어
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-259
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-222p 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+flat 네트워크 - 
+ 네트워크 풀에서 IP를 할당.
+수동으로 할당.
+브릿지 네트워크의 연결 문제
+트래픽에 대한 분리의 어려움..
+가상화의 문제점> 격리 전이 
+
+Fixed IP
+고정
+자동 배정 이후 취소가 불가능.
+
+Floating IP
+유동
+사용자가 외부망에서 접근 
+외부망에서 내부로 접근
+자신이 원하는 가상머신에 할당 이후에 취소도 가능.
+
+클라이언트------->외부인스턴스 
+SSH 이용하여 접근
+
+절차
+
+보안 그룹
+어느 방향
+어떤 프로토콜?
+
+내일!
+공용 액세스가 가능한 인스턴스
 
 
 
