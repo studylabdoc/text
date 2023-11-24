@@ -32,6 +32,13 @@ https://upload.wikimedia.org/wikipedia/commons/8/82/Openstack-conceptual-arch-fo
 driver_handles_share_servers  true / false 
 https://access.redhat.com/documentation/ko-kr/red_hat_openstack_platform/16.1/html-single/security_and_hardening_guide/index
 
+cloud-init 구성 및 관리
+https://access.redhat.com/documentation/ko-kr/red_hat_enterprise_linux/8/pdf/configuring_and_managing_cloud-init_for_rhel_8/red_hat_enterprise_linux-8-configuring_and_managing_cloud-init_for_rhel_8-ko-kr.pdf
+
+CLI commands
+https://cloudinit.readthedocs.io/en/latest/reference/cli.html
+
+
 rol.redhat.com > 랩 환경 
 RHLS 
 
@@ -554,6 +561,40 @@ SSH 이용하여 접근
 
 내일!
 공용 액세스가 가능한 인스턴스
+
+
+인스턴스
+ㄴ  디스크
+	ㄴ 임시 : 인스턴스 시작 접속: 종료-> 삭제
+	ㄴ 영구: 시작 종료와 상관 없이 데이터 유지
+
+324 EXAM
+328 LAB
+
+11:20분
+
+cloud-init *
+제일 포인트 
+클라우드 이닛 > 인스턴스를 생성할 때 초기화 작업
+PXE booting -> 무인 설치 
+init script 
+인스턴스에서 필요한 초기 작업을 도와주는 파일
+cloud-init = user-data
+사용자가 필요한 파일에 대한 요청 -> 관리자/ 운영자  맞춤 파일 제공
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
