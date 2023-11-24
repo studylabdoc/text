@@ -38,6 +38,9 @@ https://access.redhat.com/documentation/ko-kr/red_hat_enterprise_linux/8/pdf/con
 CLI commands
 https://cloudinit.readthedocs.io/en/latest/reference/cli.html
 
+all-in-one install doc
+https://medium.com/@tcij1013/install-openshift-on-openstack-16-1-all-in-one-96c179310b36
+
 
 rol.redhat.com > 랩 환경 
 RHLS 
