@@ -582,10 +582,32 @@ init script
 cloud-init = user-data
 사용자가 필요한 파일에 대한 요청 -> 관리자/ 운영자  맞춤 파일 제공
 
+1. 인프라 자동화
 
+HEAT
+USER-HEAT-
+오케스트레이션 
 
+hot를 사용하여 클라우드 지원 생성 , 관리
+heat orchestration template 
+애플리케이션 생성을 위해 openstack API를 호출 템플릿 기반의 오케스트레이션을 제공
+오케스트레이션 : 컴퓨터 시스템과 애플리케이션, 서비스의 자동화된 설정, 관리, 조정을 의미.
 
+USER
+            tmp file
+               CLI          API       AMQP  heat-engine      
+AMQP   advanced massage queueing protocol 
+heat-engine -> 수신한 템플릿과 API 파라미터 포함한 사용자 요청 데이터에 기반하여 인프라, 클라우드 애플리케이션을 생성하기 위해 나머지 API를 호출
 
+hot
+사용자가 구성해야 하는 가상 자원에 대한 명세서
+json / yaml 
+사람이 읽고 이해하기 쉬운 텍스트 형태의 데이터로 구성
+
+yaml로 구현하게 되면 json보다 파싱에 대한 부하가 크다. 하지만 멀티 라인 스트링을 지원. 주석 처리가 쉽다.
+
+412p
+15:05분에 이어서 진행
 
 
 
