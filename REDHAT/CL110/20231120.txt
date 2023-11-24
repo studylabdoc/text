@@ -609,7 +609,11 @@ json / yaml
 
 yaml로 구현하게 되면 json보다 파싱에 대한 부하가 크다. 하지만 멀티 라인 스트링을 지원. 주석 처리가 쉽다.
 
+http
+restful API
 
+가상화 개념 *
+vmware doc 
 
 
 
