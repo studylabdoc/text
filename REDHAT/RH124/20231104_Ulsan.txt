@@ -2915,9 +2915,17 @@ H no          U
 LXC 
 
 https://www.redhat.com/ko/topics/containers/whats-a-linux-container
+컨테이너를 이용하게되면 기존 가상화보다 엄청 가볍게 이용이 가능한 장점
+host기준으로 99.8% 성능이 나온다.
 
+가상화 사용해야 하는 경우
+컨테이너로 사용해야 하는 경우.
 
+실습환경 구성.
+컨테이너를 생성 -> 계정 하나 만들어야 한다.
 
+[root@servera ~]# useradd consvc
+[root@servera ~]# echo 'consvc' | passwd --stdin consvc
 
 
 
