@@ -2922,10 +2922,112 @@ host기준으로 99.8% 성능이 나온다.
 컨테이너로 사용해야 하는 경우.
 
 실습환경 구성.
-컨테이너를 생성 -> 계정 하나 만들어야 한다.
+컨테이너를 생성 -> 계정 하나 만들어야 한다.[Rootless 형태의 컨테이너를 작업하기 위함]
 
 [root@servera ~]# useradd consvc
 [root@servera ~]# echo 'consvc' | passwd --stdin consvc
+
+# dnf list | grep container-tools
+[root@servera ~]# dnf -y install container-tools
+
+# ssh consvc@localhost
+[consvc@servera ~]$ id
+uid=4334(consvc) gid=4334(consvc) groups=4334(consvc) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+[consvc@servera ~]$ podman info
+
+$ mkdir -p  ~/.config/containers
+$ vi ~/.config/containers/registries.conf
+------------------------
+[registries.search] 
+registries = ['registry.redhat.io', 'quay.io', 'docker.io']
+$ podman pull centos
+$ podman images
+REPOSITORY             TAG         IMAGE ID      CREATED      SIZE
+quay.io/centos/centos  latest      300e315adb2f  2 years ago  217 MB
+
+1. 빌드로 이미지 생성하기.
+2. 생성된 이미지로 구동.
+
+기존에 있는 이미지로 웹 서버 구동하기
+> 서비스화 시켜서 구동하기.
+
+
+-p
+-v
+ 두가지를 먼저 해보고
+빌드 
+서비스 파일 구성
+시험에서 나오는 구성인  systemd 로 구현
+
+8:10분 시작
+
+*
+시험에서 사용해야 하는 명령어
+
+테이너에서 사용되는 명령어. 옵션 . 옵션에 대한 기능.
+# docker images : 도커에서 사용중인 이미지 목록을 출력
+# docker history [이미지명] : 이미지의 변경 이력을 확인 가능
+# docker login : 도커허브에 접근 할 수 있도록 ID/PASS를 입력받음
+# docker login [SERVER]: 개인 저장소의 위치로 접근 하는 경우에는 [SERVER]까지 입력한다.
+# docker pull : 저장소에서 이미지 가져오기
+# docker push : 저장소로 이미지 내보내기
+# docker search : 저장소에 존재하는 이미지를 검색
+# docker build -t [image:tag] : Dockerfile 기반으로 이미지를 생성
+# docker build -t [image:tag] -f Dockerfile : 사용하려는 파일이름이 Dockerfile이 아닌 경우에 -f 옵션으로
+파일명을 지정
+docker - Dockerfile
+podman - Containerfile
+# docker tag image:tag image:tag2: 이미지의 태그 변경시 사용
+# docker image tag image:tag image1:tag : 이미지의 이름 변경
+실행
+# docker run [image] : 이미지를 컨테이너로 실행
+현재 상태에서 실행시 진행되는것:
+1. 실행되자마자 컨테이너 종료상태
+2. 실행시 이름을 지정하지 않았 기 때문에 자동으로 생성
+3. 실행된 컨테이너에서 쉘을 실행한다. 하지만 이후 작업을 지정하지 않고서 run 명령을 내렸기에 바로 정지
+4. 컨테이너가 종료되면 도커는 컨테이를 제거하지 않고 유지시킨다.
+옵션
+-it : 컨테이너가 실행 후 실행된 컨테이너 내부에 쉘을 실행한다. 
+-d : 컨테이너를 백그라운드로 실행한다. 
+--rm : 컨테이너가 종료될 때 기존의 컨테이너를 유지하지 않고 삭제시킨다. 동일한 컨테이너를 여러번
+실행시켜야 하는 경우 docker ps -a 에서 나오지 않도록 해야 하는 경우에 사용하면 좋다. 
+--name : 컨테이너의 이름 변경, 좀 더 관리를 쉽게 하기 위해서 지정하는 것이 좋다.
+image:tag 동일한 이미지가 존재하는 경우 특정 버전을 선택하여 사용하도록 tag를 지정
+명령어 : 컨테이너를 실행후 바로 내부에서 사용자가 명시한 명령어를 실행한다.
+-p : 컨테이너에서 동작되는 포트와 외부 호스트 포트를 포워딩 하기 위해 사용
+-p 80:8080 : -p [내부]:[외부]
+-v : 볼륨
+컨테이너에 영구적인 데이터 보관을 위한 볼륨을 연결한다.
+영구적인 데이터 보관 : 불변의 이미지에 저장을 해도 재시작을 하는 순간 삭제가 되기 때문에 영구저장을
+위해서는 외부 호스트에서 추가 볼륨을 마운트 해 주어야 저장이 가능.
+mysql-[/data]
+# docker commit container newcontainer:tag : 실행중인 컨테이너를 이미지화 하는 것
+# docker create image:tag : run과 비슷하지만 직접실행하지 않고 컨테이너 생성만 한다.
+# docker start [CONTAINER ID]: 생성된 컨테이너를 시작한다.
+# docker stop [CONTAINER ID]: 실행중인 컨테이너를 중지한다. -15 
+# docker kill [CONTAINER ID]: 실행중인 컨테이너를 강제종료한다 -9
+# docker rm -f [CONTAINER ID]: 실행중인 컨테이너를 강제 제거, 실행중인 자료에 대해서 보장하지
+않습니다.
+# docker stats [CONTAINER ID]: 실행중인 컨테이너에 대하여 상태를 확인한다.
+# docker inspect [CONTAINER ID]: 실행중인 컨테이너의 정보를 확인
+# docker ps : 현재 동작중인 컨테이너를 출력
+# docker ps -a : 모든 상태의 컨테이너를 출력
+# docker attach [CONTAINER ID]: 백그라운드 모드로 동작중인 컨테이너에 연결
+# docker exec [CONTAINER ID] [COMMAD]: 컨테이너 내부에 명령어를 실행
+# docker top [CONTAINER NAME]: 컨테이너 상태 확인
+# docker logs tail [CONTAINER ID] : 컨테이너 내부에서 출력되는 표준 출력, 오류를 화면서 표시를 해준다.
+# docker pause [CONTAINER ID] : 컨테이너를 일시정지한다.
+# docker unpause [CONTAINER ID] : 일시정지되는 컨테이너를 다시 시작
+# docker port [CONTAINER ID] : 컨테이너에서 사용중인 포트를 확인
+# docker diff [CONTAINER ID] : 원본 이미지 형태와 현재 실행중인 컨테이너의 파일에 대한 차이점을
+확인하기 위해 사용
+# docker cp CONTAINER:SRC_PATH DEST_PATH|-
+# docker cp SRC_PATH|- CONTAINER:DEST_PATH
+컨테이너 내부 / 외부에서 파일을 복사 해야 하는 경우 사용
+# docker rmi [CONTAINER image]: 이미지를 호스트에서 삭제하는 경우 사용
+
+
+
 
 
 
