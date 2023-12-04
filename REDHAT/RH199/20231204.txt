@@ -173,8 +173,37 @@ mytextfile.txt
 디렉토리에 구성 가능.
 원본이 삭제되면 연결이 불가능. 하지만 동일한 이름으로 생성시 연결 가능[기존 파일은 아니다.]
 
+[root@servera ~]# ls -l /etc/passwd 계정 정보
+-rw-r--r--. 1 root root 1598 May 18  2022 /etc/passwd
+[root@servera ~]# ls -l /etc/shadow 암호, 비밀번호 이용시간
+----------. 1 root root 1077 May 18  2022 /etc/shadow
+[root@servera ~]# ls -l /etc/group 그룹 계정 정보
+-rw-r--r--. 1 root root 689 May 18  2022 /etc/group
+[root@servera ~]# ls -l /etc/gshadow 그룹암호, 비밀번호 이용시간
+----------. 1 root root 552 May 18  2022 /etc/gshadow
 
+passwd 파일 필드 설명
+root:x:0:0:root:/root:/bin/bash
+root : 사용자명 문자. 
+x : 비밀번호
+0 : UID
+0 : GID
+root : 코멘트 
+/root : 홈디렉토리 
+/bin/bash : 로그인시 사용할 쉘
 
+계정 | 그룹 
+1 권한부여시 실수를 줄이기 위하여 
+2 공용파일 
+group 파일
+그룹명:x:GID: 
+kmem:x:9:
+wheel:x:10:student
+
+기본 그룹 : 로그인시 처음 할당되는 그룹
+ 
+보조 그룹: 사용자가 직접 변경하거나 권한에 따라서 사용가능한 그룹
+newgrp : 강제로 주그룹을 [현재 쉘에서] 변경
 
 
 
@@ -183,7 +212,7 @@ mytextfile.txt
 
 
 
-
+f
 
 
 
