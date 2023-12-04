@@ -1,1 +1,34 @@
-1
+RH199
+75887588 wifi 
+
+김기연
+01097902540
+nsr230@studylab.xyz
+
+
+
+
+https://meet.google.com/nme-jznb-wia
+
+mail -
+20231204
+
+rol.redhat.com : 실습 랩, e_book
+
+E-book : 한글 / 영문 둘다 다운로드 해 두시는 것을 추천.
+
+
+RH124+ RH134 -> 시험 범위로 압축 :
+650
+
+기본 명령어 부분 제거
+파일 생성 -> 컨테이너 구성 
+
+7p
+
+
+
+
+
+
+
