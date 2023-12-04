@@ -5,10 +5,16 @@ RH199
 01097902540
 nsr230@studylab.xyz
 
-
-
-
+구글미트:
 https://meet.google.com/nme-jznb-wia
+
+깃허브 파일 주소:
+https://github.com/studylabdoc/text/blob/main/REDHAT/RH199/20231204.txt
+
+studylabdoc/text
+/REDHAT/RH199/20231204.txt
+
+
 
 mail -
 20231204
