@@ -636,14 +636,163 @@ rpm 파일도 설치 가능
 의존성 파일 확인..
 + 리포지토리 등록 *  <<< 
 
+rpm 명령어 
+
+dnf / yum 설치를 진행 하게 되면 -> rpm 다운로드 > 설치
+
+rpm 명령
+rpm -qa 시스템에 설치된 프로그램 목록 확인 
+1.5.65
+1 주버전 기능이 눈에 띄게 변경되는경우
+5 부 버전 향상됐다. 
+65 패치버전
+1.5.65 > 2.0.11
+
+rpm -ql 패키지 설치시 포함되는 파일을 참조.
+rpm -qlc 설정 파일만 확인
+rpm -qld 매뉴얼파일만 확인
+패키지 설치시의 설정 파일은 개발자마다 다르긴 하지만 보통 .conf .cf 로 끝나는 경우가 많다.
+rpm -ql file | grep conf$
+rpm -qf 설치되어 있는 파일을 대상으로 패키지 명을 호출
+rpm -qi 정보파일 확인
+
+rpm -ivh -i install -U upgrade
+rpm -Uvh
+-i 설치 
+-U 프로그램의 버전이 맞다면 업그레이드를 진행 / 만약에 없다면 설치 
+-h 설치시 해시기호 ######로 %를 표시
+-v 설치시의 내용을 자세하게 볼수 있다.
+--nodeps 의존성 체크 없이 사용하는 경우에 필요.
+
+rpm 패키지 내용 확인
+https://zetawiki.com/wiki/CentOS_rpm_%ED%8C%A8%ED%82%A4%EC%A7%80_%EB%82%B4%EB%B6%80_%ED%8C%8C%EC%9D%BC%EB%AA%A9%EB%A1%9D_%ED%99%95%EC%9D%B8
+
+rpm 패키지에서 파일 추출
+https://zetawiki.com/wiki/Rpm%EC%97%90%EC%84%9C_%ED%8C%8C%EC%9D%BC_%EC%B6%94%EC%B6%9C
+
+rpm -e 삭제 
+
+
+dnf 디렉토리
+/etc/yum.repos.d/   < 여기서 리포지토리를 구성하고 dnf 통하여 파일을 다운로드 / 설치를 진행
+/var/log/dnf.log 작업에 대한 모든 로그를 저장
+# dnf repolist 현재 사용가능한 리포지토리를 확인 
+# dnf clean all  정보 파일에 대한 초기화 
+
+# dnf search [검색어]
+# dnf list | grep http
+# dnf info httpd
+# dnf provides /usr/bin/ls
+
+# dnf install telnet -> telnet 설치, 응답형으로 물어본다.
+# dnf -y install telnet -> telnet 설치, 비응답형으로 묻지 않는다.
+
+# dnf -y localinstall httpd -> 지정된 패키지를 사용하여 설치 하지만 의존성이 있는 파일들은 리포지토리를 통하여 제공 받는다.
+
+#  dnf group list
+# dnf group install
+
+# dnf -y remove telnet
+삭제를 하는 경우에는 -y를 먼저 사용하지 말고 확인을 먼저!
+
+# 
+# dnf check-update 업데이트가 가능한 패키지를 확인 
+# dnf update -y -> 시스템에 설치되어 있는 모든 패키지를 대상으로 업데이트가 가능하면 업데이트를 진행
+
+# dnf history : 작업한 내역을 확인
+# dnf history undo 4   -> 4번 작업을 되돌리는 용도로 사용
+
+repo 구성하는 방법
+
+/etc/yum.repos.d
+규칙:
+1. 파일명의 끝이 .repo
+2.  파일내의 형식
+[] -> repo id  (dnf list 출력시 나오는 부분)
+name -> repo name
+baseurl -> * 실제 패키지가 존재하는 링크
+enabled -> 활성화 1/0  1 - 활성화 0 비활성화 
+gpgcheck  /0 gpgkey  비활성화 1
+
+두가지 형식으로 만들수 있음
+
+vi를 통해서 직접 구성
+명령어를 이용해서 만드는 방식
+
+http://content.example.com/rhel9.0/x86_64/rhcsa-practice/rht
+
+http://content.example.com/rhel9.0/x86_64/rhcsa-practice/errata
+
+디스크 -> ?st fs/  lvm  -> fstab
+
+디스크 -> fstab 등록
+
+LVM -> 생성 확장 
+swap
+
+# lsblk
+# blkid
+/etc/fstab
+# mount
+# umount
+# df
+# fdisk
+# parted
+# pvcreate
+# vgcreate
+# lvcreate
+# lvextend
+# vgexted
+
+사용자
+-------------
+디렉토리-마운트 
+-------------
+파일시스템
+---------- 
+파티션
+----------
+H/W
+
+모든게 수동
+사람의 손길을 타게끔 만들어져 있다.
+
+# lsblk
+
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+vda    252:0    0   10G  0 disk 
+├─vda1 252:1    0    1M  0 part 
+├─vda2 252:2    0  200M  0 part /boot/efi
+├─vda3 252:3    0  500M  0 part /boot
+└─vda4 252:4    0  9.3G  0 part /
+vdb    252:16   0    5G  0 disk 
+vdc    252:32   0    5G  0 disk 
+vdd    252:48   0    5G  0 disk 
+
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+vdb       252:16      0      5G    0     disk 
+
+
+hda  IDE 
+sda  s-ata scsi  sas  usb
+vda virtio 
+xvda HVM [EC-2] xen 
+nvmen0 nvme 
+# lsblk 블록디스크를 확인
+lsblk --fs 파일시스템의 UUID까지 확인
+
+parted : 199 level  명령어를 실행하는 순간 바로 작성 완료
+
+fdisk : gpt 지원X  메모리상에서 작업이 이루어지며 쓰기 명령전에는 초기화가 가능
+
+초기화 할때 
+# dd if=/dev/zero of=/dev/vdd 
+빠르게 초기화
+# dd if=/dev/zero of=/dev/vdd  bs=1M count=100
+lsblk --fs
 
 
 
-
-
-
-
-
-
+	
 
 
