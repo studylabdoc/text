@@ -522,16 +522,128 @@ wx
 151페이지 연습문제
 156페이지 Lab
 
-12:10분
+SELINUX -> 방화벽 + selinux 
+
+튜닝 프로파일 
+
+sysctl 
+
+tuend :
+파라미터를 그룹지어 상황에 맞추어 편하게 사용할 수 있도록 하는 서비스 
+
+데스크탑 
+서버
+워크스테이션
+
+CPU
+MEM
+NIC
+DISK
+특정 워크로드 요구 사항을 반영하는 튜닝 프로파일을 사용하여 정적 및 동적으로 튜닝 조정을 적용
+
+정적
+기본 리스트 파일 여기서 선택
+필요한 경우에는 파일을 새로 생성하여 사용하는 것도 가능.
 
 
+동적
+: 기본은 비 활성화 -> 설정파일을 통해 활성화
 
-
-
-
+ /etc/tuned/tuned-main.conf
+dynamic_tuning = 1 -> 동적 튜닝 활성화 
+update_interval = 10  -> 동적 튜닝 사용시 시스템 체크 간격 [초]
  
+ auto_profile
+ Enable automatic profile selection mode, switch to the recommended profile.
 
+tuned-adm auto_profile
 
+# dnf -y install tuned
+# systemctl enable --now tuned -> tuned 서비스를 부팅시에도 활성화 + 현재 런타임에도 시작. systemctl start tuned ; systemctl enable tuned
 
+tuned-adm
+
+list  :  전체 목록
+active  : 현재 활성화 정보
+off : tuned 프로파일 비활성화
+recommend : 현재 시스템에 맞춰 추천
+profile : 특정한 프로파일을 선택하여 적용
+스케쥴러
+
+cron 
+ systemd timer 
+
+cron
+
+# crontab 
+-u 유저를 선택하여 어떤 작업을 실시
+-l 작업 리스트 확인
+-e 크론탭 파일을 수정
+-r 크론탭 파일을 삭제
+
+저장 하는 순간부터 발동
+/etc/crontab 파일을 참조 하면 된다.
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name  command to be executed
+
+1* 분 0 - 59
+2* 시 0 - 23
+3*  일 1 - 31
+4* 월 1- 12
+5* 주 123456 월화수목금토 0,7 같은 의미 = 일 
+
+[작동되는시간] [실행할 유저] [실행할 명령이나, 쉘 스크립트]
  
+* * * * * : 최소 시간마다 동작. 1분 
+*/2 * * * * : 2분마다 동작하는 프로그램 기준 -> crontab이 실행된 시간 기준
+2 4 6 8 10 > 3 5 7 9 
+6 * * * *  매시간 6분 마다..
+6-13 * * * * 매시간 6 7 8 9 10 11 12 13 에 동작. 
+6-13,17 * * * * 매시간 6 7 8 9 10 11 12 13 17 분에 동작. 
+6 14 * * *  오후 2시 6분 마다..
+6 * * * * /test/run.sh : 매시간 6분마다 /test/run.sh이 실행
+/test/run.sh은 실행권한을 가지고 있어야 한다.
+
+root 계정에 crontab 파일에 동일하게 추가를 한번 해서 실제 동작 하는지 봐주시기 바랍니다.
+
+DNF
+소프트웨어
+
+리눅스 소프트웨어 설치의 발전
+소스 설치 config > make > install : 사실 실패가 더 많은 방식
+장점 : 여러 커스텀 가능. 테스트를 먼저 진행.
+
+rpm : 기존에 소스 설치하던 것에 비해 시작이 단축
+명령어 하나에 설치가 완료
+의존성 문제 있으며 / 삭제시 원하지 않는 파일까지 같이 삭제되는 경우도 존재.
+
+yum / dnf 
+의존성 문제를 해결 , 자동 업데이트
+일단 최신버전만 제공-> 모듈화 특정 프로그램의 경우에는 버전별로 존재 
+rpm 파일도 설치 가능 
+리포지토리가 사라지게 되면 [지원 종료] 더이상 설치할 길이 막막해짐 DVD
+리포지토리가 필요 : 저장소 
+
+프로그램 설치
+프로그램 제거
+검색
+의존성 파일 확인..
++ 리포지토리 등록 *  <<< 
+
+
+
+
+
+
+
+
+
+
+
 
