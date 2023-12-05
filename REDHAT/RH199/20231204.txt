@@ -6,7 +6,7 @@ RH199
 nsr230@studylab.xyz
 
 구글미트:
-https://meet.google.com/nme-jznb-wia
+https://meet.google.com/mje-bmqo-gme
 
 깃허브 파일 주소:
 https://github.com/studylabdoc/text/blob/main/REDHAT/RH199/20231204.txt
