@@ -49,7 +49,10 @@ DNF 소프트웨어 리포지토리 활성화 : 275
 명령줄에서 네트워킹 구성 : 449 nmcli / nmtui 
 네트워크 연결 스토리지 자동 마운트: 490
 SELINUX 포트 레이블 지정 제어: 520
-컨테이너 실행: 537
+컨테이너 실행: 537  * 
+
+grep
+find 
 
 ---------------------------------------------
 10:00 - 18:00  
@@ -1091,7 +1094,7 @@ root 패스워드 재설정
 # mount -o rw,remount /sysroot
 	# mount | grep sysroot    rw 
 # chroot /sysroot 
-# passwd , # echo 'redhat' | passwd --stdin root
+# echo '비밀번호' | passwd --stdin root
 # touch /.autorelabel 
 # exit
 # exit
