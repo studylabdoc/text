@@ -1035,6 +1035,9 @@ ext : 장치 이름
  /lvm     795M 
  /lvm1   736M 
 
+lvextend -l +1 /dev/mapper/vg0-lv0 ; xfs_growfs /lvm ; df -h /lvm  xfs
+lvextend -l +1 /dev/mapper/vg0-lv0 ; resize2fs /lvm ; df -h /lvm    ext4
+
 LV를 완전히 새로 생성하게 되면 생기는 문제
 UUID 
 ttV22e-OxDw-hze8-6ed4-NHth-FVEE-oyCnVJ
@@ -1068,6 +1071,32 @@ MB -> MiB  : 신경 안쓰셔도 됩니다.
 4:30 
 
 boot중에 생기는 문제.
+
+mount -a
+완전하게 된다 > reboot 
+
+3시간 문제 풀이
+2번만 새로한다:
+25-30
+
+root 패스워드 재설정
+쉘이 살아 있는 상태가 아니라 그 무엇도 접속이 불가능한 상태일 때
+부팅중이 변경 
+
+강제 재부팅
+커널 목록에서 레스큐 커널로 선택 -> e   :  기본 커널에서는 진입을 위해 root 패스워드를 입력받는데 지금 상황을 비밀번호를 모른다. 그렇기 때문에 레스큐커널로 진입
+커널 명령줄인 linux로 시작되는 라인을 찾고 해당라인의 마지막으로 이동 end -> rd.break  -> ctrl + x : 변경된 사항을 적용하여 부팅.
+비밀번호 없이 엔터키로 접근
+
+# mount -o rw,remount /sysroot
+	# mount | grep sysroot    rw 
+# chroot /sysroot 
+# passwd , # echo 'redhat' | passwd --stdin root
+# touch /.autorelabel 
+# exit
+# exit
+SELINUX 컨텍스트 파일을 재구성 한 뒤 부팅을 완료
+
 
 
 
