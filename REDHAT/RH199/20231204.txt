@@ -893,13 +893,66 @@ DEVICE mountpoint fstype op [fsdump] [fsck]
 파티션, 파일 시스템, 영구 마운트 추가 321
 
 mount / fstab 등록 / fs , fdisk. set 
-12:3 분
-
 
 LVM에서 이어지는 작업
 
+SWAP
+스왑은 안쓰는게 제일 좋다.
+MEM-------[DISK]
+하지만 프로그램에 따라서 swap이 무조건 사용되는 경우도 있기는 하다.
+표준 파티션으로 생성 : 영구적으로 스왑을 활성화 시켜두는 경우
+파일로 생성 : 임시적으로 이용해야 하는 경우
+기존에 사용하는 시스템 디스크보다는 따로 장착된 디스크를 사용하는것을 추천
+
+# fdisk /dev/vdb
+파티션 작업을 진행 후  part type을 swap(82)으로 변경 
+스왑 공간에 대한 구조 생성
+# mkswap /dev/vdb3
+
+스왑 활성화
+# swapon  /dev/vdb3
+스왑 확인
+# free
+# top
+# swapon -s
+스왑 비활성화
+# swapoff/dev/vdb3
+영구적인 스왑으로 변경
+/etc/fstab 파일에 등록
+
+UUID=472c520e-12c6-4cdf-ab63-d5013b7f2912 swap  swap    defaults        0 0
+fstab에 등록된 스왑 활성화
+# swapon -a
+
+fstab에 등록된 스왑 비활성화
+# swapoff -a
+
+파일로 생성하여 스왑 사용하기
+dd
+dd if=/dev/zero of=swapfile bs=1M count=1024
+mkswap swapfile
+chmod 0600 swapfile
+swapon /stage1/swapfile
+파일로 구성시 등록되는 swapfile 
+/stage1/swapfile swap  swap    defaults        0 0
+
+스왑 사용시의 우선 순위
+-p, --priority priority
+            -1 and 32767.
+정수로 작성할때 값이 높은것을 먼저 사용하게 된다.
+1  100
+2  345
+값을 지정하지 않고 사용한다면 -1 -2 -3 
+ fstab 등록시에는pri=value
+UUID=472c520e-12c6-4cdf-ab63-d5013b7f2912 swap  swap    defaults,pri=20        0 0
+/stage1/swapfile swap  swap    pri=10        0 0
+
+lsblk --fs
+free
 
 
+고정 문제 swap disk lvm ..  
+랜덤 문제
 
 
 
