@@ -1031,5 +1031,47 @@ ext : 장치 이름
 # resize2fs /dev/mapper/vg0-lv1
 # df -h 
 
+확장 ->   930M 
+ /lvm     795M 
+ /lvm1   736M 
+
+LV를 완전히 새로 생성하게 되면 생기는 문제
+UUID 
+ttV22e-OxDw-hze8-6ed4-NHth-FVEE-oyCnVJ
+
+새로생성
+Tfoc0S-LCXb-R4gG-5WEV-bUfQ-8jLl-Y6ntLE
+
+4M 
+
+생성 *
+
+PE size 지정
+
+vgcreate vg0 -s [8M 16M] 
+생성의 예시
+
+용량이 800M인 디렉토리 : df에서 800짜리로 만들어지면 된다.
+LE의 개수가 124개인 LV를 생성하시오. : LE개수만 정확히 지정 
+
+확장 : 
+기존 용량 -> 업데이트된 용량 : 용량을 보는 기준 = df -h 기준
+
+MB -> MiB  : 신경 안쓰셔도 됩니다.
+
+307p 스왑 연습문제
+336p  LVM
+342p  LVM 
+
+/etc/fstab 등록
+재부팅까지 완벽하게 되는지 확인
+4:30 
+
+boot중에 생기는 문제.
+
+
+
+
+
 
 
