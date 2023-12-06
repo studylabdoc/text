@@ -954,16 +954,82 @@ free
 고정 문제 swap disk lvm ..  
 랜덤 문제
 
+LVM - 두개 
 
+표준 파티션
+사용자
+-------------
+디렉토리-마운트 
+-------------
+파일시스템
+-----LVM----- 
+파티션
+----------
+H/W
 
+표준 파티션 단점:
+일단 만들어지면 변경 X
 
+RAID - LVM
 
+LVM 
 
+PV : LVM에서 인식하는 디스크 체계
+VG : 디스크들의 그룹
+LV : VG에서 할당되는 가상 디스크 
+PE=LE
 
+LVM에서 이용하는 블록 사이즈
+VG - PE
+LV - LE
 
+블록 디바이스 - 4K
+4M - 256M
 
+명령어
+# pv[tab][tab]
+pvcreate pvremove pvs vgdisplay
+# vg[tab][tab]
+vgcreate vgremove vgs vgdisplay vgextend   vgreduce
+# lv[tab][tab] 
+lvcreate lvremove lvs lvdisplay lvextend lvreduce 
 
+PV>VG>LV
 
-	
+디스크부터 작업
+파티션 용량을 1G x2
+type LVM으로 변경
+
+# pvcreate /dev/[device name]
+# vgcrete [vgname] /dev/[device name]
+-s : 기본 PE는 4M지만 변경해야 하는 경우에 사용
+
+# lvcreate -n [lvname] {-l -L} [lv size] [vgname]
+lvcreate 옵션중 용량 설정
+-n lv의 이름
+-l,-L : 용량 지정
+-l : PE 개수
+-L :  실제 용량으로 지정
+EX: 400M
+# lvcreate -n lv0 -l 100
+# lvcreate -n lv0 -L 400M 
+
+vg0-lv0
+
+/dev/vg0/lv0
+/dev/mapper/vg0-lv0
+
+생성과 달리 확장:
+명령어도 extend..
+# vgextend [vgname] [device] : vg에 새로운 장치를 추가 할당
+# lvextend -l +[PE개수] [LVM device ex: /dev/vg0/lv0]
+# lvextend -L +[SIZE M G T] [LVM device]
+실 적용
+xfs : 마운트 포인트 대상
+ext : 장치 이름
+# xfs_growfs /lvm 
+# resize2fs /dev/mapper/vg0-lv1
+# df -h 
+
 
 
