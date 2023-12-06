@@ -823,6 +823,81 @@ o : mbr 테이블로 변경
 
 1G 파티션을 생성하여 마운트 하고 fstab 등록 하는 것까지
 
+msdos
+Command (m for help): n
+Partition type
+   p   primary (0 primary, 0 extended, 4 free) 주파티션
+   e   extended (container for logical partitions) 확장 파티션
+
+주 파티션 : 파티션으로 바로 이용가능 4개 
+확장 파티션 : 주파티션의 카운트 공유 , 공간을 생성(논리 파티션이 들어갈 공간)
+                         전체 주 파티션 개수-1
+
+sfdisk -d /dev/vdb
+sfdisk -d /dev/vdb | sfdisk /dev/vdc
+디스크 구조를 동일하게 만드는 경우 사용.
+
+파티션 생성
+mbr 
+주 파티션
+확장 파티션 - 논리 파티션
+
+gpt 
+1-128 
+
+2048s -> size
+
++100M +1G 
+
+파티션을 생성한 뒤에 장치명+숫자로 이루어진다.
+/dev/vdb   -> /dev/vdb1
+
+파일시스템
+
+파티션 < 디스크에 생성하는 논리 구조
+파일시스템 < 자료구조
+ext / xfs 
+
+mkfs -t ext4
+mkfs -t xfs
+mkfs.ext4 / mkfs.xfs 
+
+파일시스템을 생성 >
+
+마운트 : 파일시스템을 사용자가 이용할 수 있게 디렉토리와 연결
+1. 연결될 디렉토리 [빈 디렉토리]
+기존에 있는 디렉토리 데이터 : 오버마운트
+2. 마운트 시도
+마운트 방법:
+# mount [장치명] [디렉토리명]
+# mount /dev/vdb1 /stage1
+3. 마운트 확인
+# lsblk --fs
+# df
+
+임시적인 연결
+마운트 명령 통해서 연결된 정보는 재부팅시 사라진다.
+부팅시에 연결되는 디바이스는 /etc/fstab 파일에 정의 되어 있음.
+
+영구적으로 연결하기
+/etc/fstab 파일에 등록
+/stage1 ext4    defaults        0 0
+DEVICE mountpoint fstype op [fsdump] [fsck]
+
+# systemctl daemon-reload -> systemd에 정보 업데이트 
+# mount -a : /etc/fstab 정보를 기반으로 하여 마운트가 가능한 모든 자원을 마운트
+
+자원을 사용 할 수 있는 상태.
+
+파일 시스템 마운트 및 마운트 해제 309
+파티션, 파일 시스템, 영구 마운트 추가 321
+
+mount / fstab 등록 / fs , fdisk. set 
+12:3 분
+
+
+LVM에서 이어지는 작업
+
 
 
 
