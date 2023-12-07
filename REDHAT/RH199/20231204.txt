@@ -1196,7 +1196,53 @@ fgrep  특수문자를 해석하지 않고 문자 그대로 패턴으로 입력
 cat file10 | fgrep linux$
  cat file10 | grep -F ^linux
 
-find 
+locate
+alias locate='updatedb ; locate $*'find 
+updatedb ; locate file10
+
+find inode정보를 기반으로 검색
+사용방법
+# find [검색시작위치] [옵션1] [옵션2] 
+이 옵션들은 기본 적으로 and연산 : or 연산으로 변경해야 하는 경우에는 -o 옵션으로 변경
+
+-name :  파일명을 기반으로 사용 와일드카드 이용
+ find /etc -name "blue*"
+-iname : 대소문자 구별없이 파일명
+-type 파일의 종류를 기반으로 검색
+f 파일
+d 디렉토리 
+l 링크
+-size 용량
+300byte
++300  이상
+300c 정확한 용량으로 찾아야 하는 경우
+-300 이하
+
+-links 링크개수를 기준으로 검색
+-user 사용자명 UID
+-group 그룹명 GID
+-nouser , -nogroup  UID/GID는 있지만 매핑된 사용자명이 없는 파일을 검색할때 
+-atime 접근 시간을 기준
+-mtime 수정 시간을 기준
+-newer 특정 파일을 대상으로 해당 파일이후에 생성된 다른 파일들을 검색
+-inum  inode 번호로 검색
+-print 표준출력으로 검색된 파일 출력 GNU는 기본값 UNIX 필수 입력
+-exec find에서 검색된 파일에 대하여 명령어로 동작시킨다.
+-ok -exec와 동일하지만 응답형으로 동작
+
+-exec chown -v student {} \;
+find ....   -exec  명령어 [옵션] {} 
+{}의 위치는 명령어마다 다르다.  {} = find에서 검색된 내용에 대한 버퍼 
+\;
+쉘에서 ; 의 의미는 명령어의 격리
+\는 바로 뒤에오는 하나의 문자에 대하여 쉘에서 해석하지 않음.
+
+
+cp file1 file2
+rm file1
+
+
+
 
 tar
 
