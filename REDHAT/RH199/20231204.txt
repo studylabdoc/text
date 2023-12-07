@@ -1241,10 +1241,88 @@ find ....   -exec  명령어 [옵션] {}
 cp file1 file2
 rm file1
 
+grep  : 특정 파일에 패턴을 검색 표준출력으로 저장
+# grep root /etc/passwd > /root/grep 
 
-
+find : 특정 조건을 패턴으로 검색 검색된 파일을 특정 디렉토리에 저장
+디렉토리 생성
+# mkdir /root/find
+# find /var -size +5M -type f -exec cp -v {}  /root/find \;
 
 tar
+아카이빙 명령어
+LTO 장치에서 사용하던 명령
+
+c 압축 파일을 생성할 때
+t 압축된 파일을 확인 할 때
+x 압축된 파일을 해제할 때
+v 압축 해제시 파일을 자세하게 확인
+f  압축파일의 타겟을 장치가 아닌 디스크의 파일로 재지정
+아카이빙 -> 파일을 한곳으로 모으는 역할 
+
+gzip
+bzip2
+
+시험문제: 아카이빙 파일을 생성 하면서 압축까지 진행 : 결과로는 압축 파일 생성
+
+사용방법
+# tar [옵션] 파일명..
+
+생성
+# tar cfv dir1.tar dir1
+확인
+# tar tfv dir1.tar
+해제
+# tar xvf dir1.tar
+
+압축과 같이 생성
+gzip
+#tar cfv[z] dir1.tar.gz dir1
+bzip2
+#tar cfv[j] dir1.tar.bz2 dir1
+xz
+#tar cfv[J] dir1.tar.xz dir1
+
+압축 형식은 gzip으로 하여 파일명은 dir.tar.xz 해라
+# tar cvzf dir.tar.xz /usr
+
+grep find tar 
+
+12:30 - 14:10
+
+TCP/IP | OSI7 
+
+OSI7 : 성공적인 네트워크(상호작용)를 위한 7가지 단계
+
+ACL -> 
+n
+L5-7 http https dns ... protocol 
+L4 식별자 TCP/UDP -> port / 서비스 
+L3 식별자: IP -> 호스트 
+L2 식별자: MAC -> NIC
+
+/etc/hosts : 호스트 명과 IP 주소에 대한 매핑 파일 [신뢰할 수 있는 호스트의 정보를 담은 파일] 지금은 이 파일을 DNS 서비스가 대신 하고 있다.
+172.25.250.250 servra.lab.example.com servera
+/etc/hostname 현재 호스트네임을 저장하고 있는 파일 hostname, hostnamectl 
+/etc/sysconfig/network : 구버전에서 사용하던 호스트네임을 담고 있던 파일
+/etc/resolv.conf : DNS 정보를 담고 있음
+DNS 서버 라인은 3개까지 추가 가능
+1dns 2dns 3dns 
+/etc/sysconfig/network-scripts/ : 이전 방식의 네트워크 관리 디렉토리 , 하나는 장치 설정 정보 , 스크립트
+/etc/NetworkManager/system-connections/ 현재 장치 파일의 정보가 담기는 디렉토리 
+
+nmcli dev status
+nmcli con show
+nmcli con show --active
+nmcli con add con-name eno2 type ethernet ifname eno2
+nmcli con add con-name eno3 type ethernet ifname eno3 ipv4.method manual ipv4.addresses 192.168.0.5/24 ipv4.gateway 192.168.0.254
+nmcli con up static-ens3
+nmcli dev disconnect ens3
+
+nmcli con show static-ens3
+
+nmcli con mod static-ens3 +ipv4.dns 2.2.2.2
+nmcli con reload
 
 
 
