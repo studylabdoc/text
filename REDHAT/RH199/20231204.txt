@@ -1391,6 +1391,139 @@ nmtui 설정 set-hostname
 
 시험 칠때만큼은 nmtui로 작업을 권장.
 
+456p 
+네트워크 설정
+4 5 6 
+
+네트워크 구성 + 활성화 + 부팅시 활성화 
+
+nfs  sun 
+네트워크 파일 시스템
+LOCAL - DAS
+Netowrk - NAS
+4 TCP
+
+showmount : 원격지 서버의 자원을 확인
+
+nfs-utils
+/etc/exports
+/etc/exports.d
+내보낼 자원을 정의 하는 파일
+
+[root@servera ~]# showmount -e 172.25.250.11
+clnt_create: RPC: Unable to receive
+이전에는 위와 같이 상대 서버의 NFS 내보내기 정보를 받을 수 있었음. 하지만 4버전부터는 아래와 같이 사용.
+
+방법:
+상대방 서버의 최상위 디렉토리를 마운트 
+mount -t nfs 172.25.250.11:/ /mnt
+tree /mnt
+/mnt
+└── shares
+    └── public
+        ├── Delivered.txt
+        ├── NOTES.txt
+        ├── README.txt
+        └── Trackings.txt
+
+autofs
+
+serverb.lab.example.com:/shares/public /serverb_nfs/
+
+실제 등록 테스트
+# mount -t nfs serverb.lab.example.com:/shares/public /serverb_nfs
+# df /serverb_nfs
+
+_netdev : 네트워크 연결 이후에 마운트 
+
+/etc/fstab 등록
+[nfs호스트+디렉토리] [마운트디렉토리] nfs defaults[,_netdev] 0 0
+
+nfs 장점
+호스트에 장착가능한 숫자 이상의 스토리지를 사용 가능
+단점 : /etc/fstab 파일의 내용이 길어진다.
+사용자의 홈 디렉토리를 nfs로 구성
+4
+일반 디렉토리 4
+autofs
+원할때만  mount를 작업 할 수 있도록 변경
+사용자도 이용 문제가 없음 [mount라는 명령은 root만 가능] : 유일하게 사용자가 마운트 할 수 있는것 ; GUI 환경 usb 
+
+# dnf -y install autofs
+# systemctl enable --now autofs
+/etc/auto.master  : 설정 파일
+/etc/auto.master.d  : 정의 파일
+이 디렉토리에서 사용되는 파일이름의 끝은 .autofs로 사용해야 한다. * 
+/etc/autofs.conf   : 설정 파일
+
+autofs 사용법
+파일이 두가지 필요함.
+/etc/auto.master.d > 맵 파일 구성
+맵에서 정의 된 파일 > 실제 마운트 할 정보 
+
+
+맵 파일 구성 정보에서의 분류
+
+다이렉트 파일 [직접 맵 파일]
+/- /etc/direct
+
+/etc/direct 작성
+/serverb_direct -rw,sync serverb.lab.example.com:/shares/direct/external
+[디렉토리명]  옵션 NFS디렉토리 위치
+[디렉토리명]  : 실제 만들어진 디렉토리 일 필요는 없다. 
+인다이렉트 파일 [간접 맵 파일]
+/DIRNAME+PATH
+
+# systemctl reload autofs
+# cd /serverb_direct 
+진입 완료
+# df .
+serverb.lab.example.com:/shares/direct/external
+일정 시간동안 사용이 없으면 자동으로 마운트 해제.
+
+사용되는 것만 마운트 되고 
+일정 시간이 지나도 사용되지 않는 자원에 대해서는 마운트 해제가 된다.
+
+
+간접맵 :
+/- 사용하지 않습니다.
+마운트할 디렉토리를 직접 주시면 됩니다.
+/etc/auto.master.d/indirect.autofs
+/serverb_indirect /etc/indirect
+
+/etc/indirect
+central -rw,sync serverb.lab.example.com:/shares/indirect/central
+
+indirect을 사용하는 진정한 이유:
+nfs 서버에 존재하는 수 많은 디렉토리에 대한 매핑
+생성되는 디렉토리 , 삭제되는 디렉토리를 파일에서 계속 지속적으로 관리 해줘야 하는 문제점 해결
+indirect
+마운트되는 디렉토리와 nfs서버에 있는 디렉토리명을 동일하게 가져가서 매핑
+* -rw,sync serverb.lab.example.com:/shares/indirect/&
+
+*에서 입력된 텍스트를 &와 동일하게 치환
+cd /serverb_indirect/dir1
+dir1 -rw,sync serverb.lab.example.com:/shares/indirect/dir1
+mount serverb.lab.example.com:/shares/indirect/dir1 /serverb_indeirect/dir1
+
+시험 : autofs 
+사용자는 미리 만들어져 있다.
+사용자에 대한 nfs 홈 디렉토리를 마운트 시키는것
+
+직접 맵 파일로 구성
+/- FILE
+FILE
+/users/remoteuser -rw,sync SERVERNAME:/users/remoteuser
+
+494 페이지 연습문제 풀이 
+SELINUX
+CON
+시험 문제 체크
+
+
+
+
+
 
 
 
