@@ -36,7 +36,6 @@ RH200 : RH199+ EX200
 RH199 기준에서 시험 범위 페이지.
 [기본 명령어는 알고 있다. ]
 
-
 로컬 사용자 및 그룹 관리 : 73 
 파일에 대한 액세스 제어 : 119
 튜닝 프로파일 조정:202
@@ -53,6 +52,11 @@ SELINUX 포트 레이블 지정 제어: 520
 
 grep
 find 
+tar 압축 << 
++ 신규 문제 최근
+umask
+shell 
+alias
 
 ---------------------------------------------
 10:00 - 18:00  
@@ -1099,6 +1103,73 @@ root 패스워드 재설정
 # exit
 # exit
 SELINUX 컨텍스트 파일을 재구성 한 뒤 부팅을 완료
+
+NTP
+
+rdate -: 이전에 사용하던 시간을 맞추기 위한 서비스
+현재 8버전 이후부터는 ntp만 지원
+
+수강신청 NTP 
+ntpd  -> chonyd
+
+rdate 
+ntp 
+같은점 : 시간을 설정한다는 면에서는 동일하다.
+차이점: rdate의 경우에는 ntp와 다르게 네트워크에 보낸 시간을 측정하지 않는다.
+ntp의 경우에는 네트워크에서 보낸 시간까지 계산되기에 
+바로 정밀하게 시간이 맞지는 않는다. 하지만 일정시간이 지난 이후에는 시간서버와 클라이언트간의 시간차가 없다.
+
+# timedatectl
+ntp 동기화 유무
+ntp 서비스 유무 
+
+서버는 구성 : classroom 서버에 구축이 완료
+
+NTP 
+원자시계---서버---- 서버------서버
+       0               1            2                 3 
+
+ 서버이면서 클라이언트 : 두개를 동시에 수행하는 서비스.
+chrony : 현재 RHEL에서 NTP 서비스를 위해 사용
+
+/etc/chrony.conf   : 메인 설정 파일
+클라이언트 설정 부분
+server [hostname|IP] iburst
+server /pool  ntp를 이용하는 방법이 크게 두가지 
+server  pool 지정
+iburst : 정확한 초기 시간 동기화를 위해 서비스에서 짧은 기간 동안 네 번 측정 + 초기 요청시에 패킷 전송수 16개 
+
+서버 설정 부분 : 시험에는 X 
+
+server classroom.example.com iburst
+
+# systemctl enable --now chronyd 
+# timedatectl 
+
+System clock synchronized: yes   NO 
+              NTP service: active    <    
+# chronyc sources -v
+
+  .-- Source mode  '^' = server, '=' = peer, '#' = local clock.
+ / .- Source state '*' = current best, '+' = combined, '-' = not combined,
+| /             'x' = may be in error, '~' = too variable, '?' = unusable.
+||                                                 .- xxxx [ yyyy ] +/- zzzz
+||      Reachability register (octal) -.           |  xxxx = adjusted offset,
+||      Log2(Polling interval) --.      |          |  yyyy = measured offset,
+||                                \     |          |  zzzz = estimated error.
+||                                 |    |           \
+MS Name/IP address         Stratum Poll Reach LastRx Last sample               
+===============================================================================
+^* 172.25.254.254                2   6    37    37  -3071ns[ +167us] +/- 2994us
+chronyc sources -v : 현재 동기화 상태를 알수있음.
+# chronyc -a makestep : NTP 서버와 시간을 최대한 근접하게 수정 , 동기화하는 시간을 줄일수 있다.
+200 OK
+
+428p  NTP 설정 : 문제 출제
+NTP 서버
+chrony * <<< 
+
+
 
 
 
