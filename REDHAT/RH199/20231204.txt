@@ -14,6 +14,10 @@ https://github.com/studylabdoc/text/blob/main/REDHAT/RH199/20231204.txt
 studylabdoc/text
 /REDHAT/RH199/20231204.txt
 
+nmtui
+https://drive.google.com/file/d/1Irn4MF0UtnZ66sRHC3yPOu1EGmgbvprz/view?usp=drive_link
+
+
 mail -
 20231204
 
@@ -1311,9 +1315,57 @@ DNS 서버 라인은 3개까지 추가 가능
 /etc/sysconfig/network-scripts/ : 이전 방식의 네트워크 관리 디렉토리 , 하나는 장치 설정 정보 , 스크립트
 /etc/NetworkManager/system-connections/ 현재 장치 파일의 정보가 담기는 디렉토리 
 
-nmcli dev status
-nmcli con show
-nmcli con show --active
+네트워크 설정을 위해 사용해야 하는 명령어
+nmcli / nmtui[시험용]
+
+이전 명령어 체계
+ls 확인
+ch 수정
+rm 삭제
+mk 생성
+최근에는 명령어 set로 구성을 많이 한다.
+CMD
+      ㄴ set1 (
+                 ㄴ 생성
+                 ㄴ 수정
+                 ㄴ 삭제
+
+      ㄴ set2 (
+      ㄴ set3 (
+      ㄴ set4 (
+
+LVM
+      ㄴ pv
+             ㄴ create
+             ㄴ list
+             ㄴ list all
+             ㄴ remove
+      ㄴ vg
+      ㄴ lv
+자동완성 *
+bash_completion
+
+연결정보[프로파일]을 생성하여 하드웨어상태도 연결되어야 실제 네트워크가 가능.
+
+nmcli dev status : 하드웨어 NIC 의 연결 상태 및 전체 정보를 확인
+nmcli con show 연결 정보에 대한 확인
+nmcli con show --active 활성화된 연결 정보만 확인
+
+새로운 연결 생성
+nmcli con add 
+con-name static-addr  : 연결이름 [프로파일명]
+ifname eth0  : 장치이름
+type ethernet : 생성되는 프로파일의 종류 
+ipv4.method manual : 생성되는 프로파일의 자동/수동 유무
+ipv4.dns 172.25.250.220 
+ipv4.addresses 172.25.250.10/24 
+ipv4.gateway 172.25.250.254
+
+nmcli con add con-name static-addr ifname eth0 type ethernet ipv4.method manual  ipv4.dns 172.25.250.220 ipv4.addresses 172.25.250.10/24  ipv4.gateway 172.25.250.254 autoconnect yes
+
+연결 정보의 경우에는 down 하더라도 다른 연결 정보가 있다면 재 연결 시도
+해당 장치에서 완전히 사용을 하지 않을거라면 con X  dev > disconnect 로 작업
+
 nmcli con add con-name eno2 type ethernet ifname eno2
 nmcli con add con-name eno3 type ethernet ifname eno3 ipv4.method manual ipv4.addresses 192.168.0.5/24 ipv4.gateway 192.168.0.254
 nmcli con up static-ens3
@@ -1324,10 +1376,19 @@ nmcli con show static-ens3
 nmcli con mod static-ens3 +ipv4.dns 2.2.2.2
 nmcli con reload
 
+servera.lab.example.com
 
+nmcli con add con-name static-addr \
+ifname eth0 type ethernet ipv4.method manual ipv4.dns 172.25.250.220 \
+ipv4.addresses 172.25.250.10/24 ipv4.gateway 172.25.250.254
 
+시험에서는 nmtui로 작업하시기 바랍니다.
+네트워크 설정 + 호스트네임 변경까지 하나의 툴에서 완료하고 나갈수 있다.
 
+호스트네임 변경
+hostnamectl set-hostname [호스트네임]
+nmtui 설정 set-hostname
 
-
+시험 칠때만큼은 nmtui로 작업을 권장.
 
 
