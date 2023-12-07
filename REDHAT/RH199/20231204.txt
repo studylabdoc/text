@@ -1169,7 +1169,36 @@ chronyc sources -v : 현재 동기화 상태를 알수있음.
 NTP 서버
 chrony * <<< 
 
+검색관련
+grep : 파일 내 컨텐츠 기준으로 검색 
+locate : 파일명으로만 검색
+find : 파일의 inode 정보를 기반으로 검색 
 
+grep
+기본적인 사용법
+# grep 검색어 파일명
+# CMD | grep 검색어
+-i 검색 패턴에서 대소문자를 구별하지 않음.
+-v 검색 패턴을 출력에서 제외하는 경우
+-l  검색에 사용된 패턴이 있는 파일을 출력
+-r -l옵션을 이용할 때 파일이 아닌 디렉토리를 대상으로 하는 경우에는 r옵션을 추가 한다.
+-w 워드단위로 정확한 단어만 검색
+^word  : 시작하는 문자가 word인것
+word$ : 끝나는 문자가 word인것
+
+grep의 한계 : 패턴은 하나만 검색 가능.
+cat /etc/passwd | grep -E '(apache|u1)'
+cat /etc/passwd | egrep '(apache|u1)'
+cat /etc/passwd | egrep 'apache|u1'
+
+특수문자 검색이 힘들다.
+fgrep  특수문자를 해석하지 않고 문자 그대로 패턴으로 입력
+cat file10 | fgrep linux$
+ cat file10 | grep -F ^linux
+
+find 
+
+tar
 
 
 
