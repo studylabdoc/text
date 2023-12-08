@@ -17,7 +17,11 @@ studylabdoc/text
 nmtui
 https://drive.google.com/file/d/1Irn4MF0UtnZ66sRHC3yPOu1EGmgbvprz/view?usp=drive_link
 
+가상머신 링크
+https://drive.google.com/drive/folders/13ZYgqP17mjk0oqmP7_NnjUVbScv9gTqJ?usp=sharing
 
+vmware nat network 192.168.10.0/24
+vmware g/w 192.168.10.2   
 mail -
 20231204
 
@@ -1515,10 +1519,92 @@ mount serverb.lab.example.com:/shares/indirect/dir1 /serverb_indeirect/dir1
 FILE
 /users/remoteuser -rw,sync SERVERNAME:/users/remoteuser
 
-494 페이지 연습문제 풀이 
 SELINUX
-CON
-시험 문제 체크
+
+SELINUX 
+/etc/selinux/config -> 비활성화
+
+9버전부터는 비활성화가 불가능
+
+grubby --update-kernel ALL --args selinux=0   : selinux 비활성화
+grubby --update-kernel ALL --remove-args selinux : selinux 활성화
+getenforce : 런타임 상태에서의 SELINUX 상태 확인
+
+enforcing  : 강제 모드 정책에 맞지않는 모든것을 차단
+permissive : 허용[디버깅] 모드 . 정책에 맞지 않으면 로깅을 하지만 구동은 가능
+setenforce : 런 타임 상태에서 selinux 모드를 변경
+# setenfoce 1 [Enforcing]
+# setenfoce 0 [Permissive]
+
+서비스 
+ 계정 
+
+chcon : 임시적으로 컨텍스트를 변경할 때 [거의사용되지 않음.]
+restorecon : 기존의 컨텍스트로 다시 되돌리는 경우
+semanage [디렉토리나 파일의 컨텍스트 속성을 완전히 변경]
+semanage > restorecon 
+
+컨텍스트 변경하기
+semanage fcontext -a -t httpd_sys_content_t '/custom(/.*)?'
+semanage fcontext  -l
+'/custom(/.*)?'
+
+/custom/.
+디렉토리 파일에서 모든파일을 대상
+restorecon -Rv /custom
+
+vsftp
+
+nfs
+nfs user home
+
+SELINUX FILE X
+
+port
+
+1 ssh로 접근하여 서비스가 기동되는지 확인?
+2 외부에서 확인?
+
+firewall-cmd --permanent --add-port=82/tcp
+firewall-cmd --list-all --zone=public
+firewall-cmd --reload
+
+523 + workstation
+$ curl http://servera:82 
+Hello
+
+11:20분
+컨테이너 
+
+555p
+시험
+이미지를 빌드 / 빌드된 이미지를 컨테이너로 생성, 옵션...
+서비스 파일 생성 -> systemd 등록
+ 
+
+docker > podman 
+ce / ee
+
+95% 이상 명령어는 호환
+
+컨테이너 라이프 사이클
+
+https://velog.io/@ghdud0503/Docker-%EA%B8%B0%EC%B4%88-3-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EB%9D%BC%EC%9D%B4%ED%94%84%EC%82%AC%EC%9D%B4%ED%81%B4
+
+podman run 컨테이너를 구동
+-d 백그라운드에서 실행
+--name webapp  컨테이너 이름
+-p 8080:8080  포트 [호스트]:[컨테이너]
+-v ~/webcontent:/var/www:Z  외부 볼륨을 이용하여 데이터를 저장.  SELINUX 까지 자동 전환
+registry.lab.example.com/rhel8/httpd-24:1-163
+
+컨테이너  책에 있는거 기준 한번 생성
+
+
+
+
+
+
 
 
 
