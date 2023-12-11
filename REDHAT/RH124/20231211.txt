@@ -232,10 +232,40 @@ man 페이지 내에서 페이지 제어
     어를 찾는다 
 : 자주 사용되는 기능
 /OPTIONS 
-/EXAMPLES 
-/Examplesls
+/EXAMPLES  지금은 대소문자 구별없이 검색이 가능.
 q 
 h
+# man man
+섹션번호 
+매뉴얼 페이지 각 섹션별 정보
+  1     누구나 실행할 수 있는 사용자 명령 (User Commands)
+  2     시스템 호출 (System Calls), 즉 커널에서 제공하는 함수
+  3     C 라이브러리 함수 (C Library functions)
+  4     디바이스와 네트워크 인터페이스 (Devices and Network Interfaces), 즉 /dev 디렉토리에 있는 특별한 파일들
+  5     파일 포맷 (File Formats), 예를 들어 /etc/passwd
+  6     게임과 데모 (Games and Demos)
+  7     환경, 테이블, 매크로 (Environments, Tables, and Macros) 등의 잡다한 여러 가지들
+  8     시스템 관리자만 실행할 수 있는 시스템 관리용 명령들 (Maintenance Commands)
+  9     커널 루틴에 관련된 문서들의 리눅스만의 독자적인 저장소
+  n     새로운 문서들의 저장소. 보다 적당한 장소로 이동된다.
+  o     오래된 문서들의 저장소. 유예 기간으로 보관되고 있는 것들이다.
+  l     특정 시스템에 대한 로컬 문서들
+# man passwd 실행 파일에 관련하여
+# man -s 5 passwd 파일의 포맷에 관련하여 
+
+# man -k password
+password: nothing appropriate.
+키워드 검색이 정상적으로 되지 않는다. : 인덱스 파일이 아직 만들어 지지 않았다.
+# mandb    : 6버전미만에서는  makewhatis 
+# man -k password
+...
+
+지금은 이용하지 않음.
+# info # pinfo   
+
+# whatis ls -> 섹션번호 확인, NAME 섹션의 짧은 설명 
+# whereis ls -> 도움말 파일 위치 확인
+# which  ls -> 명령어의 절대 경로 (실제 파일의 위치)
 
 # ls
 # cd
