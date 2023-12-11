@@ -4,12 +4,14 @@ RH124
 010197902430
 nsr230@studylab.xyz
 
-https://github.com/studylabdoc/text/blob/main/REDHAT/RH124/20231211.txt
+수업 및 참고자료들은 다음 링크를 통하여 제공 https://github.com/studylabdoc/text/blob/main/REDHAT/RH124/20231211.txt
+
+리눅스 커맨드 pdf
+https://drive.google.com/file/d/1X-g1pHmON007-HY2BpT55B-EwOHO1DNA/view?usp=drive_link
+
 
 github.com -> studylabdoc/text
 REDHAT -> RH124 
-
-스토어에서 푸드콘 
 
 REDHAT mail : search -> 20231211 
 Red Hat virtual classroom training class: 20231211-NA-RH124 (46489450
@@ -21,4 +23,132 @@ RH124 - Red Hat System Administration I -> JOIN
 1. 리소스 -> E-book 
 ko , en 
 2. 랩 -> 
+workstation -> 콘솔열기
+강의 webapp [주피터 랩] -> 오픈 workstation으로 student 계정으로 접근 되어 있는지 확인
+
+월 - 금
+10:00 - 18:00 진행
+점심시간 한시간 , 한시간30분
+
+RH124 기본 명령어 들로 구성
+기본 명령어 set + shell 
+RH134 로컬 스토리지 / 네트워크 
+RH199  124 + 134 -> 압축 -> RHCSA 자격증 대비과정 
+
+계정 정보
+root / redhat
+student / student
+
+화장실 -> 엘리베이터 왼쪽
+흡연 -> 1층  오른쪽 -> 문 : 주차장
+경사진 길 -> 우측 컴포즈 커피 
+
+11:10분 
+
+구글 크롬이 느릴때 -> 파이어폭스 
+
+리눅스란 무엇인가?
+
+작은 범위 : 커널 *   linux = kernel 
+큰 범위 : 배포판 kernel + 응용프로그램
+
+iptime -> linux kernel 
+vmware ESXI  -> linux
+
+RHEL -> fedora, centos | rocky
+fedora -> RHEL -> centos
+테스트      공식배포   -> 클론  2021.12.31
+fedora -> centos stream-> RHEL
+테스트       테스트                 공식배포
+fedora -> centos stream-> RHEL -> Rocky
+Debian - ubuntu
+Suse - suse, opensuse 
+한컴리눅스 : 국내에서 만든 배포판
+linux
+lindow : linux + window 합성어
+
+어느순간부터 IT를 한다?
+교양과목 : 
+1. 리눅스: 정부에서 사용하는 모든 컴퓨터를 linux로 교체하겠다. windows 7 > win 10
+2. 파이썬: 학교 : 초등학생들 학교에서 기본 코딩 스크래치 블록 코딩 
+
+절대 이 두가지는 교양이 아닙니다. 생존 기술
+
+1991. 리누스 토발즈 - 커널을 공개
+
+리눅스 - 공짜 
+
+무료 소프트웨어 != 리눅스
+리눅스 -> 오픈소스 
+
+GNU gnu not unix  재단
+
+UNIX : 리눅스 이전에 사용하던 서버
+IBM HP SUN[ORACLE]
+하드웨어 + 소프트웨어 -> 고가
+
+락인효과로 다른 브랜드 구매가 꺼려지는 상황
+
+배포판 -> 
+GNU만의 배포판을 만들어서 UNIX 타도를 외치겠다.
+
+응용프로그램의 작성은 순조로웠다.
+커널 -> Hurd : 메모리 누수
+1991 리누스 토발즈 -> 커널 배포
+GNU - 리누스 토발즈 -> linux kernel GNU 
+
+공식적으로 배포판이 출시
+
+고소장의 축제
+
+Minix -> LINUX 
+LINUX - Hurd +  LINUX  + Minix -[UNIX]
+-> LINUX 2.0 
+
+REDHAT  무료소프트웨어 인식이 강한 사이에서 어떻게 살아남았나?
+
+redhat 처음 회사를 창립 
+서브스크립션 -> 유료 판매 
+
+사람 반발: 리누스 토발즈 : 돈을 받고 파는것도 자유다.
+redhat : 우리 제품을 사용한다면 [서브스크립션을 구매한다면?] 고소에 대한 리스트는 본인들이 다 책임지겠다.
+
+cisco : IBM 납품 워런티 : 2년 라이프타임으로 해주겠다.
+
+redhat -> redhat linux  > RHEL  2010년도 쯔음...
+
+IBM
+redhat 
+
+인터페이스
+GUI 그래픽 모드
+CLI  텍스트 모드 
+
+최근의 인프라에서 두가지
+1. 자동화 : 어떠한 작업에 대하여 사람이  직접 건드리지 않고도 수행이 가능한 상태
+2. 코드화  : 특정한 언어를 대상으로하여 자동화를 위한 모드를 작성 yaml* , toml * , python *, perl
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
