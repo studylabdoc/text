@@ -1,1 +1,24 @@
 RH124
+
+김기연
+010197902430
+nsr230@studylab.xyz
+
+https://github.com/studylabdoc/text/blob/main/REDHAT/RH124/20231211.txt
+
+github.com -> studylabdoc/text
+REDHAT -> RH124 
+
+스토어에서 푸드콘 
+
+REDHAT mail : search -> 20231211 
+Red Hat virtual classroom training class: 20231211-NA-RH124 (46489450
+
+rol.redhat.com -> VT 사이트 RHLS 
+
+MY VIRTUAL TRAINING CLASSES ->
+RH124 - Red Hat System Administration I -> JOIN
+1. 리소스 -> E-book 
+ko , en 
+2. 랩 -> 
+
