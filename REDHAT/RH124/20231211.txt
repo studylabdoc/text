@@ -281,6 +281,7 @@ password: nothing appropriate.
 기준점: / 출발점이 항상 동일하다. 그래서 틀릴 일이 없다. 
 이동하는 방법
 # cd /test/one/two
+: 디렉토리 위치가 파일의 위치가 가까운경우 
  
 2. 상대 경로
 기준점: 현재 디렉토리 # pwd
@@ -298,6 +299,10 @@ password: nothing appropriate.
 .    : 현재 디렉토리
 ..   : 현재 디렉토리의 부모디렉토리 
 
+디렉토리의 위치가 13단계 
+작업하려는 위치 -> 12단 11단계
+
+# cd -   :  바로 직전에 이동한 디렉토리로 변경
 
 
 # ls *
@@ -310,7 +315,8 @@ password: nothing appropriate.
 -i : 해당 파일의 inode 번호를 표시한다.
 -n : 파일의 소유자와 그룹을 숫자로( UID : GID )표시한다.
 -d : 찾고자 하는 디렉토리에 관한 정보만을 표시한다.
-
+-h : 사람이 보기 좋은 형태로 용량을 변경
+-v : 숫자에 대한 정렬을 실시.
 
 # ls -l
 total 0
@@ -342,64 +348,146 @@ file1 : 파일명
 # passwd
 # useradd
 # rm
+삭제
+주의사항: CLI에서 하는 모든 작업은 되돌릴수 없다.
+GUI의 터미널 ,  원격 ssh , 콘솔 모든걸 모함
+삭제를 하는 순간 되돌릴수 없다.
+rm의 경우에는 다음과 같은 옵션을 가지고 있다.
+rm -i : alias 에 기본 등록되어 있음. 응답형으로 동작.
+rm -r 디렉토리 삭제
+rm -v 삭제되는 파일을 출력
+rm -f  삭제시 묻지 않음.
+디렉토리 삭제 -> rm -rf 
+
 # cp
+복사 
+# cp 원본 타겟
+# cp file1 file2
+-p 속성을 복사. 권한 소유자 시간 
+-r 디렉토리 내의 파일을 같이 복사하는 경우
+-i alias 에 기본 등록되어 있음. 응답형으로 동작.
+-v 복사되는 파일을 출력: 자세히 보기
+# cp file1 file2 file3 file4 file dir1
+
 # mv
+이름 바꾸기 , 파일 이동
+# mv file1 file10
+# mv file1 /dir1
+# mv file1 file2 file3 file4 file5 /dir1
+# mv dir dir2
+# mv dir1 dir2 -t dir3 
+# mv dir dir1 : dir1이 존재하는 경우에는 dir이 dir1으로 종속 
+
 # date
+시간을 확인
+date 명령은 시간 포맷을 변경하는것이 중요.
+# date +%m%d_%H%M
+# date +%option 
+시간 포맷을 변경하는 것 자체 포인트
+
 # touch
+1. 빈파일 만들기
+2. 파일의 시간 변경하기
+# touch -t 08111300 file10 ; ls -l file10
+# stat file10
+Access , Modify의 나노초가 00000000으로 구성되어 있으면 시간이 조작된 파일이다.
+
 # mkdir
+디렉토리 생성
+-p 부모디렉토리가 없는 경우에 같이 생성
+
 # rmdir
+빈 디렉토리를 삭제하도록 설계 
+.와 ..을 제외한 그 어떤 파일도 존재하면 안된다.
+디렉토리 삭제
+-p 부모 디렉토리를 같이 삭해야해야 하는 경우에 삭제
+내부에 파일이 있는 경우에는  rm -rf 를 사용
+
 # id
+계정 정보를 확인
+
 # cat
+텍스트 파일을 읽고
+파일을 병합하고
+파일을 표준출력으로 확인
+
 # ps
+프로세스를 확인하는 명령
+
 # bash
+쉘
+
 # su -
+사용자 전환
+
 # echo
 # more
+긴 파일을 페이지 단위로 보여줌.
+사용법은 man과 동일
+ 
 # man
+매뉴얼
 # clear
+화면을 깨끗하게 청소
+
 # ln
+링크 
+하드링크/ 소프트링크
+
 # tree
-# dnf
-# chmod
-# chown
-# umask
-# which
-# where is
+디렉토리의 전체 트리상태 
+
+# dnf  소프트웨어 설치 tool 
+# chmod 권한 변경
+# chown 소유자 변 경
+# umask 기본 권한 변경
+# which 
 # whereis
-# alias
-# histroy
-# stat
-# file
-# cat file1 file2 > file3
-# find . -name core 2> /dev/null
-# cat < file1
-# ssh
-# scp
-# sftp
-# script
-# tree
-# vi
-# uname
-# systemctl
-# exit
-# export
-# ^c
-# ^d
-# export
-# poweroff
-# init 
+# alias 명령어를 짧게 약어 형태로 사용
+# histroy 사용된 명령어를 확인
+# stat 시간정보에 대하여 자세하게 확인
+# file 파일의 형식
+# cat file1 file2 > file3  표준 입출력 
+# find . -name core 2> /dev/null 표준 입출력 
+# cat < file1 표준 입출력 
+# ssh 원격 명령어 세트 
+# scp 원격 명령어 세트 
+# sftp 원격 명령어 세트 
+# script 화면에 대한 로깅 정보
+# vi 텍스트 에디터
+# systemctl systemd 제어 명령어
+# exit 쉘을 빠져나가거나, exit code를 작성할때 사용
+# export 환경 변수 적용
+# ^c : 기존 작업을 강제 종료 
+# ^d : EOF , exit 기능
+# poweroff 
 # reboot
 # shutdown
+
 # ping
 # telnet
 # ifconfig
+
 # head
+텍스트 파일의 첫 부분을 확인
+기본값 10줄
+# head -1 file
+# cat file | head -1
+
 # tail
+텍스트 파일의 끝 부분을 확인
+기본값 10줄
+# tail -1 file
+# cat file | tail -1
+-f 로깅 파일의 추가되는 데이터를 확인하는 용도로 사용
+-F 5M이상의 파일 지속적인 모니터링에 이용 
+
 # who
 # last
-# lastb
+# lastb : 로그인 실패 계정에 대한 로깅
 # w
 # while true do ; action ; done
+
 # df
 # du
 # sort
