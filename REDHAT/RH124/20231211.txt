@@ -499,8 +499,16 @@ Access , Modify의 나노초가 00000000으로 구성되어 있으면 시간이 
 # find
 
 
+mk : 생성
+rm : 삭제 
+ch : 변경 
+ls : 확인
 
-
+CMDset
+	ㄴ 1set
+		ㄴ 명령어..
+	ㄴ 2set
+		ㄴ 명령어..
 
 
 
