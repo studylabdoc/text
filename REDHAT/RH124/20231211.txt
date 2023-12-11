@@ -219,6 +219,23 @@ remoteuser@remotehost's password: password
 2. 명령어를 실행시 입력을 대기하고 입력된 내용을 기반으로 실행되는 명령어.
 3. 명령어 실행시 명령어 내부로 진입 작업이 끝나고  종료 명령을 내렸을때 쉘로 복귀.
 
+# man 
+매뉴얼
+리눅스에도 모든 프로그램에 매뉴얼 
+# CMD --help
+# man CMD
+man 페이지 내에서 페이지 제어
+<Enter> 하나의 라인씩 밀리면서 출력한다.
+<Space> <--> <CTRL + B> 한 페이지씩 밀리면서 출력한다.
+      CTRL + B로 이전 페이지로 돌아간다.
+/-a     <--> n, N    (n: next) 특정 단어를 검색하여 찾는다. 두 개 이상 존재할경우는 n으로 다음 단
+    어를 찾는다 
+: 자주 사용되는 기능
+/OPTIONS 
+/EXAMPLES 
+/Examplesls
+q 
+h
 
 # ls
 # cd
