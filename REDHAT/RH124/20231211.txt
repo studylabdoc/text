@@ -167,16 +167,57 @@ UID =0 = root
 명령어로의 구분? 빈칸[white space] -> 단위 토큰
 존재하는 명령어가 실행대상이 된다.
 
-14:00 
-
-[2] 옵션 : 명령들의 집합 : 조정
+[2] 옵션 : 명령의 기능 집합 : 조정
+하나의 명령어 안에는 보통 수가지의 옵션이 존재.
+이를 확인하기 위해서는 매뉴얼을 확인
+man ls , ls --help 
+두가지 형태의 옵션
+# CMD o
+# CMD -o
+# CMD --option
+-형태와 --형태를 둘다 제공하는 옵션도 존재하지만 
+--만 존재하는 형태도 존재.  -만 있는 것도 가끔 있음.
 
 [3] 인자 : 파일, 디렉토리로 지정 : 타겟 
-
+현재 디렉토리가 아닌 특정한 디렉토리나 파일을 대상으로 명령어를 실행하는 경우에 사용 
 
 EX: ls -l /var
 $ ssh root@servera
 
+옵션과 인자.
+# CMD -a
+# CMD --all
+# CMD -ai
+# CMD -a -i
+# CMD --all -i
+
+만약에 옵션에 인자가 포함되어 있는 명령어라면 :
+옵션과 인자를 연속하여 사용해야 한다.
+# find / -arg A -arg2 B -arg3 C : 성공
+# find / -arg A -arg2 C -arg3 B : 명령어 실패 
+
+로그인 환경:
+CLI : 텍스트 환경 -> 문자로만 이루어져 있다.
+GUI : 그래픽 환경 -> 이용하기 편한 형태, mem를 많이 사용.
+Connection to servera closed by remote host.
+
+원격 로그인 환경
+[user@host ~]$ ssh remoteuser@remotehost
+ssh          remoteuser@ remotehost
+명령어     계정      구분자  호스트네임 
+만약에 계정을 입력하지 않고 접근하면 현재 호스트의 계정이 기본값으로 사용
+remoteuser@remotehost's password: password
+[remoteuser@remotehost ~]$
+#
+
+컴퓨터의 3대 동작
+입력-연산-출력
+
+
+명령어의 형식
+1. 명령어 자체로 실행되고 결과를 알려줌.
+2. 명령어를 실행시 입력을 대기하고 입력된 내용을 기반으로 실행되는 명령어.
+3. 명령어 실행시 명령어 내부로 진입 작업이 끝나고  종료 명령을 내렸을때 쉘로 복귀.
 
 
 # ls
