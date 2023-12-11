@@ -128,7 +128,130 @@ CLI  텍스트 모드
 1. 자동화 : 어떠한 작업에 대하여 사람이  직접 건드리지 않고도 수행이 가능한 상태
 2. 코드화  : 특정한 언어를 대상으로하여 자동화를 위한 모드를 작성 yaml* , toml * , python *, perl
 
+기본 명령어
+------------>
+리눅스 기본 명령어.
+70개
+PDF 파일의 경우에는 옵션이 빈약.
+옵션들은 제가 따로 추가를 해 드릴예정
+시간이 부족한 관계로 필수만 진행.
+나머지는 글자만 붙여넣고 필요한 경우에 진행.
+https://en.wikipedia.org/wiki/Protection_ring
 
+
+shell
+sh - ksh - [bash] - zsh 
+        csh - tcsh 
+쉘? 
+
+$ :  관리자 계정을 제외한 나머지 계정
+UID가 0이 아닌 경우
+UID != 0 = non root 
+
+# : 관리자 계정 root
+UID가 0 인경우
+
+UID =0 = root 
+
+계정 생성
+계정 생성
+비밀번호 구성
+첫 로그인시 비밀번호 변경
+생성된 계정으로 메일을 전송
+
+쉘을 구성하는 3요소
+# [1] [2] [3]
+
+[1] 명령어 : 리눅스의 명령 : 실행
+쉘에서 처음 오는것은 무조건 명령어
+명령어로의 구분? 빈칸[white space] -> 단위 토큰
+존재하는 명령어가 실행대상이 된다.
+
+14:00 
+
+[2] 옵션 : 명령들의 집합 : 조정
+
+[3] 인자 : 파일, 디렉토리로 지정 : 타겟 
+
+
+EX: ls -l /var
+$ ssh root@servera
+
+
+
+# ls
+# cd
+# pwd
+# passwd
+# useradd
+# rm
+# cp
+# mv
+# date
+# touch
+# mkdir
+# rmdir
+# id
+# cat
+# ps
+# bash
+# su -
+# echo
+# more
+# man
+# clear
+# ln
+# tree
+# dnf
+# chmod
+# chown
+# umask
+# which
+# where is
+# whereis
+# alias
+# histroy
+# stat
+# file
+# cat file1 file2 > file3
+# find . -name core 2> /dev/null
+# cat < file1
+# ssh
+# scp
+# sftp
+# script
+# tree
+# vi
+# uname
+# systemctl
+# exit
+# export
+# ^c
+# ^d
+# export
+# poweroff
+# init 
+# reboot
+# shutdown
+# ping
+# telnet
+# ifconfig
+# head
+# tail
+# who
+# last
+# lastb
+# w
+# while true do ; action ; done
+# df
+# du
+# sort
+# tee
+# screen
+# mail
+# wall 
+# grep
+# find
 
 
 
