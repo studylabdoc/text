@@ -1229,9 +1229,173 @@ chown / chmod / umask는 세트
 				 표준에러(2, stderr)
 				    (EX: Screen)
 
-쉘에서는 명령어 입력을 특별한 지정이 없는 한 키보드(Keyboad)에서 받는다. 그리고 명령어의 출력 결과를 모니터에 출력해준다. 이러한 명령어의 출력 결과나 입/출력을 리다이렉션 심볼(Redirection Symbol)을 사용하여 방향을 재지정 할 수 있다. 
-방향을 재 지정함으로 인해 기본 출력 방향이 모니터인 것을 file로 변경이 가능하다.
+쉘에서는 명령어 입력을 특별한 지정이 없는 한 키보드(Keyboad)에서 받는다. 그리고 명령어의 출력 결과를 모니터에 출력해준다. 이러한 명령어의 출력 결과나 입/출력을 리다이렉션 심볼(Redirection Symbol)[<,>,2>]을 사용하여 방향을 재지정 할 수 있다. 
+방향을 재 지정함으로 인해 기본 출력 방향이 모니터인 것을 file로 변경이 가능하다. [리눅스는 모든것을 파일로 다룬다.]
+EX: cat file1 > file1
+        cat file1 > /dev/null 
+
+입력 재지정(입력 리다이렉션, Redirection stdin)
+입력 재지정은 표준입력(Stdin)에서 입력을 받지 않고, 다른쪽에서 입력을 받는 것을 입력 재지정 (Redirection stdin)이라고 한다. 원래 특별한 지정이 없다면, 키보드에서 입력을 받지만 다른쪽 방향에서 입력을 받는 것을 말한다. 파일 기술자 0번은 생략 가능하다.
+
+CMD   <  filename (표준입력)
+CMD  0<  filename(표준입력 - 파일 기술자 0번)
+
+mail -s "linuxXXX : OK" admin@paran.com < report.txt 
+wall <  /etc/hosts
+
+출력 재지정(출력 리다이렉션, Redirection stdout)
+
+출력 재지정은 정상정인 출력 결과를 표준출력(모니터)으로 출력을 하지 않고, 다른 쪽으로 출력하는 것을 출력 재지정(Redirection stdout)이라고 한다. 원래 특별한 지정이 없다면, 모니터로 출력되지만 다른 쪽 방향으로 출력하는 것을 말한다. 파일 기술자 1번은 생략 가능하다.
+
+CMD   >  filename /* 표준출력, 덮어쓰기 기능 */
+CMD  1>  filename /* 표준출력, 덮어쓰기 기능 */
+CMD   >> filename/* 표준출력, 이어쓰기 기능 */
+CMD  1>> filename/* 표준출력, 이어쓰기 기능 */
 
 
+에러 재지정(에러 리다이렉션, Redirection stderr)
+
+에러 재지정은 표준 에러로 출력하지 않고, 다른 쪽으로 출력하는 것을 에러 재지정(Redirection stderr)이라고 한다. 원래 특별한 지정이 없다면, 모니터로 출력을 하지만 다른 쪽으로 출력하는 것을 말한다. 파일 기술자 2번은 생략 불가능하다. 방향 재지정자를 1번과 동일하게 사용하여 1번 파일 기술자와 구별하기 위해 생략 불가능하다.
+
+CMD  2>  filename/* 표준에러출력 */
+CMD  2>> filename /* 표준에러출력 */
+
+# ./script.sh > file.log 2>&1
+# ./configure --perfix=/usr/local/apache2 > file.log 2>&1
+
+$ find / -name core –type f 
+$ find / -name core –type f 2> /dev/null
+
+# 파이프(PIPE)
+- CMD | CMD
+파이프(Pipe)란? 앞에 실행한 명령어의 표준출력 결과를 뒤에 실행하는 명령어의 표준입력 값으로 넣어 준다. 앞의 출력 결과를 뒤에 실행하는 명령어의 입력 결과로 보내줌으로 인해 파이프(|)를 사용하면 여러 명령을 동시에 연결하여 사용 할 수가 있다.
+
+ls -al 명령을 사용하게 되면 모든 파일을 보여주므로 한 화면을 넘는 많은 파일을 보여 주게 될 때 "ls -al | more" 를 쓰게 되면 ls 명령에 대한 결과를 more 명령을 통해 확인해 볼 수 있다.
+
+첫 번째 CMD로 출력된 내용을 화면에 그대로 출력하지 않고 파이프 버퍼에 data를 저장 해 두었다가 버퍼에 저장된 결과 값을 가지고 뒤에 있는 CMD의 입력 값으로 넘겨 뒤에 있는 명령어가 실행한 결과를 출력해 주게 된다.
+# ps -ef | grep sshd  
+
+배쉬쉘 기능(Bash Shell Funtion)
+- bash shell function
+
+# set –o
+# set –o vi : 활성화
+# set +o vi : 비활성화
+# set –o ignoreeof
+# set –o noclobber
+bash 쉘의 기능
+allexport            off
+braceexpand          on
+emacs                on/* 기본적인 편집기 선언 */
+errexit              off
+errtrace             off
+functrace            off
+hashall              on
+histexpand           on
+history              on
+ignoreeof            off/* 로그아웃 방지 기능 선언 */ ^d
+interactive-comments on
+keyword              off
+monitor              on
+noclobber            off/* 덮어쓰기 방지 기능 선언 */
+# echo 3333 >| test1 : 기능 무시하고 덮어쓰기.
+noexec               off
+noglob               off
+nolog                off
+notify               off
+nounset              off
+onecmd               off
+physical             off
+pipefail             off
+posix                off
+privileged           off
+verbose              off
+vi                   off/* 기본적인 편집기 선언 */
+xtrace               off
+
+<Tab> 파일이름 자동 완성 기능
+
+디렉토리에 있는 파일이나 디렉토리의 첫 번째 문자만 입력 후 Tab키를 누르면 첫 글자로 시작하는 파일이나 디렉토리의 나머지 글자가 자동으로 완성된다. 단, 첫 문자가 같은 디렉토리나 파일이 있는 경우 Tab키 한번만 누르면 아무 변화도 없지만 Tab키 두 번 연속으로 누르면 동일하게 시작하는 모든 디렉토리나 파일을 출력해 준다.
+
+[명령어 형식]
+# ls t[TAB]
+
+자동완성을 사용하게 되면 실수가 적어진다.
+디렉토리 이동, 파일 실행에 있어 좀 더 빠른 작업이 가능.
+
+변수의 종류
+지역 변수(Local Variable)
+환경 변수(Environment Variable)
+특수 변수(Special Variable)
+
+변수 선언 방법
+    
+# VAR=5 ; export VAR
+# echo $VAR
+# unset VAR
+# export -n VAR
+
+지역변수 선언
+변수 선언 방법(EX: bash)
+	# VAR=5        (# export VAR=5)
+	# export VAR 
+	# echo $VAR    (# print $VAR)
+	# unset VAR
+
+지역 변수는 현재 사용하고 있는 쉘에만 적용되는 변수 값으로 선언 하는 것이다. 서브 쉘에서 지역 변수 값을 확인하려고 할 경우 값이 나타나지 않는다.
+var=5                      echo $var (0)
+----------+               +----------
+          |               |
+          | echo $var (X) |
+          +---------------+
+
+환경변수 선언
+
+환경변수는 현재 쉘과 서브쉘에 변수를 모두 적용되는 변수 값으로 선언해 주는 것이다. 환경변수를 사용하는 이유는 이전쉘에서 선언한 변수 값을 서브쉘에서도 동일하게 적용하기 위한 것이다.
+export var=hello    echo $var (0)
+----------+               +----------
+          |               |
+          | echo $var (0) |
+          +---------------+
+
+set : 모든 변수에 대해 출력 (지역변수 + 환경변수)
+env : 환경변수만 출력 
+
+시스템 지역변수
+ PS1 명령어 프롬프트에 나타내는 시스템 환경 변수
+[root@servera test]#
+# echo $PS1
+[\u@\h \W]\$
+
+변경된 내용을 영구적인 설정으로 변경하는 방법.
+
+# vi ~/.bashrc 
+-------------------------------
+.....
+#
+# Variable Definition
+#
+export PS1='[\u@\h \w]\$ '
+-------------------------------
+PS1 시스템 환경 변수 설정하는 방법
+
+쉘프롬프트에 보여지는 항목을 설정하는 것으로 아래와 같은 것들을 사용할 수 있다.
+ex) [로그인한 계정@호스트네임 현재경로] #         /* 현재 상태 $ : 프롬프트($, root일 경우 #) */
+---------------------------------------
+\t     현재 시간을 HH:MM:SS 형식으로 표시
+\d     날자를 "요일 월 일" 형식으로 표시 (예, "Tue May 26")
+\n     개행문자
+\s     쉘의 이름, $0 의 베이스 이름 (마지막 슬래쉬 뒷 부분)
+\w     현재 작업 디렉토리
+\W     현재 작업 디렉토리의 베이스 이름
+\u     현재 사용자의 사용자명
+\h     호스트 이름
+\#     이 명령의 명령 번호
+\!     이 명령의 히스토리 번호
+\$     유효 UID가 0 이면 if the effective UID is 0, a #, 그렇지 않으면 $
+\nnn   팔진수 nnn에 해당하는 문자
+\\     백슬래쉬
+\[     비출력 문자의 시퀀스를 시작한다. 프롬프트에 터미널 제어시퀀스를 넣을때 사용한다.
+\]     비출력 문자의 시퀀스를 마친다.
 
 
