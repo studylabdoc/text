@@ -521,6 +521,69 @@ VI
 # cat file1 file2 > file3  표준 입출력 
 # find . -name core 2> /dev/null 표준 입출력 
 # cat < file1 표준 입출력 
+/proc/PID/fd
+0
+1
+2
+
+fd에서 이미 예약되어진 번호 3가지가 있으며 0, 1 ,2 번이다. 그리고 이는 다음과 같이 부른다.
+
+stdin 표준 입력
+
+stdout 표준 출력
+
+stderr 표준 에러
+
+표준 입출력에 대한 방향 전환
+
+입력
+<
+# CMD 0< file
+# CMD < file  * 
+ 
+출력
+>     덮어쓰기
+>>   이어쓰기
+1 2 
+표준 출력
+# CMD 1> file
+# CMD 1>> file
+
+# CMD > file
+# CMD >> file
+
+표준 에러
+출력과 에러의 차이
+$?  < 실행한 명령어의 성공 값
+0/ 1-255
+
+# CMD 2> file
+# CMD 2>> file
+표준 출력은 기본값으로 1을 사용하고 생략이 가능하지만 표준 에러는 생략이 불가능.
+
+하나의 파일에 표준 출력 / 에러를 동시에 담기
+# CMD > file1 2>&1
+표준 에러를 표준 출력의 스트림으로 변경
+
+161p 랩 25 
+40분
+표준 입력 /  표준 출력
+
+표준 에러 > 원본으로 넘기는것 * 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # ssh 원격 명령어 세트 
 # scp 원격 명령어 세트 
 # sftp 원격 명령어 세트 
@@ -693,19 +756,317 @@ CMDset
 		ㄴ 명령어..
 
 
+사용자 / 그룹 사용자
+
+계정생성 -> 삭제
+
+그룹 생성 -> 삭제
+
+비밀번호 관리 /비밀번호의 생애주기
+비밀번호를 관리자 변경 -> 일반 사용자에게 넘겨주는 태스크
+
+# id
+uid=0(root) gid=0(root) groups=0(root) 
+uid -> 현재 계정의 UID 숫자된 ID : 컴퓨터가 인지하는 계정에 대한 코드 
+gid -> 현재 계정의 GID 숫자된 ID : 컴퓨터가 인지하는 그룹계정에 대한 코드 
+groups -> 현재 계정이 포함된 여러 그룹의 집합.
+
+id -> password 일종의 인증 체계를 거쳐야 로그인이 완료 된다.
+
+관련된 파일
+/etc/passwd
+/etc/group
+/etc/shadow
+/etc/gshadow
++
+/etc/passwd-
+/etc/group-
+/etc/shadow-
+/etc/gshadow-
+뒤에 -가 있는 파일들은 기존 파일이 업데이트가 되면 원본 파일을 백업파일로 이동시킨후 업데이트 
+
+useradd 계정을 생성 
+ cat /etc/default/useradd
+# useradd -D
+GROUP=100
+HOME=/home
+INACTIVE=-1
+EXPIRE=
+SHELL=/bin/bash
+SKEL=/etc/skel
+CREATE_MAIL_SPOOL=yes
+
+usermod
+# usermod -aG g1 team01
+그룹을 추가하는 경우에는 -aG 로 기존 그룹을 보존한 상태로 그룹을 추가해야한다.
+
+userdel
+# userdel -r user
+계정을 삭제할 때 -r 옵션을 주지 않는다면 파일이 남기 때문에 조심해야 한다.
+
+passwd
+#
+# passwd
+# echo text | passwd --stdin account
+# echo 계정:비밀번호 | chpasswd
 
 
+https://systemd.io/UIDS-GIDS/
 
 
+그룹 관리
+
+사용자 1..10000
+
+하나의 그룹으로 관리하기 위한 목적의 그룹
+> 권한 
+
+그룹에다가 권한을 준다.
+사용자 1-10000까지 권한을 부여한다.
+
+인적 오류가 확률이 적어진다.
+
+# groupadd group1   < gid를 따로 지정하지 않았기 때문에 마지막 사용된 GID +1이 사용된다.
+
+1000 1000
+            1001
+1001  1002 
+1005 
+1. # groupadd -g GID g1
+2. /etc/login.defs
+
+UID_MIN  GID_MIN   을 사용하지 않은 번호로 재설정
 
 
+init
+0  파워오프
+1 싱글
+2 멀티 nfsX
+3 멀티
+4 사용하지 않음.
+5 멀티 + 그래픽
+6 재부팅
+SAH-512 + password + salt
+1
+
+SAH-512 'redhat' + bj23jht4 = 45Jc6H30E
+2
+SAH-512 redhat + shtfsdf= hUfzfHpc9X
 
 
+# chage -d 0 계정
+원래 -d 옵션의 목적은 비밀번호를 업데이트한 날짜를 변경하기 위함이지만 -d 옵션에 인자로 0를 사용하게 되면 강제로 다음 로그인시 비밀번호를 변경하게 끔 설정
+
+사용자가 접근을 했다 : 비밀번호는 사용자만 알고 있다. 관리자이지만 계정이 해킹을 당해도 책임에서 회피가능
+
+처음 계정을 생성시 해야하는 리스트
+
+1. 계정 생성
+# useradd team01
+2. 비밀번호 구성
+# passwd team01
+
+echo로 비밀번호를 변경하는 경우. or 이런 작업을 하면서 남기기 싫은 경우
+# bash
+# history -c
+# exit
 
 
+3. 필요한 나머지 구성
+# usermod -aG group team01
+# ....
+4. 사용자가 처음 접속시 비밀번호를 변경하게끔 설정
+# chage -d 0 team01
+
+파일에 대한 액세스 제어
+chmod chown : 
+bash shell 
+find / grep 
+
+ 파일의 속성 정보 확인
+ 파일의 속성 정보 변경
+ 파일의 소유권한 / 그룹권한 변경
+ 파일의 퍼미션 변경
+ 파일의 특수퍼미션 변경
+
+파일의 속성 정보 변경 명령어에는 chown, chgrp, chmod, umask와 같은 명령어 등이 있다.
+
+# ls -l file1
+-rw-r--r-- 1 root root 1945  6월 11 14:13 file1
+
+File Type: X
+Permission Mode: chmod
+Link Count: ln 
+Owner: chown
+Group: chgrp , chown
+File Size: 
+Mtime: touch -t
+File Name: mv
+
+파일의 소유권한 / 그룹권한 변경
+
+chown 명령어
+
+chown 명령어는 Unix 계통 시스템에서 파일의 소유권을 바꾸기 위해서(change the owner of a file)사용된다. 대부분의 경우, 이것은 오직 슈퍼 사용자에 의해서만 실행될 수 있다. 그들이 소유하고 있는 파일의 그룹을 바꾸고 싶어하는 비특권화된 (일반적인) 사용자들은 chgrp을 사용해야 한다.
+
+[명령어 형식]
+# chown user01 file1
+# chown user01.other file1  (# chown user01:other file1)
+# chown user01:other file1 
+그룹의 경우에 .이나 :을 앞에 찍어 그룹임을 명시.
+권장사항은 :으로 사용하는 것.
+# chown .other file1
+# chown :other file1
+# chown -R user01 dir1
+# chown -R user01:other dir1
+
+-c : 바뀌어지는 파일들에 대해서만 자세하게 보여준다.
+-f : 바뀌어 지지 않는 파일들에 대해서 오류 메시지를 보여주지 않는다.
+-v : 작업 상태를 자세히 보여준다.
+-R : 경로와 그 하위 파일들 모두를 바꾼다.
+
+chgrp는 일반 사용자가 이용하는 그룹을 변경하는 명령
+조건 2
+1 해당 파일의 소유자 일것
+2 변경하려는 그룹에 현재 계정이 가입 되어 있을 것
+두 가지 조건을 모두 만족해야 일반 사용자가 파일을 변경 할 수 있다.
 
 
+chmod
+권한에 대한 변경
+  rwxrwxrwx * 
+ chmod 명령어
 
+파일이나 디렉토리를 새로운 권한으로 변경하는 명령이다. 파일의 소유자나 관리자만이 chmod를 사용할 수 있으며 파일의 소유자, 파일의 그룹, 다른 사용자로 나누어 각각의 권한을 설정 할 수 있다.
+# ls -l file1 
+-rw-r--r-- 1 root root 0 Jan 10 12:43 file1
+
+[명령어 형식]
+# chmod u+x file1  심볼릭
+# chmod 755 file1  옥탈
+
+[1] 심볼모드(symbolic mode)를 이용한 권한 변경
+RWX RWX RWX
+----- ------ -----
+  U         G        O
+
+[사용자 기호]
+기호                       설명
+u      user           파일/디렉토리의 소유자
+g      group          파일/디렉토리의 그룹
+o      other          다른 사용자 
+a      all            소유자, 그룹, 다른 사용자 모두(아무 표시 안할 경우 기본적으로 설정됨)
+
+[설정 기호]
+기호                        설명
++       퍼미션 허가       지정한 퍼미션을 허가한다.
+-       퍼미션 금지       지정된 퍼미션을 금지시킨다.
+=       퍼미션 지정       지정한 퍼미션만 허가하고 나머지는 금지 시킨다.
+                       설명 : 이전에 권한을 어떻게 줬던 지금 설정해주는 권한으로 대체시켜서 사용 가능
+                       (+,-는 내가 이전에 어떠한 권한을 설정해 줬는지 확인해야 하지만 =는 이전에 어떻게 설정하였던 상관없이 설정이 가능한 것이다.)
+
+[권한 기호]
+
+r        w        x
+read write execute
+
+설명 : 읽기 권한이 없으면 파일 안에 있는 내용을 볼 수 없다. 따라서 파일을 수정하기 위해서는 반드시 read권한을 부여해야지 파일을 열어서 보고 수정 할 수가 있는 것이다. 만약에 write권한만 있다면 파일을 열어 볼 수 없으므로 수정이 불가능 한 것이다. 따라서 파일을 수정하려면 read&write권한이 모두 있어야 한다.
+
+심볼의 정의
+u(User)
+g(Group)
+o(Other)
+a(all)
+
++(Add)
+-(Deny)
+=(equal)
+
+r(Read)
+w(Write)
+x(Excute)
+
+심볼 모드를 사용한 퍼미션 변경
+
+# cd /test 
+# rm -rf /test/* 
+
+# touch file1 
+# ls –l file1
+-rw-r--r-- 1 root root 0 Feb 14 11:12 file1
+
+# chmod u+x file1
+# ls –l file1
+-rwxr--r-- 1 root root 0 Feb 14 11:12 file1*
+
+# chmod g-r file1
+# ls –l file1
+-rwx---r-- 1 root root 0 Feb 14 11:12 file1*
+
+# chmod u-x,g+x file1
+# ls –l file1
+-rw---xr-- 1 root root 0 Feb 14 11:12 file1*
+
+# chmod a=rwx file1 
+# ls –l file1
+
+-rwxrwxrwx 1 root root 0 Feb 14 11:12 file1*
+
+파일과 디렉토리 퍼미션의 정확한 의미
+F
+R  파일을 읽을 수 있는 권한
+W 파일을 수정 할 수 있는 권한
+X 파일을 실행 할 수 있는 권한
+
+D
+R  디렉토리의 컨텐츠를 읽을 수 있는 권한 : ls 
+W 디렉토리의 컨텐츠에 수정을 가 할 수있는가? : touch cp rm ..
+X  디렉토리에 진입 할 수 있는 권한 : cd 
+
+옥탈모드 :
+각 권한마다 할당 되어 있는 숫자가 존재
+R W X
+4  2  1
+
+소유자권한비트  그룹권한비트  기타권한비트
+r  w  x     r  w  x    r  w  x
+1  1  1     1  1  1    1  1  1
+4  2  1     4  2  1    4  2  1
+파일 소유자 권한 : 400 = 읽기 권한, 200 = 쓰기 권한, 100 = 실행 권한
+그룹 사용자 권한 : 40 = 읽기 권한, 20 = 쓰기 권한, 10 = 실행 권한
+기타 사용자 권한 : 4 = 읽기 권한, 2 = 쓰기 권한, 1 = 실행 권한
+
+--- : 권한 없음 0           000
+--x : 실행 권한 1           001
+-w- : 쓰기 권한 2           010
+-wx : 쓰기 실행 3           011
+r-- : 읽기 권한 4           100
+r-x : 읽기 실행 5           101
+rw- : 읽기 쓰기 6           110
+rwx : 읽기 쓰기 실행 7       111
+
+F 기본 권한 R 
+0  --- O
+1 --x  X
+2 -w- X 
+3 -wx X
+4 r--  O
+5 r-x  O
+6 rw- O
+7 rwx  O
+
+D 기본 권한 X
+0  ---  O
+1 --x  X
+2 -w- X
+3 -wx X
+4 r--   X
+5 r-x  O
+6 rw- X
+7 rwx O
+
+# chmod 754 file1
+# chmod u=rwx,g=r-x,o=r-- file1
 
 
 
