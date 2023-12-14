@@ -2195,5 +2195,60 @@ $ ssh-keygen -f /home/team01/.ssh/id_rsa -N '' -t rsa -b 4096
 
 45 분
 
+현재 9버전에서는 root 로그인을 설치시부터 차단 가능하다.
 
+PermitRootLogin prohibit-password : 선택적인 root 로그인 / 인증키로 로그인 하는 방식
+#PermitRootLogin yes : root 로그인을 모두 허용
+#PermitRootLogin no : root 로그인을 모두 차단
+
+#PasswordAuthentication yes : 비밀번호로 로그인하는 것을 허용한다. 반대로 하면 인증키로만 로그인이 가능하다. 이때 조심해야 하는것은 인증키로 로그인 할 수 있는 계정이 하나라도 있어야 하기 때문에 작업전에 확인이 필요하다.
+
+네트워크
+DoD  
+그 당시 네트워크 
+프로토콜이 죄다 벤더 마음: 우리걸 밀어야 한다.
+만약에 정말로 혹시나 핵을 발사를 한다?
+
+TCP/IP   --------> OSI7 model 
+1. 셀프힐링
+2. 셀프 러닝
+
+
+L4 식별자 TCP/UDP service 
+L3 식별자 IP host
+L2 식별자 MAC 
+사용하는 명령어....
+
+OSI7 : 성공적인 상호작용을 위한 7가지 단계 
+모든 통신은 L2에서 이루어진다.
+
+국내 책 : 네트워크 : 달과 마토의 ez네트워크
+CCNA  : 자격증 위주 비추천
+네트워크개념 배우고 공부
+
+IPV4 2012할당 끝
+A *
+B *
+C *
+D *
+E *
+IP/subnet 
+
+192.168.1.5/24  192.168.1.0 - 192.168.1.255  /32   /30 
+
+공인 
+사설+ NAT
+Ipv6: DNS 의존적 
+
+
+네트워크 구성
+
+호스트이름 : 컴퓨터이름
+IP주소 :  고유한 이름
+호스트=IP 
+
+FQDN 형식으로 도메인 주소를 구성
+
+
+      servera.example.com
 
