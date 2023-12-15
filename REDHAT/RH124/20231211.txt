@@ -1,7 +1,7 @@
 RH124
 
 김기연
-010197902430
+010197902540
 nsr230@studylab.xyz
 
 수업 및 참고자료들은 다음 링크를 통하여 제공 https://github.com/studylabdoc/text/blob/main/REDHAT/RH124/20231211.txt
@@ -2251,4 +2251,108 @@ FQDN 형식으로 도메인 주소를 구성
 
 
       servera.example.com
+
+
+/etc/sysconfig/network-scripts/ 기존에 이용하던 네트워크 장치 설정 정보가 담기 디렉토리, 네트워크 카드 동작을 위한 스크립트 
+
+network manager -> 
+/etc/NetworkManager/system-connections/   : 신규버전에서는 이 디렉토리를 장치 프로파일을 저장하는 용도로 사용
+
+물리적인장치 ------ 연결정보 > 활성화
+                                       연결정보2
+                                        연결정보3
+
+nmcli con  : 연결정보에 대한 명령
+add 추가에 관련한 명령 mod-> 수정 del -> 삭제 
+con-name static-addr  : 연결이름, 프로파일명
+ifname eth0 : 실제 물리적인 장치명 
+type ethernet  : 네트워크를 위한 타입 설정
+ipv4.method manual  : auto, manual로 나누어 지며 네트워크 설정에 대한 방법을 지정
+ipv4.dns 172.25.250.220  : domain -> IP 서버 지정
+ipv4.addresses 172.25.250.10/24  실제 호스트 주소, subnet 
+ipv4.gateway 172.25.250.254 외부 네트워크와의 연결을 위한 라우터 
+autoconnect yes 
+
+RHEL -> 서브스크립션 
+
+rpm -ivh 
+rpm -Uvh
+
+의존성이에 민감하게 반응하는 rpm 이기 때문에 이를 해결할 
+
+yum dnf
+
+리포지토리 구성
+
+/etc/yum.repos.d
+
+
+http://content.example.com/rhel9.0/x86_64/rhcsa-practice/rht
+http://content.example.com/rhel9.0/x86_64/rhcsa-practice/errata
+
+RHCSA -> 
+시험 필요한것 : dnf config-manager 리포지토리 추가 
+
+
+물리 디스크를 확인하는 방법
+
+
+lsblk : 블록 디바이스에 대하여 확인
+lsscsi : 스카시 디바이스에 대하여 확인
+lspci: pci 장치에 대한 확인
+
+lsblk --fs : 파일시스템의 UUID 출력 및 fstype 확인
+
+ 파일시스템 마운트
+
+마운트 : 사용자가 하드웨어를 액세스 하기 위한 최소 조건 
+하나의 디렉토리와 하나의 장치 
+마운트 = 특정 디바이스내로 진입하기 위한최소한의 요구조건 
+------------
+파일시스템 : 파일을 쉽고 빠르게 관리하기 위함. 
+----------
+파티셔닝   디스크의 공간을 나누어 사용하기 위함.
+------------
+H/W 
+
+             APP
+User
+----------
+Kernel
+------   
+H/W
+
+마운트 ?
+조건 2
+1 빈 디렉토리 [내부에 데이터가 있는 디렉토리의 경우에는 마운트가 되긴 하지만 경로가 변경되기 때문에 이전의 데이터는 확인 불가능]
+2 파일시스템까지 구성이 완료된 디바이스
+
+# mount [device] [dir]
+
+# mount
+# lsblk 
+# df
+systemctl start httpd
+-------------임시적인 상황
+
+부팅후에도 계속 사용하고 싶다.
+systemctl enable httpd
+
+/etc/fstab : 해당 파일에 규칙을 잘 지켜 작성 해주면 됩니다.
+
+# systemctl daemon-reload 
+# mount -a
+
+종합검토
+
+RH199
+RHCSA RHCE 
+
+컴퓨터
+
+다운로드 폴더 : RH124 FILE PDF del 
+
+계정 로그인이 된게 있으면 꼭 로그아웃
+
+리셋  -> 
 
