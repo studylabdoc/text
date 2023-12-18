@@ -349,6 +349,14 @@ iburst : 서비스가 시작된 후 보다 정확한 초기 시간 동기화를 
 
 116p
 
+#!/usr/bin/bash + find
+시스템에서 용량이 10M 이상인 파일중에 수정시간이 5일이상 지난 파일을/test 라는 디렉토리로 복사하는 스크립트를 생성한다. 스크립트명은 run.sh 이 파일은 /usr/local/bin에 존재해야 한다.
+
+cron / chrony  * 
+# crontab -u 계정 -e 
+수정
+# crontab -u 계정 -l 
+
 
 
 
