@@ -141,11 +141,213 @@ echo 'hello'
 # CMD > file1 2>&1 
 >&2 : 표준 출력에 대한 스트림을 강제로 표준 에러로 전환
 
+bash 에서 사용하는
+
+기본 반복문/ 조건문
+
+for VARIABLE in LIST; do
+COMMAND VARIABLE
+done
+for 변수 in [파일, 명령어, 1 2 3]; do
+명령어 실행 echo ${i}
+done
+d
+ex: serveralab.example.com
+ssh root@server${i}lab.example.comostname
+done
+변수는 작성후 호출시 ${변수} 로 작업하는것이 좋다.
+
+계정을 생성한다.
+목록이 있거나 , 숫자만 다른 user####
 
 
+if <CONDITION>; then
+<STATEMENT>
+...
+<STATEMENT>
+fi
+
+if 조건문; then
+조건에 대한 실행
+fi
+https://blog.naver.com/PostView.naver?blogId=mmarine&logNo=70094622832
 
 
+스크립트 종료 코드
+exit 
+종료코드 0-255
+0 -> 정상
+1-255 -> 비정상 
 
+# CMD1 && CMD2 || CMD3
+CMD1 이 정상이면 CMD2를 실행하고 아니라면 CMD3을 실행
+
+# bash쉘을 이용하면서 
+명령어를 이용
+# ls -l * 
+토큰단위로 잘라내고 잘라낸 토큰에 구문을 분석
+분석된 구문 명령 옵션 인자.. + 특수문자  << 
+* [] {} . ? [::text::]
+
+vi에서 대소문자 구별없이 검색하기
+/\c검색어 * 
+
+ 46p 페이지의 lab  10분 
+
+14:45분
+향후 작업 예약 (시험에 포함)
+
+crontab * 
+anacron
+systemd.timer
+
+at / cron
+
+at : 한번 실행하고 종료
+cron: 시간마다 계속 실행
+
+/etc/crontab
+*  *  *  *  * user-name  command to be executed
+[1] [2] [3] [4] [5]
+
+[1] 분: 0 - 59 / 0-5분 사이에는 작업하지 않음. 
+[2] 시 : 0 - 23 / 0시는 작업하지 않음.
+[3] 일 : 1 - 31     27 28 30 31
+[4] 월 : 1 - 12 
+[5] 주 : 0 - 6  [0=7] 월 화 수 목 금 토 일[0,7]
+
+14 12 * * * 12시 14분에 작업되는 내역
+14 12-15 * * * 12:14,13:14,14:14,15:15분 마다 작업
+14,20,30 15 * * * 15시 14분 20분 30분 마다 작업
+*/10 * * * * 10분에 한번씩 
+*/2 * * * * CMD < 예전 시험 문제
+* * * * * CMD < crontab 의 최소 시간인 1분에 한번 
+*/10 * * * * 10분에 한번씩 
+EX : /var/log/custom/12:10.log...20 30 ..
+     크론탭 실행시간이 13분   23 33 43 53.. 
+예전에 사용하던 형식:
+시간포맷 사용자 명령어
+15 14 * * * student /usr/local/run.sh
+/etc/crontab  파일 대신 개인 파일을 이용하여 생성
+
+/var/spool/cron/사용자이름 < text file
+tl
+crontab
+-l 크론탭 파일의 리스트 확인
+-e 크론탭 파일 수정
+-r 크론탭 파일 삭제
+-u 사용자 지정
+# crontab -u student -e
+
+student 계정으로 다음 명령분에 실행하도록 설정한다. echo hello을 14:20
+
+# cat /etc/crontab 
+# crontab -u student -e
+---------------------------------
+14 20 * * * echo hello
+---------------------------------
+* * * * * 
+
+# systemctl status crond
+# systemctl enable --now crond
+# 실제 crontab 작업
+# crontab -u 계정 -l < 작업 내역 확인
+
+62p  실습  5분 
+20분 
+30분 시작
+
+cron > systemd.timer 
+cron 최소시간 : 1분 단위 
+systemd.timer  : 1초 단위 
+
+# systemctl daemon-reload 
+/tmp 10
+/var/tmp 30 
+
+/etc/crontab , root 
+find /tmp -mtime +10 -type f -exec rm -f {} \;
+find /tmp -mtime +10 -type d -exec  rm -rf {} \;
+find /var/tmp -mtime +30 -type f -exec rm -f {} \;
+find /var/tmp -mtime +30 -type d -exec  rm -rf {} \;
+
+log
+syslog
+시스템에서 일어나는 작업들에 대한 기록
+
+init-rsyslog--/var/log/FILE
+
+systemd-systemd-log-rsyslog--/var/log/FILE
+                     journal
+
+
+messages  < 현재 이용하는 로깅 파일
+
+
+messages.20230101
+messages.20221201
+messages.20221101
+messages.20221001
+
+messages.20220901
+ 
+
+94p의 연습문제
+
+journal 항목 검토 /  NTP 
+
+35분 
+
+3장 시험문제 NTP * 
+
+/etc/systemd/journald.conf
+Storage=persistent
+  : 재부팅 이후에도 journal 파일을 유지할수 있도록 /var/log/journal 디렉토리를 생성하여 부팅마다의 파일로 보존
+
+
+NTP 시험에 나옴 *
+
+rdate -> 구버전에서는 이 서비스를 이용
+NTP -> 신버전 8,9 
+
+UDP로 동작 rdate 
+원격지 서버와 클라이언트간의 시간 차가 발생 할 수 있다.
+인증에 문제가 생길 수 있다.
+
+NTP 시간서버
+
+클-----------------------서
+    1------>요청--------2>  (2-1)+(4-3)
+    4<-------응답-------3
+
+싱크를 맞추는 시간  -> 8진수 [111] 377  
+
+# timedatectl 
+
+# 서비스를 구성하는 방법
+/etc/chrony.conf   : chrony에 대한 설정 파일
+ 
+server classroom.example.com iburst
+ server : server 단독/ pool 그룹
+ classroom.example.com : 실제 시간을 받아올 호스트 IP
+iburst : 서비스가 시작된 후 보다 정확한 초기 시간 동기화를 위해 서비스에서 짧은 기간 동안 네 번 측정합니다 
+패킷을 정송하고 다음 패킷까지의 시간 주기는 16초
+한번에 8개의 패킷을 동시에 요청에 사용 
+ 
+# systemctl enable --now chronyd
+# timedatectl
+# chronyc sources
+# chronyc sources -v
+# chronyc -a makestep : NTP에서는 시간이 많이 차이가 나게 되면 동기화에 시간이 오래 걸린다. makestep 옵션을 이용하게 되면 NTP와 로컬시간을 근접하게 변경
+동기화에 필요한 시간을 줄이는 용도. 
+
+# dnf -y install chrony
+# vi /etc/chrony.conf
+# server classroom.example.com iburst
+[# systemctl daemon-reload]
+# systemctl enable --now chronyd
+
+116p
 
 
 
