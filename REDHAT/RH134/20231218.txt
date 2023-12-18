@@ -1,1 +1,21 @@
-1
+RH134
+124 -> 134 [199]
+
+김기연
+01097902540
+
+https://github.com/studylabdoc/text/blob/main/REDHAT/RH134/20231218.txt
+
+
+google-meet
+https://meet.google.com/tth-ykxk-tmn
+
+실습환경 
+https://rol.redhat.com 
+VT-LAB
+E-book 다운로드
+MY VIRTUAL TRAINING CLASSES >
+RH134 -> JOIN 
+
+리소스 -> download pdf  > 한글
+오늘 한글 -> 내일 영어
