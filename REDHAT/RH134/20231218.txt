@@ -357,6 +357,135 @@ cron / chrony  *
 수정
 # crontab -u 계정 -l 
 
+125p
+
+tar : 테이프 아카이빙 명령
+c : 아카이빙 생성
+t : 아카이빙 내 파일 확인
+x : 아타이빙 해제 
+v : 진행되는 파일에 대한 내역 확인
+f : 작업을 파일을 대상으로 진행 가능하게 해줌
+z : gzip 으로 압축/ 해제
+j :  bzip2 로 압축/ 해제
+J : xz 로 압축/ 해제
+
+# tar [옵션] [인자] [인자]
+
+# tar cf [아카이빙에 생성될 파일명] [파일목록 디렉토리 ]
+# tar cf dir2.tar dir2
+
+# tar tf dir2.tar 파일 목록만 확인
+# tar tfv dir2.tar 파일의 상세 정보를 확인 
+# tar xf dir2.tar
+---------------
+단순하게 아카이빙만 진행하는 경우
+
+아카이빙 + 압축
+1 tar > 압축 알고리즘
+2 tar + 압축 알고리즘
+
+gzip
+# tar cfz  dir1.tar.gz dir1
+bzip2
+# tar cfj  dir1.tar.bz2 dir1
+xz
+# tar cfJ  dir1.tar.xz dir1
+
+예전 버전에서는 절대경로로 작업시 /를 보존한 상태로 아카이빙 진행
+
+아카이빙 해제시 문제:
+덮어쓰기가 되기 때문에 업데이트된 데이터에 대하여 손실 발생 
+테스트 : 파일 뒤에 -P 옵션을 작성하여 절대경로로 파일을 생성하고 해제 하면 된다.
+
+시험에서 나오는 형식
+tar + gzip|bzip2|xz 로 구성되어서 출제
+
+특정한 디렉토리[/var/log]를 아카이빙 하면서 제시된 압축 알고리즘[gzip|bzip2|xz]을 이용하여 압축을 같이 시도하는 것으로 문제가 출제
+
+/var/log 디렉토리를 /root/log.tar.(gz) 으로 생성하라. 압축 알고리즘은 (xz)를 사용한다.
+
+cd 
+tar cfJ log.tar.gz /var/log 
+
+scp 
+sftp
+
+원격지의 파일 복사 scp sftp  / 미러링rsync
+
+로컬 디스크/ 디렉토리의 경우에 미러링 windows
+https://freefilesync.org/
+클라우드 데이터 동기화 
+https://filezilla-project.org/filezilla_pro.php
+
+rsync : 구버전 
+xinetd : socket 
+> ssh를 이용하여 rsync 데이터에 접근
+
+rsync -avz -e ssh IP:/PATH /PATH
+rsync -avz -e ssh IP:/PATH/ /PATH/
+
+후행 슬래시에 따른 동기화 차이점
+# ssh -avz servera:/custom/ /test/
+/test/ 
+1. 디렉토리가 없으면 생성한다.
+2. /custom 디렉토리와 /test디렉토리의 내용은 동일
+# ssh -avz servera:/custom /test
+/test
+1. 디렉토리가 없으면 생성한다.
+2. /test 디렉토리 안에 custom이라는 이름의 디렉토리를 생성
+# ssh -avz --delete servera:/custom /test
+--delete  : 원본에서 삭제된 데이터는 타겟에서도 동일하게 삭제 : 완전한 미러링
+
+tar 를 이용한 방법
+# tar -cf - . | ( cd /test ; tar -xf . )
+# tar -cf - . | ssh servera 'tar -xf - -C /test'
+
+시스템 성능 튜닝 [시험]
+tuned < 시험에서 나오는 부분
+
+sysctl 
+
+파라미터를 미리 조정하여 만들어진 프로파일
+적용만 시키면 좀 더 쉽게 튜닝된 성능에 머신으로 조절
+CPU
+MEM
+DISK
+NIC
+정적 튜닝 구성 - 직접 프로파일을 선택해서 구성
+동적 튜닝 구성 - 동적 튜닝설정된 이후 일정 시간마다 체크하여 사용되는 리소스 기준으로 프로파일을 자동 변경/ 기본적으로 비활성화 - 설정파일[etc/tuned/tuned-main.conf][dynamic_tuning =1 ] 에서 구성 건드려야 함. 
+
+159p    14:15 
+# dnf -y install tuned
+# systemctl enable --now tuned
+# tuned-adm recommend 
+virtual-guest
+# tuned-adm profile virtual-guest
+
+위의 두 명령을 한 줄에 처리하기
+# tuned-adm profile $(tuned-adm recommend)
+
+# tuned-adm
+active : 현재 활성화된 프로파일 확인
+off : tuned 프로파일 제거 [파라미터에 적용된 부분을 제거]
+recommend : 현재 시스템에 맞는 프로파일 추천  
+list : 사용가능한 프로파일 리스트 확인
+profile     : 실제 프로파일을 적용시키기 위한 옵션
+
+시스템의 권장 프로파일로 시스템을 튜닝하고 재부팅시에도 적용되도록 설정하세요.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
