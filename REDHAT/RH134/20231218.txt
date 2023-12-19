@@ -473,6 +473,99 @@ profile     : 실제 프로파일을 적용시키기 위한 옵션
 
 시스템의 권장 프로파일로 시스템을 튜닝하고 재부팅시에도 적용되도록 설정하세요.
 
+nice / renice
+
+사용자 입장에서는 우선순위의 변경폭의 제한이 있다. 
+
+프로세스의 우선순위를 조절하기 위함.
+당장 처리해야 하는 프로세스
+지금 실행은 되고 있는데 급하지는 않음.
+사용자가 이용가능한 nice 범위 -20 19
+nice값이 높은 경우 : 우선순위가 낮아짐.
+nice값이 낮은 경우 : 우선순위가 높아짐.
+
+
+nice -20 19  처음 실행시 적용하는 명령
+# nice [op]  CMD 
+# nice -n 5 CMD
+# nice -5 CMD
+# nice -n -5 CMD
+# nice --5 CMD
+
+renice -20 19
+기존에 설정된 값을 무시하고 새로운 값으로 업데이트 
+#  renice [op]  PID 
+# ps -l
+
+SELINUX 
+
+9버전은 설치시 기본 활성화
+/etc/selinux/config 
+SELINUX=enforcing
+
+Enforcing: 강제 적용 selinux 정책에 맞지 않는 경우에는 무조건 차단
+Permissive(허용): elinux 정책에 맞지 않는 경우로깅을 남기고 실행은 가능하게 해줌. 디버깅 
+Disabled(비활성화됨): selinux를 사용하지 않음.
+grubby --update-kernel ALL --args selinux=0
+grubby --update-kernel ALL --remove-args selinux
+# getenforce : 현재 selinux 상태 확인
+# setenforce [1|0]
+1 Enforcing
+0 Permissive
+
+selinux X
+apache - /var/www/html
+               - /etc /var /tmp... 
+
+selinux O
+apache - /var/www/html
+                X - /etc /var /tmp... 
+
+컨텍스트 : 프로세스/ 서비스가 가지고 있는 컨텍스트와 동일한지 확인 [내가 접근할수 있는 리소스인가?]
+
+파일을 생성하게 되면 :
+파일을 생성하는 디렉토리의 컨텍스트를 상속
+/var/www/html http_content_t
+
+/root   admin_t
+
+cp , touch 파일을 생성 가능한 명령어들은 부모디렉토리의 컨텍스트를 상속받아 파일에 적용
+
+mv는 컨텍스트를 그대로 가지고 이전을 하기 때문에 적용대상에서 벗어남.
+
+semanage fcontext : 강제로 컨텍스트 속성을 변경
+(/.*)? 슬래시로 시작하고 그 뒤에 임의의 수의 문자가 있는 문자 집합'으로 설명되며, 집합은 있을 수도 있고 없을 수도 있습니다. 더 간단히 말하면 이 구문은 비어 있는 경우에도 디렉터리 자체와 일치하지만 해당디렉터리 내에 생성된 거의 모든 파일 이름과 일치한다. => /virtual(/.*)?
+/virtual(/.*)? = /virtual 디렉토리를 포함해 재귀적으로 모든 파일 /virtual + 내부의 디렉토리 / 파일 / 숨김파일 등등 하여간 모든파일
+semanage fcontext -a -t httpd_sys_content_t '/virtual(/.*)?'
+
+restorecon : 변경된 내용을 적용
+restorecon -Rv /virtual
+
+chcon : 임시적인 변경 
+
+193p 
+50분
+
+컴퓨터 과학에서 불리언(Boolean) 자료형은 논리 자료형이라고도 하며, 참과 거짓을 나타내는 데 쓰인다. 주로 참은 1, 거짓은 0에 대응하나 언어마다 차이가 있다. 숫자를 쓰지 않고 참과 거짓을 나타내는 영단어 true와 false를 쓰기도 한다.
+
+semanage boolean에서는 특정한 기능에 대한 on off 용도로 사용을 한다.
+EX : vsftp 
+익명사용자 
+anonymous_rw : 옵션에서 조절 하면 기능상 동작을 바로 했음.
+하지만 SELINUX -> semanage boolean 에서도 기능을 활성화 시켜줘야 정상 동작.
+
+
+SELINUX 문제해결시 방법:
+강제 : 에러 -> 허용 :디버깅-> 설정 -> 확인
+
+mount / fstab  mount 
+----------------
+파일시스템  mkfs 
+-----LVM------  pv vg lv.. 
+파티션   parted / fdisk  / sfdisk 
+----------------  lsblk blkid
+H/W
++ stratis 나올때도 있고 안나올때도 있음. 
 
 
 
