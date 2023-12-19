@@ -8,7 +8,7 @@ RH134
 https://github.com/studylabdoc/text/blob/main/REDHAT/RH134/20231218.txt
 
 google-meet
-https://meet.google.com/tth-ykxk-tmn
+https://meet.google.com/gnx-hrjw-caf
 실습환경 
 https://rol.redhat.com 
 VT-LAB
