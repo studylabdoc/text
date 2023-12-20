@@ -1158,15 +1158,10 @@ UUID=8d788ad5-a0ee-4d38-a4b4-c85bdcb9dd6b       /stratis        xfs     defaults
 278
 
 serverb 문제의 50% 해결
-
++ 기본으로 파티션 구성부터 -> fstab 등록후 정상 재부팅 까지를 이해 
 lvm 생성
 lvm 확장
 swap 생성
 [추가] stratis 생성 < fstab 등록시 조심 : systemd.mount 매뉴얼 참고 
-
-
-
-
-
 
 
