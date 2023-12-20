@@ -658,6 +658,107 @@ Command action
    o   create a new empty DOS partition table 파티션을 MBR 형태로 변경 
    s   create a new empty Sun partition table
 
+파티션 생성부터 -> 확인
+
+Command (m for help): n 파티션 생성
+Partition type
+   p   primary (0 primary, 0 extended, 4 free)
+   e   extended (container for logical partitions)
+Select (default p): p 파티션 형태 선택 primary 
+Partition number (1-4, default 1): 1 파티션 번호 
+First sector (2048-10485759, default 2048): 2048 시작 용량 설정
+Last sector, +/-sectors or +/-size{K,M,G,T,P} (2048-10485759, default 10485759): +500M  끝 용량 지정 +용량[용량기호]
+
+Created a new partition 1 of type 'Linux' and of size 500 MiB.
+
+Command (m for help): p
+Device     Boot Start     End Sectors  Size Id Type
+/dev/vdb1        2048 1026047 1024000  500M 83 Linux
+
+Command (m for help): n
+Partition type
+   p   primary (1 primary, 0 extended, 3 free)
+   e   extended (container for logical partitions)
+Select (default p): e
+Partition number (2-4, default 2): 
+First sector (1026048-10485759, default 1026048): 
+Last sector, +/-sectors or +/-size{K,M,G,T,P} (1026048-10485759, default 10485759): 
+확장 파티션으로 남은 용량 전체 지정
+Created a new partition 2 of type 'Extended' and of size 4.5 GiB.
+
+Command (m for help): n
+All space for primary partitions is in use.
+Adding logical partition 5
+First sector (1028096-10485759, default 1028096): 
+Last sector, +/-sectors or +/-size{K,M,G,T,P} (1028096-10485759, default 10485759): +1G
+
+Created a new partition 5 of type 'Linux' and of size 1 GiB.
+
+Command (m for help): n
+All space for primary partitions is in use.
+Adding logical partition 6
+First sector (3127296-10485759, default 3127296): 
+Last sector, +/-sectors or +/-size{K,M,G,T,P} (3127296-10485759, default 10485759): +2G
+
+Created a new partition 6 of type 'Linux' and of size 2 GiB.
+
+Command (m for help): p
+Disk /dev/vdb: 5 GiB, 5368709120 bytes, 10485760 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x3886e288
+
+Device     Boot   Start      End Sectors  Size Id Type
+/dev/vdb1          2048  1026047 1024000  500M 83 Linux
+/dev/vdb2       1026048 10485759 9459712  4.5G  5 Extended
+/dev/vdb5       1028096  3125247 2097152    1G 83 Linux
+/dev/vdb6       3127296  7321599 4194304    2G 83 Linux
+
+Command (m for help): t
+Partition number (1,2,5,6, default 6): 1
+Hex code or alias (type L to list all): L
+Aliases:
+   linux          - 83 * 
+   swap           - 82 * 
+   extended       - 05
+   uefi           - EF
+   raid           - FD
+   lvm            - 8E *
+   linuxex        - 85
+
+Hex code or alias (type L to list all): 82
+
+Changed type of partition 'Linux' to 'Linux swap / Solaris'.
+
+Command (m for help): t
+Partition number (1,2,5,6, default 6): 5
+Hex code or alias (type L to list all): 8E
+
+Changed type of partition 'Linux' to 'Linux LVM'.
+
+Command (m for help): p
+Disk /dev/vdb: 5 GiB, 5368709120 bytes, 10485760 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x3886e288
+
+Device     Boot   Start      End Sectors  Size Id Type
+/dev/vdb1          2048  1026047 1024000  500M 82 Linux swap / 
+/dev/vdb2       1026048 10485759 9459712  4.5G  5 Extended
+/dev/vdb5       1028096  3125247 2097152    1G 8e Linux LVM
+/dev/vdb6       3127296  7321599 4194304    2G 83 Linux
+
+
+
+
+
+
+
+
 
 
 
