@@ -561,7 +561,7 @@ SELINUX 문제해결시 방법:
 mount / fstab  mount 
 ----------------
 파일시스템  mkfs 
------LVM------  pv vg lv.. 
+-----[LVM]------  pv vg lv.. 
 파티션   parted / fdisk  / sfdisk 
 ----------------  lsblk blkid
 H/W
@@ -991,11 +991,178 @@ mkswap > swapon > fstab > pri 옵션 지정
 파티션            스왑파티션
 -----------
 
+235p
+239p lab 동시 진행
 
+파일시스템- fstab 
+swap
+LVM 
+파일시스템 :
+표준 파일 시스템
+: 용량이 한번 정해지면 변경 X
+논리 파일 시스템
+: 필요한 경우 용량 변경 가능
+LVM RAID 
+클라우드에서는 LVM으로 디스크를 제공을 하고 있기 때문에 알아둬서 나쁠건 없다.
 
+LVM 
+물리장치 : 디스크 
+PV : LVM에서 인식하는 디스크
+VG : 디스크들의 그룹 
+LV : VG에서 분할된 파티션
 
+생성 확장
+# fdisk -l /dev/vdb
+Disk /dev/vdb: 5 GiB, 5368709120 bytes, 10485760 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x188fde5a
 
+Device     Boot Start     End Sectors Size Id Type
+/dev/vdb1        2048 2099199 2097152   1G 8e Linux LVM
+파티션 형태를 LVM으로 지정
 
+PV 형태로 디스크를 생성
+# pvcreate /dev/vdb1 
+  Physical volume "/dev/vdb1" successfully created.
+  Creating devices file /etc/lvm/devices/system.devices
+
+# pvs
+  PV         VG Fmt  Attr PSize PFree
+  /dev/vdb1     lvm2 ---  1.00g 1.00g
+# pvdisplay  /dev/vdb1
+
+# vgcreate [vgname] [device]
+# vgcreate vg0 /dev/vdb1 
+  Volume group "vg0" successfully created
+# vgcreate vg0 -s 8m  /dev/vdb1 : PE용량을 변경해야 하는 경우에는 -s 옵션을 사용해야 한다. 
+
+#  lvcreate -n [lvname] -l [size] [vgname]
+# lvcreate -n lv0 -l 150 vg0
+용량 지정시 옵션 
+-l : LE 개수를 지정 작성 : EX : -l 100 
+-L  실제 용량을 사이즈로 작성 : EX : -L 401M 
+
+# partprobe
+디스크 파티션 정보 갱신
+# udevadm settle
+장치 이름 구성
+
+VG와 LV의  
+PE-LE는 매핑되어 있음.
+둘의 용량은 동일
+vg 기본값으로 생성하는 경우 4M
+-> 256M까지 생성 가능
+vg에서 4m  lv에서 8m? 불가능
+
+/dev/vdb1
+VG name : vg0
+PE size : default
+lvname : lv0
+size : LE- 100
+mount point : /stage1
+
+LVM 생성 
+  589  pvcreate /dev/vdb1
+  590  vgcreate vg0 /dev/vdb1
+  591  lvcreate -n lv0 -l 100 vg0 
+  592  ls -ld /stage1
+  593  mkfs.xfs /dev/vg0/lv0 
+  594  mount /dev/vg0/lv0 /stage1
+  595  df /stage1
+
+확장
+확장을 하는 이유: 용량이 부족하니까 
+요청에 의해서.
+
+disk -> 
+
+PV 등록 pvcreate
+VG 확장 vgextend  : 디스크를 추가 물리적으로 추가되는 것이라 힘든것 없음.
+
+LV  확장 lvextend : 용량이 추가.
+실제 마운트된 디스크의 용량을 늘리는 것, 온라인 상태에서 작업이 가능
+
+-l  LE 개수로 추가
+-L 용량으로 추가
+두가지 작업을 하는 경우 조심해야 하는것 :
++기호를 앞에 붙여 주기 바람.
+# pvcreate /dev/vdb2
+# vgextend vg0 /dev/vdb2
+# lvextend -l +50 /dev/vg0/lv0
+LE 개수로 직접 추가. LE size x 50 = 200m LVM만 현재 알고 있는 상태 . systemd 파일시스템에도 업데이트를 해 줘야한다.
+파일 시스템마다 다른 명령을 가지고 있다. xfs/ ext 
+xfs : xfs_growfs [마운트포인트]
+ext : resize2fs [장치명] 
+# xfs_growfs /stage1
+# lvextend -L +200m /dev/mapper/vg0-lv1 
+# resize2fs /dev/mapper/vg0-lv1
+
+시험에서는 용량의 단위가 
+mib mb
+1000 1024
+
+ext 파일시스템의 경우에는 용량을 줄일수 있음. << 순서를 못맞추면 에러
+
+한방에 성공하는것이 가장 중요
+595M    /stage1   800M xfs
+365M   /stage2   500M ext
+확장문제에서 중요한것은 절대로 넘어가지 않는것
+1. 어느 수준까지는 접근을 시킨다음
+2. LE를 하나씩 추가 ; 적용 ; 확인
+lvextend -l +1 /dev/mapper/vg0-lv0 ; xfs_growfs /stage1 ; df -h /stage1
+용량이 맞을때 까지
+
+stratis
+
+서비스화된 스토리지
+관리의 편의성 : 더이상 관리자가 직접 하지 않고 systemd가 관리를 지원
+보이는 용량과 실제 용량이 다름.
+# dnf list | grep stratis
+stratis-cli 
+stratisd
+# systemctl daemon-reload
+# systemctl enable --now stratisd
+# stratis pool create stratispool1 /dev/vdc
+# stratis blockdev list
+# stratis pool list
+# stratis pool add-data /dev/vdd
+# stratis filesystem create stratispool1 stratis-filesystem1
+# stratis filesystem list
+/dev/stratis/stratispool1/stratis-filesystem1  < 장치명은 다음과같이 되어 있으며 이걸 이용하여 마운트를 하면 됩니다.
+# mkdir /stratis
+# mount /dev/stratis/stratispool1/stratis-filesystem1 /stratis
+# df -h /stratis
+Filesystem                                                                                       Size  Used Avail Use% Mounted on
+/dev/mapper/stratis-1-0fccfd3c831344ddbeff2f5abd8fcb16-thin-fs-8d788ad5a0ee4d38a4b4c85bdcb9dd6b  1.0T  7.2G 1017G   1% /stratis
+df로 보이는 용량에 속으면 안된다.:  10G 
+
+# stratis filesystem snapshot stratispool1  stratis-filesystem1 stratis-filesystem1-snapshot 스냅샷 생성
+# stratis filesystem list
+# mkdir /mnt/snaphost
+# mount /dev/stratis/stratispool1/stratis-filesystem1-snapshot /mnt/snaphost
+# vi /etc/fstab
+UUID=8d788ad5-a0ee-4d38-a4b4-c85bdcb9dd6b       /stratis xfs      defaults        0       0
+# systemctl daemon-reload
+# mount -a
+stratis에서는 기존과 동일하게 작성하면 부팅중에 무조건 멈춤
+# man systemd.mount  x-systemd.requires=
+
+UUID=8d788ad5-a0ee-4d38-a4b4-c85bdcb9dd6b       /stratis        xfs     defaults,x-systemd.requires=stratisd.service        0       0
+해당옵션은 fstab에서 서비스가 올라오지 않은경우 서비스가 활성화 될 때까지 잠시 멈춰주는 기능을 한다. 이 옵션을 적지 않으면 부팅시 멈춤
+
+260
+272
+278
+
+serverb 문제의 50% 해결
+
+lvm 생성
+lvm 확장
+swap 생성
+[추가] stratis 생성 < fstab 등록시 조심 : systemd.mount 매뉴얼 참고 
 
 
 
