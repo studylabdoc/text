@@ -878,6 +878,7 @@ UUID / 장치명 둘다 사용 가능 하지만 권장사항: UUID
 227p 연습문제 
 13:45분
 
+# lsblk
 # fdisk /dev/[device]
 n
 p
@@ -893,6 +894,7 @@ p
 w
 # mkfs.ext4 /dev/[device1]
 # mkfs.xfs /dev/[device1]
+# lsblk --fs
 
 # mkdir /dir1
 # mount /dev/[device1] /dir1
@@ -903,7 +905,7 @@ UUID=dhdudif /dir1 xfs defaults 0 0
 # systemctl deamon-reload
 # mount -a
 # df /dir1
-
+# lsblk
 
 
 
