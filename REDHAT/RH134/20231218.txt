@@ -631,8 +631,32 @@ parted : 명령을 하는 순간 바로 적용
 디스크 초기화
 # dd if=/dev/zero of=/dev/vdb 
 
+# fdisk /dev/vdb
 
+Command (m for help): m 도움말 확인
+Command action
+   a   toggle a bootable flag              /* 부트 가능한 플래그로 변경 (부트 파티션 저장) */
+   b   edit bsd disklabel                  /* bsd 디스크 레이블을 편집 */
+   c   toggle the dos compatibility flag   /* 도스 호환 플래그로 변경 */
+   d   delete a partition                 /* 파티션 삭제 */
+   l   list known partition types        /* 알려진 파티션 형태의 목록 (지원 가능한 파티션 보기) */
+   m   print this menu                    /* 메뉴를 출력 */
+   n   add a new partition                 /* 새로운 파티션 추가 */
+   o   create a new empty DOS partition table /* 새로운 도스 파티션 테이블을 생성 */
+   p   print the partition table         /* 파티션 테이블을 출력 (파티션 설정 상태 확인) */
+   q   quit without saving changes     /* 변경을 저장하지 않고 종료 */
+   s   create a new empty Sun disklabel  /* 새로운 Sun 디스크 레이블을 생성 */
+   t   change a partition's system id    /* 파티션의 시스템 id를 변경 (파일 시스템 유형 변경) */
+   u   change display/entry units          /* 표시/엔트리 단위를 변경 */
+   v   verify the partition table         /* 파티션 테이블을 점검 */
+   w   write table to disk and exit      /* 디스크에 테이블을 기록하고 빠져나감(파티션 정보 저장) */
+   x   extra functionality (experts only)
 
+  Create a new label
+   g   create a new empty GPT partition table  파티션을 GPT 형태로 변경 
+   G   create a new empty SGI (IRIX) partition table
+   o   create a new empty DOS partition table 파티션을 MBR 형태로 변경 
+   s   create a new empty Sun partition table
 
 
 
