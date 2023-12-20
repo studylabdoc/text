@@ -752,8 +752,157 @@ Device     Boot   Start      End Sectors  Size Id Type
 /dev/vdb5       1028096  3125247 2097152    1G 8e Linux LVM
 /dev/vdb6       3127296  7321599 4194304    2G 83 Linux
 
+Command (m for help): d
+Partition number (1,2,5,6, default 6): 1
+
+Partition 1 has been deleted.
+
+Command (m for help): p
+Disk /dev/vdb: 5 GiB, 5368709120 bytes, 10485760 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x3886e288
+
+Device     Boot   Start      End Sectors  Size Id Type
+/dev/vdb2       1026048 10485759 9459712  4.5G  5 Extended
+/dev/vdb5       1028096  3125247 2097152    1G 8e Linux LVM
+/dev/vdb6       3127296  7321599 4194304    2G 83 Linux
+
+Command (m for help): g
+Created a new GPT disklabel (GUID: 1D9C7365-EFFA-C749-AF7C-3411A815BF10).
+GPT로 변경해서 파티션 작업
+
+Command (m for help): n
+Partition number (1-128, default 1): 
+First sector (2048-10485726, default 2048): 
+Last sector, +/-sectors or +/-size{K,M,G,T,P} (2048-10485726, default 10485726): +500M
+
+Created a new partition 1 of type 'Linux filesystem' and of size 500 MiB.
+Command (m for help): t
+Selected partition 1
+Partition type or alias (type L to list all): L : GPT에서는 입력해야하는 코드가 다르다.
+ Aliases:
+   linux          - 0FC63DAF-8483-4772-8E79-3D69D8477DE4
+   swap           - 0657FD6D-A4AB-43C4-84E5-0933C84B4F4F
+   home           - 933AC7E1-2EB4-4F13-B844-0E14E2AEF915
+   uefi           - C12A7328-F81F-11D2-BA4B-00A0C93EC93B
+   raid           - A19D880F-05FC-4D3B-A006-743F0F84911E
+   lvm            - E6D6D379-F507-44C2-A23C-238F2A3DF928
+
+linux 20 
+swap 19
+lvm 30 
+시험에서는 사용되는 디스크가 이미 GPT로 구성되어 파일시스템에 구성되어 있을 가능성이 높다.
 
 
+Device     Boot   Start      End Sectors  Size Id Type
+/dev/vdb1          2048  1026047 1024000  500M 83 Linux
+/dev/vdb2       1026048 10485759 9459712  4.5G  5 Extended
+/dev/vdb5       1028096  3125247 2097152    1G 83 Linux
+/dev/vdb6       3127296 10485759 7358464  3.5G 83 Linux
+
+파티션 테이블 다른 서버에 동일하게 구성하기.
+sfdisk -d /dev/vdb | sfdisk /dev/vdc
+
+내부 파티션을 삭제하고 1G짜리 두개로 생성
+
+
+Device     Boot   Start     End Sectors Size Id Type
+/dev/vdb1          2048 2099199 2097152   1G 83 Linux
+/dev/vdb2       2099200 4196351 2097152   1G 83 Linux
+
+1G 용량의 파티션 두개 생성
+
+파일시스템 : 파티셔닝 작업이후에 자료를 저장하기위한 논리구조
+ext / xfs
+ext 파일저장에 필요한 최소 단위를 1K로 변경 가능하기 때문에 작은 용량의 파일을 보관하는데 이점
+xfs 대용량 파일시스템 RHEL9의 표준 파일시스템은 xfs 
+
+시험에서 어떤 파일시스템?
+
+파일시스템 생성
+# mkfs.
+mkfs.cramfs  mkfs.ext4    mkfs.msdos   
+mkfs.ext2    mkfs.fat     mkfs.vfat    
+mkfs.ext3    mkfs.minix   mkfs.xfs 
+
+vdb1 : ext4
+vdb2 : xfs
+# mkfs.ext4 /dev/vdb1  : y를 입력
+# mkfs.xfs /dev/vdb2   : -f 
+
+마운트 : 디렉토리와 장치를 연결
+특정장치에 액세스 할 수 있도록 하는 작업
+
+# mount [장치명] [마운트포인트:디렉토리]
+# mount /dev/vdb1 /stage1
+
+# df /stage1
+Filesystem     1K-blocks  Used Available Use% Mounted on
+/dev/vdb1         996780    24    927944   1% /stage1
+
+# df /stage2
+Filesystem     1K-blocks  Used Available Use% Mounted on
+/dev/vdb2        1038336 40292    998044   4% /stage2
+
+마운트 해제
+# umount [마운트된 디렉토리]
+# umount /stage1
+
+: 마운트는 임시적인 연결일 뿐
+부팅시에도 사용하도록 하려면?
+/etc/fstab 이라는 파일에 등록
+/dev/vda3       /boot              xfs                        defaults 0       0
+장치              마운트포인트  파일시스템형식 옵션      dump[1.0]    fsck[1.2.0] 
+
+/etc/fstab
+UUID=f2fa1894-0ff8-485b-83bf-8df37ef373db       /stage1 ext4    defaults        0       0
+# mount -a : fstab 자원중에 마운트가 가능한 모든 자원을 마운트 시키는 명령
+
+/etc/fstab
+UUID=f2fa1894-0ff8-485b-83bf-8df37ef373db       /stage1 ext4    defaults        0       0
+/dev/vdb2       /stage2 xfs     defaults        0       0
+
+UUID / 장치명 둘다 사용 가능 하지만 권장사항: UUID
+
+1. fstab 수정
+2. systemctl daemon-reload
+3. mount -a   * 
+
+2번에 있는 daemon-reload 함정
+문제는 업데이트만 시킨다.
+3으로 재부팅전에 꼭 확인작업 하고나서 진행 하셔야 합니다.
+
+227p 연습문제 
+13:45분
+
+# fdisk /dev/[device]
+n
+p
+1
+2048
++500M
+----------------------
+[option]
+t
+8E 82
+------------------------
+p
+w
+# mkfs.ext4 /dev/[device1]
+# mkfs.xfs /dev/[device1]
+
+# mkdir /dir1
+# mount /dev/[device1] /dir1
+# df /dir1
+# umount /dir1
+# vi /etc/fstab
+UUID=dhdudif /dir1 xfs defaults 0 0
+# systemctl deamon-reload
+# mount -a
+# df /dir1
 
 
 
