@@ -908,6 +908,90 @@ UUID=dhdudif /dir1 xfs defaults 0 0
 # lsblk
 
 
+swap
+디스크공간을 메모리 영역처럼 사용하기 위한 기술
+
+windows 가상메모리
+linux unix - swap 
+
+swap size 권장 사항.
+https://access.redhat.com/ko/solutions/744483
+
+스왑을 구성하는 경우에는 시스템 디스크가 아닌 다른 디스크에 구성
+스왑이 사용되는 것은?
+물리적인 메모리가 부족하다 : 빠른 증설 고려
+가끔씩 프로그램중에 swap을 이용하게끔 설계되는 경우.
+
+# top
+# free 
+# free -h 
+를 이용하여 스왑 메모리 사용 확인
+
+swapin   MEM <<<< DISK
+swapout MEM >>>>> DISK
+
+mkswap : 스왑을 생성하는 경우
+swapon : 스왑을 활성화 시키는 경우
+swapoff : 스왑을 비활성화 시키는 경우
+swapon -s : 스왑에 대한 상태 확인
+fstab manual : 부팅시 활성화를 위해 스왑을 등록
+pri=[##] * : 스왑이 두개이상경우 우선순위를 주기 위하여 우선순위값을 등록. 빠른 디스크를 먼저 사용하도록 등록
+
+fdisk를 통하여 디스크 파티셔닝
+
+Device     Boot   Start     End Sectors  Size Id Type
+/dev/vdb1          2048 2099199 2097152    1G 82 Linux swap / Solaris   : 파티션 ID를 swap으로 교체를 하여 사용
+/dev/vdb2       2099200 5171199 3072000  1.5G 83 Linux  : 내부에서 파일을 생성하여 스왑 공간으로 활용하기 위함.
+
+# mkswap /dev/vdb1 
+Setting up swapspace version 1, size = 1024 MiB (1073737728 bytes)
+no label, UUID=892869d2-4313-4760-b333-060232c4e59a
+# lsblk --fs
+─vdb1
+│    swap   1           892869d2-4313-4760-b333-060232c4e5
+
+# swapon /dev/vdb1
+# swapon -s 
+
+파티션을 이용한 파일로 swap 공간 생성
+
+# mkdir /swap
+# mkfs.xfs /dev/vdb2
+# mount /dev/vdb2 /swap
+# cd /swap
+# dd if=/dev/zero of=swapfile bs=1M count=1024
+# mkswap swapfile
+# 
+# chmod 0600 swapfile
+# swapon /swap/swapfile
+# swapon -s
+# swapoff /dev/vdb1
+# swapoff /swap/swapfile
+
+# vi /etc/fstab
+UUID=892869d2-4313-4760-b333-060232c4e59a       swap    swap    defaults        0       0
+# swapon -a
+
+/swap/swapfile  swap    swap    defaults        0       0
+파일의 경우에는 절대 경로로 지정
+
+pri 옵션을 이용하여 fstab 파일에서 우선순위를 지정.
+
+UUID=892869d2-4313-4760-b333-060232c4e59a       swap    swap    defaults,pri=20        0       0
+/swap/swapfile  swap    swap    pri=10  0       0
+
+재부팅전에 swapon -a 명령을 입력하여 정상동작하는지 확인을 꼭 하기 바랍니다.
+
+mkswap > swapon > fstab > pri 옵션 지정
+
+마운트           swapon / fstab -> pri=10
+------------
+파일시스템   스왑 파일시스템
+-----------
+파티션            스왑파티션
+-----------
+
+
 
 
 
