@@ -8,7 +8,7 @@ RH134
 https://github.com/studylabdoc/text/blob/main/REDHAT/RH134/20231218.txt
 
 google-meet
-https://meet.google.com/gnx-hrjw-caf
+https://meet.google.com/zej-vamo-vaj
 실습환경 
 https://rol.redhat.com 
 VT-LAB
@@ -566,6 +566,7 @@ mount / fstab  mount
 ----------------  lsblk blkid
 H/W
 + stratis 나올때도 있고 안나올때도 있음. 
+
 
 
 
