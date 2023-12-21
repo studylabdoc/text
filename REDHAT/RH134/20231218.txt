@@ -8,7 +8,7 @@ RH134
 https://github.com/studylabdoc/text/blob/main/REDHAT/RH134/20231218.txt
 
 google-meet
-https://meet.google.com/zej-vamo-vaj
+https://meet.google.com/cnf-dnap-jhn
 실습환경 
 https://rol.redhat.com 
 VT-LAB
@@ -1164,4 +1164,5 @@ lvm 확장
 swap 생성
 [추가] stratis 생성 < fstab 등록시 조심 : systemd.mount 매뉴얼 참고 
 
+nfs!
 
