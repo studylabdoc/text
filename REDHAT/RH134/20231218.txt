@@ -1388,16 +1388,26 @@ SELinux messages run: sealert -l d854ee12-966f-4109-8e87-7e41dcc69b72
 # firewall-cmd  --permanent --add-port=[82]/tcp
 # firewall-cmd  --reload
 
+컨테이너
+docker -> podman 
 podman 
+두문제->
 
-contailner-tools
+빌드를 통해 이미지를 생성 > 이미지로 컨테이너를 실행
+컨테이너를 서비스로 변환 > systemd에 등록하여 영구적인 서비스로 변환
+
+podman , contailner-tools
+podman  컨테이너 및 컨테이너 이미지를 관리
+buildah 컨테이너를 생성 
+skopeo  이미지를 검사. 복사. 삭제 이미지 서명
+
 podman command
 
 podman build 	컨테이너 파일을 사용하여 컨테이너 이미지를 빌드합니다. *
 podman run 	  새 컨테이너에서 명령을 실행합니다. *
 podman images 로컬 스토리지의 이미지를 나열합니다. *
 podman ps 	  컨테이너에 대한 정보를 출력합니다. *
-podman inspect컨테이너, 이미지, 볼륨, 네트워크 또는 포드의 구성을 표시합니다.
+podman inspect 컨테이너, 이미지, 볼륨, 네트워크 또는 포드의 구성을 표시합니다.
 podman pull 	레지스트리에서 이미지를 다운로드합니다. *
 podman cp 	  컨테이너와 로컬 파일 시스템 간에 파일 또는 폴더를 복사합니다.
 podman exec 	실행 중인 컨테이너에서 명령을 실행합니다.
@@ -1405,14 +1415,14 @@ podman rm 	  하나 이상의 컨테이너를 제거합니다. *
 podman rmi 	  로컬에 저장된 하나 이상의 이미지를 제거합니다. *
 podman search 레지스트리에서 이미지를 검색합니다. *
 
-목표
-이미지를 다운로드
-빌드를 통해 이미지를 생성
-컨테이너를 서비스로 변환
+wget *
+'
 
-podman  컨테이너 및 컨테이너 이미지를 관리
-buildah 컨테이너를 생성 
-skopeo  이미지를 검사. 복사. 삭제 이미지 서명
+wget 주소 :
+현재 디렉토리에 다운로드
+
+
+
 
 [root@node1 ~]# dnf info container-tools
 Last metadata expiration check: 0:03:21 ago on Thu 15 Jun 2023 02:29:25 PM KST.
@@ -1431,6 +1441,55 @@ Description  : Latest versions of podman, buildah, skopeo, runc, conmon, CRIU, U
              : updated.
 
 [root@node1 ~]# dnf -y install container-tools
+
+podman 사용시 run 일때 옵션
+
+--name 컨테이너의 이름을 지정
+--rm 컨테이너가 중지되면 컨테이너를 삭제
+-d 백그라운드 모드로 사용
+-it : 쉘을 열기위해서 사용하는 옵션 커맨드로  bash를 이용해야 경우 필수.
+
+사용자로 컨테이너를 구성하게 되면 0 - 1024번 포트를 사용 불가능
+80 X 그래서 컨테이너 내의 포트는 변경이 되어 있는 경우가 많다.
+그렇기 때문에 외부와 포트 포워딩이 되어야 한다.
+
+-p [hostport]:[conport]
+-p 8080:8080 
+
+ podman run -d --name web --rm -p 8080:8080 -v /home/contsvc/content:/var/www/html:Z registry.lab.example.com/rhel8/httpd-24
+
+439p 
+15분 
+podman run 
+-d 백그라운드 모드
+--name web  이름 지정
+--rm  정지시 삭제
+-p 8080:8080  포트 포워딩
+-v /home/contsvc/content:/var/www/html:Z 외부데이터 마운트를 위한 옵션 + selinux context 자동 변경 
+image name
++
+-e 환경변수 지정
+-e VAR=1
+
+서비스 화 
+mkdir -p ~/.config/systemd/user/
+cd ~/.config/systemd/user/
+podman generate systemd --name web --files --new
+podman stop -a
+systemctl --user daemon-reload 
+systemctl --user enable --now container-web.service
+loginctl enable-linger
+su - 
+reboot
+ssh root@servera
+curl http://localhost:8080
+firewall-cmd --permanent --add-port=8080/tcp
+firewall-cmd --reload 
+[student@workstation ~]$ curl http://servera:8080
+
+시험 문제
+210/300 3:00
+해보시면 거의 딱맞게 설계
 
 
 
