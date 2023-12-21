@@ -1244,6 +1244,108 @@ root > autofs에 대한 설정만 적절히 되어 있다면 이후 작업하는
 
 간접 접근 방식 
 
+nfs-utils autofs 패키지 필요.
+# dnf -y install nfs-utils autofs
+현재 내보내기 중인 디렉토리 확인
+
+[root@servera mnt]# ls
+ls: cannot access 'efi': No such file or directory
+efi  shares
+[root@servera mnt]# tree
+.
+└── shares
+    ├── direct
+    │   └── external
+    │       └── README.txt
+    └── indirect
+        ├── central
+        │   └── README.txt
+        ├── east
+        │   └── README.txt
+        └── west
+            └── README.tx
+
+마스터 맵 파일
+마스텁 맵 -> 정의 파일
+
+마스터 맵 파일 구성 
+/etc/auto.master에서 확인
+/etc/auto.master.d 디렉토리에 작성
+작성시 파일명은 .autofs로 끝나야 한다.
+
+직접 구성 요소
+# vi /etc/auto.master.d/direct.autofs
+/- /etc/auto.direct
+/-  : 다이렉트 파일에 대한 정의 파일인것을 지정 
+/etc/auto.direct : 다이렉트 구성 파일의 실제 옵션과 마운트 요소들을 작성하는 파일.
+
+# vi /etc/auto.direct
+/external -rw,sync,fstype=nfs4 serverb.lab.example.com:/shares/direct/external
+/external   : 로컬에 마운트될 디렉토리 , 만들지 않아도 된다. autofs가 필요한 경우 알아서 생성
+-rw,sync,fstype=nfs4 마운트시 사용할 옵션
+serverb.lab.example.com:/shares/direct/external  원격지의 디렉토리 주소를 작성
+# systemctl enable --now autofs
+
+간접 맵
+# vi /etc/auto.master.d/indirect.auto
+/internal /etc/auto.indirect
+central -rw,sync,fstype=nfs4 serverb.lab.example.com:/shares/indirect/central
+central : 접근시 사용하는 디렉토리명이 되며 실제 접근할 때는 마스터파일에서 작성한 부모 디렉토리를 포함하여 /internal/central 접근하게 되면 nfs 디렉토리로 접근 완료
+# systemctl reload-or-restart autofs
+
+# cd /internal/central
+
+간접 맵을 사용하는 궁극적인 이유: 와일드 카드 이용을 위함
+
+1. 수많은 디렉토리를 일일이 등록해야 하는 것을 방지
+2. 서버에 존재하는 디렉토리가 계속 변경되는 경우 
+
+* -rw,sync,fstype=nfs4 serverb.lab.example.com:/shares/indirect/&
+
+*에 대한 문자열을 &의 소스위치와 매핑을 시킴
+
+cd /internal/dir1
+dir1 -rw,sync,fstype=nfs4 serverb.lab.example.com:/shares/indirect/dir1
+# systemctl reload autofs
+
+시험문제: ?
+홈디렉토리를 nfs로 구성하는 것 
+서버측의 구성은 모두 완료
+계정은 이미 생성, home dir 실제하지 않음. 
+autofs를 통하여 /ruser/user1
+-----------
+부팅 과정
+
+POST -: 하드웨어 체크
+boot file search
+kernel 
+boot finish : login 
+
+0 종료
+1 싱글
+2 CLI nfsX   multi user
+3 CLI nfs O multi user
+4                    multi user
+5 GUI
+6 재부팅
+
+root 비밀번호를 변경
+* 접속이 되어 있는 상태라면 ? passwd 
+하지만 재부팅, 종료, 로그인 되어 있는 계정이 없으며 sudo가 불가능 하고 인증서 작업이 되어 있지 않아 그 어떤것으로도  root 계정 으로 전환이 불가능한 경우라면 직접 root 비밀번호를 교체
+
+
+kernel 선택줄 rescue kernel 선택 : e
+kernel 명령줄 linux : 마지막으로 이동 : rd.break : ctrl + x
+initramfs >break > systemd 
+
+# mount -o rw,remount /sysroot
+# chroot /sysroot
+# passwd 
+# touch /.autorelabel
+# exit
+# exit
+
+
 
 
 
