@@ -1333,6 +1333,9 @@ root 비밀번호를 변경
 * 접속이 되어 있는 상태라면 ? passwd 
 하지만 재부팅, 종료, 로그인 되어 있는 계정이 없으며 sudo가 불가능 하고 인증서 작업이 되어 있지 않아 그 어떤것으로도  root 계정 으로 전환이 불가능한 경우라면 직접 root 비밀번호를 교체
 
+한번에 성공시켜야 한다.
+
+재부팅 : 강제 재부팅.
 
 kernel 선택줄 rescue kernel 선택 : e
 kernel 명령줄 linux : 마지막으로 이동 : rd.break : ctrl + x
@@ -1340,10 +1343,120 @@ initramfs >break > systemd
 
 # mount -o rw,remount /sysroot
 # chroot /sysroot
+# passwd
+좀더 쉽게 : echo '비밀번호' | passwd --stdin root 
+# touch /.autorelabel
+현재 시스템에는 selinux가 활성화 되어 있음. 
+selinux 컨텍스트를 확인하는 것 외에도 타임스탬프를 확인
+root : redhat > 시도하는 순간
+/etc/shadow update : 업데이트 한 시간
+selinux 파일이 가지고 있는 타임 스탬프 
+/.autorelabel  부팅중에 최상위 디렉토리에서 .autorelabel파일을 발견하면 selinux를 강제로 disable 함 > 재부팅 > selinux를 다시 재활성화 
+# exit
+# exit
+
+
+kernel 선택줄 rescue kernel 선택 : e
+kernel 명령줄 linux : 마지막으로 이동 : rd.break : ctrl + x
+initramfs >break > systemd 
+# mount -o rw,remount /sysroot
+# chroot /sysroot
 # passwd 
 # touch /.autorelabel
 # exit
 # exit
+
+시험 보시는 분들 필수 *
+
+servera serverb  
+
+324p
+이 랩은 구성시 커널파일을 받아와서 재구성하기 때문에 상당히 오래 걸립니다. 
+2-3 5분까지 걸리기 때문에 기다려야 합니다.
+혹시나 중간에 취소를 해버리면 랩이 터져요.
+리셋
+
+
+selinux port labeling
+# systemctl restart httpd 
+# journalctl -f 
+바로 위로 올라가 빨간색 라인을 찾습니다.
+SELinux messages run: sealert -l d854ee12-966f-4109-8e87-7e41dcc69b72
+# sealert -l d854ee12-966f-4109-8e87-7e41dcc69b72
+# semanage port -a -t http_port_t -p tcp [82]
+# systemctl enable --now httpd
+# firewall-cmd  --permanent --add-port=[82]/tcp
+# firewall-cmd  --reload
+
+podman 
+
+contailner-tools
+podman command
+
+podman build 	컨테이너 파일을 사용하여 컨테이너 이미지를 빌드합니다. *
+podman run 	  새 컨테이너에서 명령을 실행합니다. *
+podman images 로컬 스토리지의 이미지를 나열합니다. *
+podman ps 	  컨테이너에 대한 정보를 출력합니다. *
+podman inspect컨테이너, 이미지, 볼륨, 네트워크 또는 포드의 구성을 표시합니다.
+podman pull 	레지스트리에서 이미지를 다운로드합니다. *
+podman cp 	  컨테이너와 로컬 파일 시스템 간에 파일 또는 폴더를 복사합니다.
+podman exec 	실행 중인 컨테이너에서 명령을 실행합니다.
+podman rm 	  하나 이상의 컨테이너를 제거합니다. *
+podman rmi 	  로컬에 저장된 하나 이상의 이미지를 제거합니다. *
+podman search 레지스트리에서 이미지를 검색합니다. *
+
+목표
+이미지를 다운로드
+빌드를 통해 이미지를 생성
+컨테이너를 서비스로 변환
+
+podman  컨테이너 및 컨테이너 이미지를 관리
+buildah 컨테이너를 생성 
+skopeo  이미지를 검사. 복사. 삭제 이미지 서명
+
+[root@node1 ~]# dnf info container-tools
+Last metadata expiration check: 0:03:21 ago on Thu 15 Jun 2023 02:29:25 PM KST.
+Available Packages
+Name         : container-tools
+Version      : 1
+Release      : 12.el9
+Architecture : noarch
+Size         : 7.9 k
+Source       : container-tools-1-12.el9.src.rpm
+Repository   : appstream
+Summary      : A meta-package witch container tools such as podman, buildah, skopeo, etc.
+License      : MIT
+Description  : Latest versions of podman, buildah, skopeo, runc, conmon, CRIU, Udica, etc as
+             : well as dependencies such as container-selinux built and tested together, and
+             : updated.
+
+[root@node1 ~]# dnf -y install container-tools
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
