@@ -9,7 +9,7 @@ https://github.com/studylabdoc/text/blob/main/REDHAT/RH134/20231218.txt
 
 google-meet
 
-https://meet.google.com/zog-csqf-mwu
+https://meet.google.com/efn-fzek-fgw
 실습환경 
 https://rol.redhat.com 
 VT-LAB
@@ -1494,4 +1494,7 @@ firewall-cmd --reload
 
 시험 문제
 useradd chmod chown...< 시험에는 다 나옵니다.
+
+
+
 
