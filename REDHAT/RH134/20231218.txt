@@ -1492,8 +1492,203 @@ firewall-cmd --reload
 210/300 3:00
 해보시면 거의 딱맞게 설계
 
-시험 문제
-useradd chmod chown...< 시험에는 다 나옵니다.
+useradd
+usermod
+userdel
+chmod
+chown
+setfacl
+getfacl
+dnf
+dnf config-manager
+grep
+find
+
+300 점 중에 250점 정도 생각하고 준비
+
+컨테이너 빼고 나머지를 다 맞추기
+컨테이너 + autofs를 빼고 나머지를 다 맞추기
+
+스토리지 관련 문제는 모두 해야 함.
+계정 관련된 것..
+
+RH124 랩중에사용해야 하는것:
+
+계정 관리
+lab start users-review
+1. workstation 시스템에서 student 사용자로 serverb 시스템에 대한 SSH 세션을 열고 root 사
+용자로 전환합니다.
+2. serverb 시스템에서 새로 생성된 사용자가 30일마다 암호를 변경해야 하도록 합니다.
+3. GID가 35000인 consultants 그룹을 생성합니다.
+4. 모든 consultants 그룹 멤버가 임의 사용자로 임의 명령을 실행할 수 있도록 관리 권한을 구성합니
+다. /etc/sudoers 파일을 편집하는 데 visudo 를 사용하지 마십시오. 대신 /etc/sudoers.d
+디렉터리에 구성 파일을 배치합니다.
+5. consultants 그룹을 보조 그룹으로 사용하여 consultant1, consultant2, consultant3
+사용자를 생성합니다.
+6. consultant1, consultant2, consultant3 암호를 redhat으로 설정합니다.
+7. consultant1, consultant2, consultant3 계정이 현재 날짜부터 90일 후에 만료되도록 설정
+합니다.
+8. 15일마다 암호를 변경하도록 consultant2 계정에 대한 암호 정책을 변경합니다.
+9. 또한 consultant1, consultant2, consultant3 사용자가 처음 로그인할 때 강제로 암호를 변
+경하도록 설정합니다.
+ lab grade users-review
+ lab finish users-review
+
+파일에 대한 액세스 제어
+ lab start perms-review
+지침
+1. student 사용자로 serverb에 로그인합니다. 쉘 프롬프트에서 sudo -i 명령을 실행하여 root
+사용자가 됩니다. student를 student 사용자 암호로 사용합니다.
+2. /home/techdocs 디렉터리를 생성합니다.
+3. /home/techdocs 디렉터리의 그룹 소유권을 techdocs 그룹으로 변경합니다.
+4. techdocs 그룹의 사용자가 /home/techdocs 디렉터리에 파일을 생성할 수 없는지 확인합니다.
+5. /home/techdocs 디렉터리에 대한 권한을 설정합니다. /home/techdocs 디렉터리에서
+setgid(2), 소유자/사용자 및 그룹의 경우 읽기, 쓰기, 실행 권한(7), 기타 사용자의 경우 권한 없음(0)
+을 구성합니다.
+6. 권한이 정확하게 설정되었는지 확인합니다.
+이제 techdocs 그룹에 쓰기 권한이 있습니다.
+7. 이제 techdocs 그룹의 사용자가 /home/techdocs 디렉터리에 파일을 생성하고 편집할 수 있
+는지 확인합니다. techdocs 그룹에 속하지 않은 사용자는 /home/techdocs 디렉터리에 파일
+을 생성하거나 편집할 수 없습니다. tech1 및 tech2 사용자는 techdocs 그룹에 속해 있습니다.
+database1 사용자는 해당 그룹에 속하지 않습니다.
+8. /etc/login.defs 파일을 수정하여 로그인 쉘의 기본 umask를 조정합니다. 일반 사용자에게는 해
+당 사용자와 그룹이 파일 및 디렉터리를 생성하고, 쓰고, 실행하고 다른 사용자는 새 파일과 디렉터리를
+보거나 수정하거나 실행하지 못하게 하는 umask 설정이 있어야 합니다.
+
+ lab grade perms-review
+$ lab finish perms-review
+
+DNF 소프트웨어 리포지토리 활성화
+
+ lab start software-repo
+다음 URL에서 사용자 지정 패키지 및 업데이트를 가져오도록 servera 의 소프트웨어 리포지토리
+를 구성합니다.
+http://content.example.com/rhel9.0/x86_64/rhcsa-practice/rht 의 사용
+자 지정 패키지
+http://content.example.com/rhel9.0/x86_64/rhcsa-practice/errata의
+사용자 지정 패키지 업데이트
+
+# dnf config-manager \
+--add-repo "http://content.example.com/rhel9.0/x86_64/rhcsa-practice/rht
+# vi /etc/yum.repos.d/rht.repo 로 직접 생성하여
+[repoid]
+name=rht
+baseurl=http~
+enabled=1
+gpgcheck=0
+
+명령줄에서 네트워킹 구성
+lab start net-configure
+
+type ethernet 
+ipv4.method manual 
+ipv4.addresses 172.25.250.10/24
+ipv4.dns 172.25.250.220
+ipv4.gateway 172.25.250.254
+autoconnect yes
+
+
+가상머신에서 vmware  
+제거 기준으로 네트워크 구성?
+
+
+NAT :  
+192.168.10.0/24
+
+192.168.10.2 : gw
+시험 시험 시험 시험
+
+210/300
+총 3시간 
+
+환경:
+workstation GUI
+KVM으로 구성된 가상머신:
+node1 - servera
+node2 - serverb
+
+시작하자마자 할일:
+1.중간에 있는 팝업창 확인 체크
+2. 왼쪽 상단에 있는 Activities 버튼 선택
+시험장 머신에는 아이콘 선택창이 왼쪽에 있음.
+2-1 첫번째 아이콘인 레드햇 마크로 되어 있는 파이어폭스 링크 < 시험문제
+2-2 두번째 아이콘 컴퓨터 모양 아이콘 
+선택창 3
+1 node1 
+2 node2
+3 close < X 
+
+node를 선택하게 되면 가상머신 컨트롤러
+콘솔 오픈 : 가상머신 콘솔 오픈 
+리셋 버튼 : 리셋을 진행하기 위해서 CONFRIM 입력을 하게 됩니다.
+
+처음에는 두 머신 모드 켜져 있음.
+엔터키를 입력을 해보시면 됩니다.
+
+시험문제 창 : 웹페이지 되어 있으며 왼쪽에 시간, 언어 선택
+
+---------------------------------
+초기 상태
+--------------------------------------
+servera
+root 로그인 가능
+네트워크가 안됨
+dnf 리포지토리 없음
+
+serverb
+root 로그인 불가능
+네트워크가 가능
+dnf 리포지토리 없음
+------------------------------------
+
+두 머신 모두 다음 상태로 전환
+1. root 로그인 가능
+2. 네트워크 활성화
+3. dnf 리포지토리를 구성하여 패키지를 다운로드 하고 설치가 가능한 상태
+4. 두 머신 모두 워크스테이션에서 ssh로 접근이 가능한 상태가 되어 ssh로 작업이 이루어 져야 합니다.
+
+작업 순서.
+
+SERVER A
+2-1.네트워크 설정	
+2-2.호스트네임 설정 > ssh 접근
+3-1. 리포지토리 설정
+SERVER B
+1 root 비밀번호 초기화 > ssh 접근 
+호스트네임 설정[확인] 
+3-2리포지토리 설정
+
+* 두 가상머신 모두 root 로그인이 ssh로 바로 들어가지 못하도록 막혀 있음.
+1. 콘솔로 접근하여 /etc/ssh/sshd_config permitrootlogin = yes 변경 하거나 또는
+2. 콘솔로 접근하여 일반 계정을 생성 -> su - 로그인 으로 계정 전환
+
+---------------------------------------------------
+
+시간이 보통 15분
+
+많이 흐른 분들은 45분
+
+
+http://naver.me/5R8jCeAC
+
+에티버스 학동
+패스트레인 양재
+
+다운로드 디렉토리 PDF 
+구글 , + 로그아웃 , 카카오톡 설치 삭제 <<*
+캐시 
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
