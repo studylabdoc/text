@@ -1,5 +1,9 @@
 RHCSA 2일 정리판 
 
+01097902540
+nsr230@studylab.xyz
+
+
 https://github.com/studylabdoc/text/blob/main/REDHAT/RH199/20240104.txt
 
 RHA : 이전에 사용하던 랩 구성
@@ -327,7 +331,13 @@ CMD..
 
 # chmod u+x  run.sh
 
-
+# tuned-adm 
+active tuned 활성화
+list : tuned에서 사용가능한 프로파일 확인
+off tuned 비활성화
+profile tuned에서 프로파일을 선택 + 활성화
+recommend tuned에서 추천하는 프로파일을 출력
+verify tuned 프로파일 확인
 
 
 
