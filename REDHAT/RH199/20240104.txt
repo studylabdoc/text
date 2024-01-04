@@ -1,0 +1,4 @@
+RHCSA 2일 정리판 
+
+
+https://github.com/studylabdoc/text/blob/main/REDHAT/RH199/20240104.txt
