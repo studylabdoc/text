@@ -1,4 +1,34 @@
 RHCSA 2일 정리판 
 
+RHA : 이전에 사용하던 랩 구성
+rol.redhat.com
+MY VIRTUAL TRAINING CLASSES >
+RH199 - RHCSA Rapid Track > Join
+
+리소스 -> Download pdf ->KO 
+총 17장
+하지만 우리만 시험에 나오는 것만 할거임!
+
+Chapter 3: 로컬 사용자 및 그룹 관리 : 요거는 전체
+Section 4.3: 기본 권한 및 파일 액세스 관리
+Section 6.5: 튜닝 프로파일 조정
+Section 7.1: 반복 실행 사용자 작업 예약
+Section 8.3: DNF를 사용하여 소프트웨어 패키지 설치 및 업데이트
+Section 8.5: DNF 소프트웨어 리포지토리 활성화
+Section 9.3: 파티션, 파일 시스템, 영구 마운트 추가
+Section 9.5: 스왑 공간 관리
+Section 10.1: 논리 볼륨 생성 및 확장
+Section 11.1: 자동으로 시작된 시스템 프로세스 식별
+Section 11.7: 루트 암호 재설정
+Section 12.9: 정확한 시간 유지 관리
+Section 13.3: 명령줄에서 네트워킹 구성 : nmcli > exam : nmtui 
+Section 13.7: 호스트 이름 및 이름 확인 구성
+Section 14.3: 네트워크 연결 스토리지 자동 마운트
+Section 15.3: SELinux 포트 레이블 지정 제어
+Section 15.1: 서버 방화벽 관리
+Section 16.5: 컨테이너 스토리지 및 네트워크 리소스 관리
+Section 16.7: 컨테이너를 시스템 서비스로 관리
+
+
 
 https://github.com/studylabdoc/text/blob/main/REDHAT/RH199/20240104.txt
