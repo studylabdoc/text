@@ -1,7 +1,7 @@
 RHCSA 2일 정리판 
 
-01097902540
-nsr230@studylab.xyz
+01097902540 문자 또는 
+nsr230@studylab.xyz 연락처 
 
 https://github.com/studylabdoc/text/blob/main/REDHAT/RH199/20240104.txt
 
@@ -632,8 +632,60 @@ lvextend -l +1 /dev/vg0/lv1 ; xfs_growfs /stage2 ; df -h /stage2  xfs 계열 늘
 
 354  논리 볼륨 생성 및 확장
 360 스토리지 스택 관리
- 
 
+
+3:30 시작
+
+컨테이너 빠르게 끝내고
+시험에서 진행 하는 방식..
+
+컨테이너
+
+가상화
+
+
+컨테이너 -> 이미지를 통해 생성한 프로세스 
+
+이미지 -> 컨테이너 생성을 위한 베이스 파일
+
+컨테이너에서 
+
+포트 호스트:컨테이너
+볼륨 호스트:컨테이너 
+
+-----------------------------
+
+vmware
+
+설치가 완료
+
+ovf -> 둘다 압축 해제
+exam
+	ㄴ servera
+	ㄴ serverb
+
+* 버추얼박스 삭제! 
+네트워크 구성 
+
+edit -> virtual network editor -> 관리자 권한 획득
+
+VMnet8 선택 
+SubnetIP : 192.168.10.0 
+NATsetting ->  GATEWAY > 192.168.10.2 
+
+OVF 해제
+FILE- open - ovf 파일 선택
+이름 exam_servera
+위치: exam\servera 
+
+root/ redhat
+servera
+192.168.10.210
+
+serverb
+192.168.10.220
+
+putty ?
 
 
 
