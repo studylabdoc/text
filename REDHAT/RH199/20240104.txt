@@ -555,14 +555,84 @@ swap을 동일하게 끝
 
 /etc/fstab에 등록하는 경우
 UUID=7aed8e9e-ce2c-4829-be7f-7e50c0b0d0c9       swap    swap    defaults        0       0
+UUID=1329eab1-a095-49ed-bc3e-fd082399cf83       swap    swap    defaults,pri=10        0       0
+
+스왑을 생성하는 다른 방법:
+파일로 만들기
+# dd if=/dev/zero of=swapfile bs=1M count=1024
 
 
+329 스왑 공간 관리
+333 기본 스토리지 관리
+2:00 시작 : LVM 컨테이너 
+
+표준 파티션
+
+블록 스토리지 생성 파티션->
+한번 생성하게 되면 용량 변경이 안됨.
 
 
+논리파티션의 확장
+용량 변경 ->
+RIAD
+LVM
 
+LV : VG에 할당된 용량으로 파티셔닝 
+VG : PV들의 그룹[하나 이상의 디스크를 연결 가능]
+PV : LVM 체계에서 이해하는 물리적인 디스크
+
+
+vg-lv
+
+PE - LE
+LVM이 사용하는 블록 사이즈
+default - 4M 4 8 16 32 64 128 256 >>  
+vg를 생성할때 사용할 블록 사이즈를 지정.
+* 지정이 되면 이후에 변경이 안됨. * 초기 설정시 생각을 잘 해야 함.
+vg에서 pe가 결정되면 lv 를 생성할때 le 가 매핑
+
+
+마운트
+------------
+파일시스템
+---LVM----
+파티션
+--------
+H/W
+
+
+마운트 하고  부팅시에도 사용이 가능하다.
+
+LVM의 강점은 지금부터
+사용을 하다가 용량을 없다. 보통?
+새로운 디스크 장착 > 기존 데이터를 큰 디스크로 넘긴다.
+원래 디스크를 초기화,
+
+LVM 
+사용을 하다가 용량을 없다.
+새로운 디스크 장착 > LV를 확장
+
+
+/dev/mapper/vg0-lv0 ext4      115M  112M     0 100% /stage1
+/dev/mapper/vg0-lv1 xfs       123M  123M  144K 100% /stage2
+기존 용량을 180메가로 변경 할 예정
++_ 25M
+
+용량에 대한 계산
+
+
+/dev/mapper/vg0-lv0  176M  114M   52M  69% /stage1
+/dev/mapper/vg0-lv1  183M  124M   60M  68% /stage2
+
+250M 
+
+lvextend -l +1 /dev/vg0/lv0 ; resize2fs /dev/vg0/lv0 ; df -h /stage1   ext 계열 늘리는 경우
+lvextend -l +1 /dev/vg0/lv1 ; xfs_growfs /stage2 ; df -h /stage2  xfs 계열 늘리는 경우
+
+
+354  논리 볼륨 생성 및 확장
+360 스토리지 스택 관리
  
-
-
 
 
 
