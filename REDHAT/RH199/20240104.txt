@@ -409,9 +409,140 @@ tar  134 4장 압축된 tar 아카이브 관리
 
 일종의 파일 서버 : 리눅스 설치 가능한 패키지 파일이 저장되어 있는 서버
 
+---------------------------------------------------
+day2
+
+스토리지  + 컨테이너
+학교에서 리눅스 수업 
+스토리지 마운트 
+영구마운트
+/etc/fstab 작업
+fdisk / parted 작업
+
+서버 / 컴퓨터
+
+블록 스토리지 - 블록장치  
+
+인식 - 연결 - 파티션 - 파일시스템 - 마운트 - fstab 
+
+온프레미스 / 클라우드 
+
+마운트 / fstab  mount , /etc/fstab 
+--------------
+파일시스템   mkfs -t , mkfs.xfs mkfs.ext4
+--- LVM-----  pv ,vg ,lv : pvs pvdispaly , pvcreate, pvremove , vgextend
+파티션  fdisk gdisk parted
+----------
+H/W   lsblk blkid
+
++ swap -> mkswap, swapon , swapoff
+
+serverb의 문제 대부분은 스토리지 문제이다. 
+여기서는 틀리면 안된다. : 
+
+1. 표준 파일 시스템을 구성하여 마운트 하기 !
++ /etc/fstab 에 등록하여 영구 마운트 하기 !
+
+사전 조건 : 디스크가 이미 연결되어 있다.
+연결되어 있는 디스크를 확인?
+
+UNIX 표준: 
+ls : 확인
+ch : 변경
+rm : 삭제
+mk : 생성
+
+[root@servera ~]# lsblk 
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+vda    252:0    0   10G  0 disk 
+├─vda1 252:1    0    1M  0 part 
+├─vda2 252:2    0  200M  0 part /boot/efi
+├─vda3 252:3    0  500M  0 part /boot
+└─vda4 252:4    0  9.3G  0 part /
+vdb    252:16   0    5G  0 disk 
+vdc    252:32   0    5G  0 disk 
+vdd    252:48   0    5G  0 disk 
+
+linux disk
+hda: 현재 사용하지 않음. IDE
+sda: scsi , sas , s-ata , usb , virt-scsi 
+vda : virt-io 
+
+fdisk : 전통적으로 많이 사용하는 파티션 툴
+gdisk : 한 때 이용한 gpt 전용 툴
+
+parted : 현재 이용하는 gpt 툴
+그런데 현재 fdisk가 업데이트 되면서 둘다 가능
+
+sfdisk 디스크[의 메타 데이터]를 덤프하여 메타 데이터를 다른곳에 동일하게 적용
+
+11시 : fdisk -> fstab mount 까지 끝 
+
+fdisk  파티션 테이블을 구성하는 명령 : * 
+[root@servera ~]# fdisk /dev/vdb 
+
+Welcome to fdisk (util-linux 2.37.4).
+Changes will remain in memory only, until you decide to write them.
+Be careful before using the write command.
+
+Device does not contain a recognized partition table.
+Created a new DOS disklabel with disk identifier 0x3a063d68.
+
+  Generic
+   d   delete a partition  파티션 삭제
+   n   add a new partition 새로운 파티션 구성
+   p   print the partition table 현재 파티정 정보 출력
+   t   change a partition type 파티션 타입 변경
+
+  Save & Exit
+   w   write table to disk and exit   현재 메모리상의 파티션 변경 정보를 저장
+   q   quit without saving changes 빠져나가기
+
+  Create a new label
+   g   create a new empty GPT partition table   gpt로 파티션 변경
+   o   create a new empty DOS partition table   dos로 파티션 변경
+
+새로운 파티션을 생성하고 확인하기
+
+Device     Boot   Start     End Sectors Size Id Type
+/dev/vdb1          2048 2099199 2097152   1G 83 Linux
+/dev/vdb2       2099200 4196351 2097152   1G 83 Linux
+
+표준 파티션 두개 생성 한뒤 저장.
+Command (m for help): w
+The partition table has been altered.
+Calling ioctl() to re-read partition table.
+Syncing disks.
+
+[root@servera ~]# lsblk /dev/vdb
+NAME   MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS
+vdb    252:16   0   5G  0 disk 
+├─vdb1 252:17   0   1G  0 part 
+└─vdb2 252:18   0   1G  0 part 
+
+마운트
+디바이스 사용자가 바로 건드릴수 없음.
+사용자가 장치를 이용할 수 있게 적용
+
+1. 파일시스템까지 구성된 디바이스
+2. 디바이스와 연결할 디렉토리
+ 재부팅시 사용이 가능한가?
+
+/etc/fstab 파일에 저장
+
+> 저장 이후 해야 하는것
+[root@servera ~]# systemctl daemon-reload 
 
 
+# dd if=/dev/zero of=/dev/vdb 
 
+
+309 파일 시스템 마운트 및 마운트 해제
+321 파티션, 파일 시스템, 영구 마운트 추가
+
+12:10분 
+swap을 동일하게 끝
+ 
 
 
 
