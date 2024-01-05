@@ -542,6 +542,24 @@ vdb    252:16   0   5G  0 disk
 
 12:10분 
 swap을 동일하게 끝
+
+스왑 - 가상메모리
+
+컴퓨터 메모리2
+
+메모리가 부족하다면? : 빠른 증설!
+
+1. 파티션을 생성하면서 linyx swap type으로 변경
+2. mkswap 
+3. swapon swapoff
+
+/etc/fstab에 등록하는 경우
+UUID=7aed8e9e-ce2c-4829-be7f-7e50c0b0d0c9       swap    swap    defaults        0       0
+
+
+
+
+
  
 
 
