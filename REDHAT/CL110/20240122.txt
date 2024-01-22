@@ -10,9 +10,14 @@ CL110
 nsr230@studylab.xyz daum naver
 RHCSA CE CKA
 
+openstack 
+https://docs.openstack.org/install-guide/_images/openstack-arch-kilo-logical-v1.png
+
 KVM 
 https://drive.google.com/file/d/1Oqgnu0VX5I3zLyrqtA2fu3KLMvnCuVie/view?usp=sharing
 
+under / over cloud
+https://access.redhat.com/documentation/ko-kr/red_hat_openstack_platform/11/html/director_installation_and_usage/chap-introduction#sect-Overcloud
 
 랩 환경 구성
 검색: 20240122
@@ -93,19 +98,53 @@ H/W [CPU: machine]
 Kilo 버전이후에는 안정성 / 성능 개선에 주력 
 
 Triple O 
+Openstack On Openstack
 오픈스택을 위한 오픈스택 
 
 undercloud
+-> 배포를 위한 오픈스택
+언더클라우드는 주요 director 노드로 OpenStack 환경(오버클라우드)을 구성하는 OpenStack 노드를 프로비저닝하고 관리하는 구성 요소가 포함된 단일 시스템 OpenStack 설치 노드
 
 overcloud
+-> 관리를 위한 오픈스택
+오버클라우드는 언더클라우드를 사용하여 생성된 Red Hat OpenStack Platform 환경으로 OpenStack Platform 환경을 기반으로 다양한 노드 역할이 포함
 
-12:00 
+언더클라우드의 오픈스택을 사용하여 오버 클라우드를 설치하는 형식
+
+다수의 클라우드 서버를 대상으로 관리하는 경우: 효율성 증가, 물리적 분리로 인한 보안성 
+
+오픈스택 플랫폼 서비스 설명
+
+코어 서비스[컴포넌트]
+옵션 서비스[컴포넌트]
+
+계산 서비스(Nova)
+인스턴스에 대한 배포
+
+네트워크 서비스(Neutron)
+네트워크 관리 서비스
+
+이미지 서비스(Glance)
+이미지 관리 서비스
+
+블록스토리지 서비스(Cinder)
+오브젝트 스토리지 서비스(Swift)
+오브젝트 -> 객체
+속성정보를 가지고 있는 무언가.
+속성정보 [메타데이터]를 가지고 있는 데이터 
+
+대시보드(Horizon)
+사용자 환경 친화적 엔드 포인트
+
+오케스트레이션(Heat)
+리소스들을 세트로 관리, 스케일링 작업
+
+ID(Keystone)
+사용자의 권란에 따라 허용과 거부
+
+배치(Placement)
 
 
 
-
-
-
-
-
+ 
 
