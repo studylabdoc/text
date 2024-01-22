@@ -10,6 +10,10 @@ CL110
 nsr230@studylab.xyz daum naver
 RHCSA CE CKA
 
+KVM 
+https://drive.google.com/file/d/1Oqgnu0VX5I3zLyrqtA2fu3KLMvnCuVie/view?usp=sharing
+
+
 랩 환경 구성
 검색: 20240122
 
