@@ -262,7 +262,34 @@ server classroom.example.com iburst
 # systemctl daemon-reload
 # systemctl enable --now chronyd
 # timedatectl
+# systemctl is-enabled chronyd
 
-114p
-3번 부터 작업 시작
+압축된 tar 아카이브 관리
+# tar
+f : 테이프 장치가 아닌 파일로 작업
+c : 아카이빙 생성
+t : 아카이빙 확인
+x : 아카이빙 해제 
+v: 작업 내역 확인 
+z: gzip 압축을 동시에 수행하는 경우
+j: bzip2 압축을 동시에 수행하는 경우
+J: xz 압축을 동시에 수행하는 경우
+
+사용 형식
+# tar 옵션 생성될파일명 디렉토리,파일
+# tar cfz test.tar.gz test
+# tar cfj test.tar.bz2 test
+# # tar cfJ test.tar.xz test
+
+tar를 이용하여 /var에 대한 아카이빙 파일을 생성한다. 압축 알고리즘은 gzip을 이용하고 생성되는 파일은 /root에 test.tar.gz 으로 생성한다.
+# tar cfz /root/test.tar.gz  /var 
+
+함정카드 발동 !
+tar를 이용하여 /var에 대한 아카이빙 파일을 생성한다. 압축 알고리즘은 bzip2을 이용하고 생성되는 파일은 /root에 test.tar.xz 으로 생성한다.
+# tar cfj /root/test.tar.xz  /var 
+시험에서는 마지막에 확인해야 하는것
+
+131p
+
+
 
