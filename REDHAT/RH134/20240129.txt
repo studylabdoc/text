@@ -241,3 +241,28 @@ chrony / chronyd
      CGroup: /system.slice/chronyd.service
              └─26722 /usr/sbin/chronyd -F 2
 
+# vi /etc/chrony.conf : ntp 설정을 위한 파일
+server classroom.example.com iburst
+iburst : iburst 옵션을 사용하는 것이 좋습니다. 그러면 chronyd
+서비스가 시작된 후 보다 정확한 초기 시간 동기화를 위해 서비스에서 짧은 기간 동안 네 번 측정합니다.
+
+# systemctl restart chronyd
+# chronyc -a makestep
+시간서버와 로컬서버의 시간이 차이가 많이 나게되면 동기화에 오랜 시간이 걸린다. 이 걸리는 시간을 압축하기 위하여 해당 명령 
+
+# chronyc sources -v
+
+시험에서는 어디에서 어디까지 인가?
+# dnf -y install chrony
+# rpm -ql chrony  | grep conf
+# vi /etc/chrony.conf
+-------------------------------------------------
+server classroom.example.com iburst
+-------------------------------------------------
+# systemctl daemon-reload
+# systemctl enable --now chronyd
+# timedatectl
+
+114p
+3번 부터 작업 시작
+
