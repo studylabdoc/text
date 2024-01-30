@@ -1,6 +1,6 @@
 RH134[5]
 
-https://meet.google.com/xrb-yyrj-tht
+https://meet.google.com/qnc-byrd-skk
 
 https://github.com/studylabdoc/text/blob/main/REDHAT/RH134/20240129.txt
 
@@ -302,7 +302,16 @@ virtual-guest
 
 159p
 
+-----DISK-----
 
+
+mount / fstab  mount                -----+
+----------------                                      |
+파일시스템  mkfs                                 |
+-----[LVM]------  pv vg lv..                 |
+파티션   parted / fdisk  / sfdisk        |
+----------------  lsblk blkid     ------+
+H/W
 
 
 
