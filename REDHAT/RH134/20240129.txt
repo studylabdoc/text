@@ -665,10 +665,14 @@ pvcreate pvs pvdisplay pvremove
 vgcreate vgs vgdisplay vgextend vgremove
 lvcreate lvs lvbdisplay lvextend lvremove
 
-260p
-생성, 확장
+nfs
 
-4:40분
+servera 클라이언트
+
+serverb 서버
+
+
+
 
 
 
