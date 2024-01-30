@@ -534,6 +534,8 @@ Filename                                Type            Size            Used    
 /dev/vdb1                               partition       1048572         0               20
 /swap/swapfile                          file            1048572         0               10
 
+스왑 문제는 block disk 형태로 구성을 해야 하기 때문에 dd로 만드는 데이터 파일 형태로 구성하면 점수가 없음.
+
 
 
 
