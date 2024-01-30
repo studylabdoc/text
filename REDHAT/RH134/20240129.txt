@@ -383,6 +383,47 @@ Command action
    s   create a new empty Sun partition table
 
 # fdisk /dev/vdb
+# lsblk 
+vdb    252:16   0    5G  0 disk 
+├─vdb1 252:17   0    1G  0 part 
+└─vdb2 252:18   0    1G  0 part 
+파티션 두개 생성.
+
+파일 시스템 생성
+-------------------------------
+# mkfs.ext4 /dev/vdb1
+# mkfs.xfs /dev/vdb2
+
+마운트 
+-------------------------
+# mkdir /stage1    : /dev/vdb1
+# mkdir /stage2    : /dev/vdb2
+
+mount 디바이스 디렉토리
+# mount /dev/vdb1 /stage1
+# mount UUID=a3300ecb-be9d-4d63-b563-a22bce7578a6 /stage2
+
+fstab 등록 : 재부팅시에도 사용 가능한 상태로 있어야 한다.
+# umount /stage1
+# umount /stage2
+
+# vi /etc/fstab
+작성 방식
+#device mountpoint f/s option dump fsck
+
+/dev/vdb1       /stage1 ext4    defaults        0       0
+UUID=a3300ecb-be9d-4d63-b563-a22bce7578a6       /stage2 xfs     defaults        0       0
+
+# systemctl daemon-reload
+# mount -a
+
+
+
+
+
+
+
+
 
 
 
