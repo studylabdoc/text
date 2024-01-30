@@ -1,5 +1,9 @@
 RH134[5]
 
+김기연
+nsr230@studylab.xyz
+01097902540
+
 https://meet.google.com/pec-vcuk-geq
 
 https://github.com/studylabdoc/text/blob/main/REDHAT/RH134/20240129.txt
@@ -417,7 +421,118 @@ UUID=a3300ecb-be9d-4d63-b563-a22bce7578a6       /stage2 xfs     defaults        
 # systemctl daemon-reload
 # mount -a
 
+swap
+--------------------------
+스왑의 구성부터 사용
 
+fdisk -> swap partition
+mkswap : 스왑 파일시스템 구성
+swapon : 스왑 활성화
+swapoff : 스왑 비활성화
+/etc/fstab에 등록하여 스왑을 부팅시에 활성화.
+
+[root@servera ~]# fdisk /dev/vdb
+
+Command (m for help): p
+Disk /dev/vdb: 5 GiB, 5368709120 bytes, 10485760 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0xa2c119ca
+
+Device     Boot Start     End Sectors Size Id Type
+/dev/vdb1        2048 2099199 2097152   1G 83 Linux
+
+Filesystem/RAID signature on partition 1 will be wiped.
+
+Command (m for help): t
+Selected partition 1
+Aliases:
+   linux          - 83
+   swap           - 82
+   extended       - 05
+   uefi           - EF
+   raid           - FD
+   lvm            - 8E
+   linuxex        - 85
+Hex code or alias (type L to list all): 82
+Changed type of partition 'Linux' to 'Linux swap / Solaris'.
+
+
+Command (m for help): p
+Disk /dev/vdb: 5 GiB, 5368709120 bytes, 10485760 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0xa2c119ca
+
+Device     Boot Start     End Sectors Size Id Type
+/dev/vdb1        2048 2099199 2097152   1G 82 Linux swap / Sola
+
+Command (m for help): q
+
+
+
+
+
+[root@servera ~]# fdisk -l /dev/vdb
+Disk /dev/vdb: 5 GiB, 5368709120 bytes, 10485760 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0xa2c119ca
+
+Device     Boot Start     End Sectors Size Id Type
+/dev/vdb1        2048 2099199 2097152   1G 82 Linux swap / Sola
+
+[root@servera ~]# mkswap /dev/vdb1
+Setting up swapspace version 1, size = 1024 MiB (1073737728 bytes)
+no label, UUID=830c2564-28ad-4a83-a611-dc9c73cc3dc4
+[root@servera ~]# lsblk  --fs /dev/vdb
+NAME FSTYPE FSVER LABEL UUID                                 FSAVAIL FSUSE% MOUNTPOINTS
+vdb                                                                         
+└─vdb1
+     swap   1           830c2564-28ad-4a83-a611-dc9c73cc3dc4
+
+[root@servera ~]# free
+               total        used        free      shared  buff/cache   available
+Mem:         1817392      208444     1428928        9676      180020     1454328
+Swap:              0           0           0
+[root@servera ~]# swapon /dev/vdb1
+[root@servera ~]# free
+               total        used        free      shared  buff/cache   available
+Mem:         1817392      208608     1428704        9676      180080     1454180
+Swap:        1048572           0     1048572
+
+# swapon -s
+Filename                                Type            Size  Used             Priority
+/dev/vdb1                               partition       10485720               -2
+
+# swapoff /dev/vdb1  
+[root@servera swap]# swapon -p 10 /dev/vdb1
+[root@servera swap]# swapon -s
+Filename                                Type            Size         Used            Priority
+/dev/vdb1                               partition       1048572         0               10
+우선순위 : 스왑이 사용되는 파일시스템의 우선순위
+[root@servera swap]# vi /etc/fstab
+UUID=830c2564-28ad-4a83-a611-dc9c73cc3dc4       swap    swap  defaults        0       0
+[root@servera swap]# swapon -a
+[root@servera swap]# swapon -s
+Filename                                Type            Size         Used            Priority
+/dev/vdb1                               partition       1048572         0               -2
+
+
+UUID=830c2564-28ad-4a83-a611-dc9c73cc3dc4       swap    swap  defaults,pri=20        0       0
+/swap/swapfile  swap swap defaults,pri=10        0       0
+우선순위를 주기 위해서 pri=값을 주면 됨높은값이 먼저 사용되는 swap 이기 때문에 먼저 사용할 디바이스에 대하여 높은 값을 설정 한다.
+
+[root@servera swap]# swapon -s
+Filename                                Type            Size            Used            Priority
+/dev/vdb1                               partition       1048572         0               20
+/swap/swapfile                          file            1048572         0               10
 
 
 
