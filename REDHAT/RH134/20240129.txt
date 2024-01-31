@@ -671,9 +671,22 @@ servera 클라이언트
 
 serverb 서버
 
+291p nfs 연결
+298p autofs 연결
+303p lab
 
+패키지 : autofs , nfs-utils
+fstab 등록시 FS = nfs 
+autofs 
+작성 파일이 두개
+master -> define 
 
-
+다이렉트
+/- /etc/auto
+/shared/dir1 -rw,sync remote-mount
+인다이렉트
+/shared /etc/auto1
+dir1 -rw,sync remote-mount
 
 
 
