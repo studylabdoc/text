@@ -675,6 +675,7 @@ serverb 서버
 298p autofs 연결
 303p lab
 
+11:00 root 패스워드 교체 
 패키지 : autofs , nfs-utils
 fstab 등록시 FS = nfs 
 autofs 
@@ -689,11 +690,57 @@ master -> define
 dir1 -rw,sync remote-mount
 
 
+serverb에서 내보내기 서비스중이다.
+/share/dir1을 로컬서버에 /external/dir1에 마운트 하라
+serverb:/share/dir1
 
+루트 암호 재설정
+패스워드를 변경하는 방법
+# passwd
+# echo 'redhat' | passwd --stdin root
+# echo 'root:redhat' | chpasswd
 
+쉘에 root가 접근이 되어 있지 않음
+sudo로 전환될 계정이 없음
+인증서로 로그인이 되지 않음.
 
+해킹
+root 쉘로 로그인이 불가능한 상황에서 root 패스워드를 리셋해야 하는 경우
 
+콘솔에서 작업
+로그인 창이 떠있다면 강제 재부팅ctrl + alt + del
 
+커널 선택 줄
+기본커널이 아닌 rescue 커널을 이용하여 부팅, 수정 모드 -> e
 
+수정 모드로 진입 이후에 linux로 시작하는 라인으로 변경 , 해당 라인의 마지막 [end] rd.break 입력 > ctrl + x 
+
+부팅 완료후 메인터넌스 모드 진입 > enter
+# mount -o rw,remount /sysroot
+# chroot /sysroot
+/boot initramfs image 
+initramfs > 이미지  압축 해제 > 메모리
+
+패스워드 변경
+# echo 'redhat' | passwd --stdin root
+
+SELINUX 
+# touch /.autorelabel
+# exit
+# exit
+서버 재부팅
+커널 선택 화면에서 레스큐 커널을 선택한 상태로 e를 누른다.
+linux 라인에서 마지막으로 이동하여 (end키 이용) rd.break 라고 입력
+ctrl -x 를 눌러 부팅
+쉘이 뜨면 다음과 같이 입력한다 (묻지마)
+mount -o rw,remount /sysroot    :       mount | grep sysroot > rw가 있는지 확인
+chroot /sysroot
+echo '지정된비번' | passwd --stdin root
+touch /.autorelabel
+exit
+exit
+끝
+
+ 
 
 
