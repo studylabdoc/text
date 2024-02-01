@@ -4,7 +4,7 @@ RH134[5]
 nsr230@studylab.xyz
 01097902540
 
-https://meet.google.com/qgi-hffs-ihh
+https://meet.google.com/piz-jwzx-tmc
 
 https://github.com/studylabdoc/text/blob/main/REDHAT/RH134/20240129.txt
 
@@ -741,8 +741,59 @@ exit
 exit
 끝
 
-324p
+/var/www(/.*)? 의 뜻
+ 슬래시로 시작하고 그 뒤에 임의의 수의 문자가 있는 문자 집합
 
- 
+디렉토리라는 형식은 뒤에 /가 붙어 있음
+/var/www/
+www디렉토리안에 존재하는 모든 파일
+. 시작, 문자, 숫자,,내부에 존재하는 모든 파일을 지칭
+
+185p
+193p
+25분
+
+
+audit
+
+type=AVC msg=audit(1706683305.533:867): avc:  denied  { getattr } for  pid=9911 comm="httpd" path="/var/www/html/index.html" dev="vda4" ino=8401457 scontext=system_u:system_r:httpd_t:s0 tcontext=unconfined_u:object_r:admin_home_t:s0 tclass=file permissive=0
+type=SYSCALL msg=audit(1706683305.533:867): arch=c000003e syscall=262 success=no exit=-13 a0=ffffff9c a1=7efca003af38 a2=7efca5e5b740 a3=0 items=0 ppid=9907 pid=9911 auid=4294967295 uid=48 gid=48 euid=48 suid=48 fsuid=48 egid=48 sgid=48 fsgid=48 tty=(none) ses=4294967295 comm="httpd" exe="/usr/sbin/httpd" subj=system_u:system_r:httpd_t:s0 key=(null)ARCH=x86_64 SYSCALL=newfstatat AUID="unset" UID="apache" GID="apache" EUID="apache" SUID="apache" FSUID="apache" EGID="apache" SGID="apache" FSGID="apache"
+type=PROCTITLE msg=audit(1706683305.533:867): proctitle=2F7573722F7362696E2F6874747064002D44464F524547524F554E44
+type=AVC msg=audit(1706683305.533:868): avc:  denied  { getattr } for  pid=9911 comm="httpd" path="/var/www/html/index.html" dev="vda4" ino=8401457 scontext=system_u:system_r:httpd_t:s0 tcontext=unconfined_u:object_r:admin_home_t:s0 tclass=file permissive=0
+type=SYSCALL msg=audit(1706683305.533:868): arch=c000003e syscall=262 success=no exit=-13 a0=ffffff9c a1=7efca003b018 a2=7efca5e5b740 a3=100 items=0 ppid=9907 pid=9911 auid=4294967295 uid=48 gid=48 euid=48 suid=48 fsuid=48 egid=48 sgid=48 fsgid=48 tty=(none) ses=4294967295 comm="httpd" exe="/usr/sbin/httpd" subj=system_u:system_r:httpd_t:s0 key=(null)ARCH=x86_64 SYSCALL=newfstatat AUID="unset" UID="apache" GID="apache" EUID="apache" SUID="apache" FSUID="apache" EGID="apache" SGID="apache" FSGID="apache"
+type=PROCTITLE msg=audit(1706683305.533:868): proctitle=2F7573722F7362696E2F6874747064002D44464F524547524F554E44
+type=SERVICE_START msg=audit(1706683305.538:869): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=dbus-:1.1-org.fedoraproject.Setroubleshootd@5 comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'UID="root" AUID="unset"
+type=SERVICE_START msg=audit(1706683306.092:870): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=dbus-:1.1-org.fedoraproject.SetroubleshootPrivileged@4 comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'UID="root" AUID="unset"
+type=SERVICE_STOP msg=audit(1706683310.514:871): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=systemd-hostnamed comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'UID="root" AUID="unset"
+type=BPF msg=audit(1706683310.536:872): prog-id=53 op=UNLOAD
+type=BPF msg=audit(1706683310.536:873): prog-id=52 op=UNLOAD
+
+
+
+
+log
+Jan 31 15:41:45 servera systemd[1]: Started dbus-:1.1-org.fedoraproject.Setroubleshootd@5.service.
+Jan 31 15:41:46 servera setroubleshoot[10288]: failed to retrieve rpm info for /var/www/html/index.html
+Jan 31 15:41:46 servera systemd[1]: Started dbus-:1.1-org.fedoraproject.SetroubleshootPrivileged@4.service.
+Jan 31 15:41:46 servera setroubleshoot[10288]: SELinux is preventing /usr/sbin/httpd from getattr access on the file /var/www/html/index.html. For complete SELinux messages run: sealert -l 373e8311-b8eb-478a-856d-3e9f34bfdeb6
+Jan 31 15:41:46 servera setroubleshoot[10288]: SELinux is preventing /usr/sbin/httpd from getattr access on the file /var/www/html/index.html.#012#012*****  Plugin restorecon (99.5 confidence) suggests   ************************#012#012If you want to fix the label. #012/var/www/html/index.html default label should be httpd_sys_content_t.#012Then you can run restorecon. The access attempt may have been stopped due to insufficient permissions to access a parent directory in which case try to change the following command accordingly.#012Do#012# /sbin/restorecon -v /var/www/html/index.html#012#012*****  Plugin catchall (1.49 confidence) suggests   **************************#012#012If you believe that httpd should be allowed getattr access on the index.html file by default.#012Then you should report this as a bug.#012You can generate a local policy module to allow this access.#012Do#012allow this access for now by executing:#012# ausearch -c 'httpd' --raw | audit2allow -M my-httpd#012# semodule -X 300 -i my-httpd.pp#012
+Jan 31 15:41:46 servera setroubleshoot[10288]: failed to retrieve rpm info for /var/www/html/index.html
+Jan 31 15:41:47 servera setroubleshoot[10288]: SELinux is preventing /usr/sbin/httpd from getattr access on the file /var/www/html/index.html. For complete SELinux messages run: sealert -l 373e8311-b8eb-478a-856d-3e9f34bfdeb6
+Jan 31 15:41:47 servera setroubleshoot[10288]: SELinux is preventing /usr/sbin/httpd from getattr access on the file /var/www/html/index.html.#012#012*****  Plugin restorecon (99.5 confidence) suggests   ************************#012#012If you want to fix the label. #012/var/www/html/index.html default label should be httpd_sys_content_t.#012Then you can run restorecon. The access attempt may have been stopped due to insufficient permissions to access a parent directory in which case try to change the following command accordingly.#012Do#012# /sbin/restorecon -v /var/www/html/index.html#012#012*****  Plugin catchall (1.49 confidence) suggests   **************************#012#012If you believe that httpd should be allowed getattr access on the index.html file by default.#012Then you should report this as a bug.#012You can generate a local policy module to allow this access.#012Do#012allow this access for now by executing:#012# ausearch -c 'httpd' --raw | audit2allow -M my-httpd#012# semodule -X 300 -i my-httpd.pp#012
+Jan 31 15:41:50 servera systemd[1]: systemd-hostnamed.service: Deactivated successfully.
+Jan 31 15:41:57 servera systemd[1]: dbus-:1.1-org.fedoraproject.SetroubleshootPrivileged@4.service: Main process exited, code=killed, status=14/ALRM
+Jan 31 15:41:57 servera systemd[1]: dbus-:1.1-org.fedoraproject.SetroubleshootPrivileged@4.service: Failed with result 'signal'.
+Jan 31 15:41:57 servera systemd[1]: dbus-:1.1-org.fedoraproject.Setroubleshootd@5.service: Main process exited, code=killed, status=14/ALRM
+Jan 31 15:41:57 servera systemd[1]: dbus-:1.1-org.fedoraproject.Setroubleshootd@5.service: Failed with result 'signal'.
+
+컨 테 이 너
+
+8.2 버전부터 추가되어우리를 괴롭히는 컨테이너
+
+
+
+
+
+
 
 
