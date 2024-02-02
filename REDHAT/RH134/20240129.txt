@@ -4,7 +4,7 @@ RH134[5]
 nsr230@studylab.xyz
 01097902540
 
-https://meet.google.com/piz-jwzx-tmc
+https://meet.google.com/gen-ohuz-rjy
 
 https://github.com/studylabdoc/text/blob/main/REDHAT/RH134/20240129.txt
 
@@ -848,6 +848,139 @@ mysql-[/data]
 # docker cp SRC_PATH|- CONTAINER:DEST_PATH
 컨테이너 내부 / 외부에서 파일을 복사 해야 하는 경우 사용
 # docker rmi [CONTAINER image]: 이미지를 호스트에서 삭제하는 경우 사용 
+
+423p  실습
+
+$ podman run -d --name conname con-imagename 'add cmd'
+----------------------------------
+컨테이너 스토리지 , 네트워크
+systemd 영구 적용
+비 로그인 서비스 활성화
+-----------------------------------
+
+박스의 내용들이 필요한 이유:
+
+스토리지
+> 외부 디스크 자원을 이용하여 영구 저장하기
+네트워크
+> 호스트와 컨테이너의 포트를 연결하여 내부 접근
+systemd
+> 서비스로 컨테이너를 구동시켜 사람의 제어없이도 백그라운드 서비스처럼 컨테이너를 이용하기
+
+
+스토리지:
+overlay F/S
+
+image-> container
+
+container layer [R/W]
+-------------------
+웹서버  가동 [R/O]
+-------------------
+설정[R/O]
+-------------------
+UBI-base image [R/O]
+-------------------
+
+
+VMDK
+RAW, QCAW2
+
+sanpshot
+
+|ori-disk|-----[add-DISK]
+    R/O                 R/W
+
+복원
+[add-DISK] : 삭제
+[add-DISK]: 생성
+ori-disk + add-DISK 접속
+
+439
+451
+457
+
+
+-------------------------------
+124 내용중에 필요한것
+
+계정 생성 부터 관리 : rol 에서 구성하는 경우 연습 이후에 리셋을 위해서 serverx에서 사용 
+권한 생성 부터 관리
+스크립트
+alias
+umask
+find / grep
+dnf 
+network
+
+계정 생성 부터 관리
+useradd
+usermod
+passwd
+groupadd
+
+chage
+/etc/default/login  << 
+useradd -D 
+
+chown
+chmod + setgid 설정
+getfacl/getfacl 
+
+umask 
+
+파일              디렉토리
+666              777
+rw-rw-rw-  rwxrwxrwx
+R 파일을 읽음    ls 명령에 대한 권한
+W 파일을 수정   cp , rm, mv ..touch 
+X 파일을 실행    cd 명령에 대한 권한
+
+사용자가 파일을 생성할 때
+필요 없는 권한도 분명 존재.
+
+team01 < 
+본인의 권한만 있으면 된다.
+생성 -> chmod 권한 변경
+
+team02 > 
+본인의 권한 , 그룹의 전체 권한
+생성 -> chmod 권한 변경
+
+   전체 권한              666       777
+- umask                    022       022
+---------------------------------------
+                                   004
+                                   663         774
+                                        wx          r
+--------------------------------------
+----------------
+    perm                      644      755
+
+other 권한을 수정 > 디렉토리에 접근을 불가능하게 하고 싶다.
+
+umask의 숫자는 숫자가 아님
+
+권한의 매핑
+01234567
+
+R   4
+W  2
+X    1 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
