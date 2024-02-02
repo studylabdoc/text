@@ -969,8 +969,35 @@ W  2
 X    1 
 
 
+vmware 설정
+
+가상머신 내에 문제에 필요한 것들을 다 넣어놨음.
+
+리셋 시간이 극단적으로 단축
+
+vmware  NAT 네트워크 구성
+
+edit > virtual network editor
+관리자 권한 획득
+
+NAT로 선택  VMnet8 
+
+DHCP 해제
+SUbnet IP 192.168.10.0
+NAT setting -> GW IP: 192.168.10.2
+
+CMD > print route 
+
+servera 192.168.10.210
+serverb 192.168.10.220
+gw : 192.168.10.2
+dns 8.8.8.8
 
 
+두가지
+servera 
+
+serverb 
 
 
 
