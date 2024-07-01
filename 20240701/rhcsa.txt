@@ -49,8 +49,6 @@ LF 자격증
 suse 자격증
 RHEL 자격증
 
-100% 실기 시험
-
 일단 알고있다고 가정하고 출발하는 명령어
 # ls
 # cd
@@ -140,3 +138,176 @@ RHEL 자격증
 # lvs
 # lvdisplay
 # blkid
+
+# mandb
+[root@servera /]# whatis ls
+ls (1)               - list directory contents
+ls (1p)              - list directory contents
+
+시험에 나오는 주제들은 무엇인가?
+
+네트워크 설정
+계정 생성
+그룹 생성
+권한 작업
+파일 검색
+NTP
+압축
+SELINUX
+서비스 / firewall
+nfs / autofs
+리포지토리 설정
+시스템 성능 조절
+root password > single mode 변경
+LVM
+swap
+컨테이너 !
+
+지금부터 이거는 선택사항
+https://termius.com/download/windows
+필요하신분은 직접 터미널 화면을 공유
+
+
+100% 실기 시험
+210 /300
+3H
+
+만점받아야지 ! X
+210에 근접하게 공부해서 최대한 적게 공부하고 한방에 합격하는 것을 목표
+
+시험을 보기 위한 프로세스
+1 오프라인 키오스크 시험 
+1-1 학동역 에티버스
+1-2 양재역 패스트레인
+월-금 오전/ 오후 
+
+2 온라인 원격 키오스크 시험
+
+3 현장에서 보는 시험 X
+
+사용자 계정 생성과 그룹 계정.
+명령어
+useradd
+passwd
+chage
+파일
+/etc/passwd
+기본적인 계정 정보를 담고 있다.
+/etc/shadow
+비밀번호와 패스워드의 기간을 담고 있다.
+/etc/group
+그룹 정보
+/etc/default/useradd
+계정 생성시 적용해야 하는 값
+/etc/login.defs
+계정 생성시의 기본 정책
+
+계정? -> 프로그램의 보안 경계를 생성
+인증 / 인가
+
+useradd -> 계정 생성
+자주 사용되지는 않지만 있으면 편한 옵션
+--btrfs-subvolume-home  RHEL 계열에서는 사용하지 못하는 옵션
+--passord 일반적인 암호가 아니라 openssl mkpasswd 명령을 통해 사용가능
+--root 사용자를 가상의 NS영역으로 격리시켜 사용
+
+연습삼아 해보는 mkpasswd  
+[root@servera ~]# dnf -y install mkpasswd
+[root@servera ~]# mkpasswd -m md5 redhat
+$1$WZA6.AfQ$Z9H0n99RuN5HsBUqzBZzY1
+[root@servera ~]# mkpasswd -m sha-256 redhat
+$5$LLQ/r2fCi2lT1307$4jirDXc5eaJzvLTS.IPJAp3zm3gyVrkVAdlwB6ByOV6
+[root@servera ~]# mkpasswd -m sha-512 redhat
+$6$FjhsCvd.M5hSsLLl$l.J4h0me.cc/fL453xPdnv.3lkCFW1lNr0VWwJXsigJpTc3bDlN5bJq9X2ZNioEyKyqV8drsr6aQ9PWAAz3qE.
+[root@servera ~]# mkpasswd -m sha-512 redhat
+$6$Z1i7OQcaHzUOXott$O5GzVnTP.12U88eoI55GfbwkJ0UKo5DEBv3f7zKWoOMEyVUMBZ7YApFXRWdQq/mtOGPQiEz4QCyeHhh2IX6GY0
+
+[root@servera ~]# id
+uid=0(root) gid=0(root) groups=0(root) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+[student@servera ~]$ id
+uid=1000(student) gid=1000(student) groups=1000(student) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+
+RHEL의 경우에 7버전 이상부터는 사용자 계정을 생성시 
+UID 번호가 1000번 부터 시작.
+
+https://systemd.io/UIDS-GIDS/
+
+
+                         groupmod
+                 .-----> usermod
+                /
+            ------------
+            /etc/group
+adduser --> /etc/passwd  <-------[systemd] ----< logind
+useradd     ------------
+                 \
+                  passwd
+                    `---> /etc/shadow
+                     ---> /etc/gshadow
+
+계정 생성
+[root@servera ~]# useradd test1
+test1은 어디어디 만들어 졌을까?
+[root@servera ~]# find / -user test1 2> /dev/null
+/home/test1 : 홈 디렉토리 
+/home/test1/.mozilla
+/home/test1/.mozilla/extensions
+/home/test1/.mozilla/plugins
+/home/test1/.bash_logout
+/home/test1/.bash_profile
+/home/test1/.bashrc
+/var/spool/mail/test1 메일함
+[root@servera ~]# 
+[root@servera ~]# grep -lr test1 /etc
+/etc/group  그룹 파일
+/etc/gshadow 그룹 비밀번호
+/etc/passwd 계정정보
+/etc/shadow 비밀번호
+/etc/subgid 컨테이너를 위한 파일
+/etc/subuid 컨테이너를 위한 파일: 사용자 계정을 가상화된 UID 범위로 설정 하는 경우 필요한 파일
+
+파일을 확인해보자.
+[root@servera mail]# cat /etc/passwd | grep test1
+test1:x:1004:1004::/home/test1:/bin/bash
+test1: 계정 명
+x: 비밀번호가 있던 흔적
+1004: 
+1004:
+:
+/home/test1:
+/bin/bash
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
