@@ -80,7 +80,6 @@ RHEL 자격증
 # chown
 # umask
 # which
-# where is
 # whereis
 # alias
 # histroy
@@ -101,16 +100,14 @@ RHEL 자격증
 # export
 # ^c
 # ^d
-# export
 # poweroff
 # init 
 # reboot
 # shutdown
 # ping
-# telnet
-# ifconfig
 # head
 # tail
+# tail -f
 # who
 # last
 # lastb
@@ -119,11 +116,13 @@ RHEL 자격증
 # df
 # du
 # sort
+# CMD | sort | uniq 
 # tee
-# screen
-# mail
+# screen > tmux
+# mail - s-nail
 # wall 
 # grep
+# locate
 # find
 # lsscsi
 # lspci
