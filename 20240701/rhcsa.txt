@@ -271,16 +271,35 @@ test1은 어디어디 만들어 졌을까?
 test1:x:1004:1004::/home/test1:/bin/bash
 test1: 계정 명
 x: 비밀번호가 있던 흔적
-1004: 
-1004:
-:
-/home/test1:
-/bin/bash
+1004: UID
+1004: GID
+: 코멘트
+/home/test1: 계정의 홈 디렉토리
+/bin/bash : 로그인시 사용 할 쉘을 등록
+* /usr/sbin/nologin : 쉘로는 접근을 하지 못하게 하는 쉘
 
+비밀번호 입력
 
+[root@servera mail]# passwd test1
+Changing password for user test1.
+New password: 
+BAD PASSWORD: The password is shorter than 8 characters
+Retype new password: 
+passwd: all authentication tokens updated successfully.
 
+shadow 파일 필드 분석
+test1:$6$ZbPZl0AgUDgcxYNo$SD9LOj9OwuBBjUE.FA8cXRsny9D0JOOkPetvz2oDB7c5UN3nhDdGN76AftxJjnExi2nnzfK.89JX7Vi9dKR4B1:19905:0:99999:7:::
 
-
+test1: 계정명
+$6$ZbPZl0AgUDgcxYNo$SD9LOj9OwuBBjUE.FA8cXRsny9D0JOOkPetvz2oDB7c5UN3nhDdGN76AftxJjnExi2nnzfK.89JX7Vi9dKR4B1: 비밀번호
+19905: 1970.01.01을 기준으로 비밀번호가 작성된 날짜
+0: 비밀번호를 변경 할 수 있는 최소 일자.
+99999: 비밀번호를 최대로 아용가능한 최대 일자.
+7:비밀번호를 사용 가능한 최대 일자가 끝나갈대 경고를 알리는 날짜
+: 유예기간
+:만료일자
+ 예약되어 있는 필드
+ 
 
 
 
