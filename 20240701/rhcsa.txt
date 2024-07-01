@@ -447,7 +447,29 @@ www-user,data-user는 secure-data그룹에 포함이 된다.
 db-user는 wheel그룹에 포함이 되며, 시스템에 로그인이 가능하다.
 각각 사용자를 ssh로 접근 후 "id"명령어 실행한다.
 
-15:05
+시험문제는 시험문제로 봐주셔야 합니다.
+문제를 필드로 끌고 들어가는 순간 귀찮음.
+
+사용자 생성
+사용자에 그룹 추가
+쉘 변경
+비밀번호 변경
+마지막에는 id 명령으로 확인
+
+groupadd -g 60001 secure-data
+dnf -y install tcsh > /dev/null 
+useradd www-hacker
+useradd www-user
+useradd data-user
+useradd db-user
+echo 'rockylinuxworld' | passwd --stdin www-hacker
+echo 'rockylinuxworld' | passwd --stdin www-user
+echo 'rockylinuxworld' | passwd --stdin data-user
+echo 'rockylinuxworld' | passwd --stdin db-user
+usermod -s /sbin/nologin -aG www-user www-hacker
+usermod -aG secure-data -s /bin/tcsh www-user
+usermod -aG secure-data -s /bin/tcsh data-user
+usermod -aG wheel db-user
 
 
 
