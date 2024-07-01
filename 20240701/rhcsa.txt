@@ -907,8 +907,162 @@ rwxrwx---
 other의 경우에는 사용 불가능
 /groupbit/ 디렉터리에서 생성이 되는 파일 및 디렉터리는 반드시 그룹 권한이 상속이 되어야 한다. = setgid
 
+파일검색 find / grep
+grep : 파일 내의 컨텐츠를 기반으로 검색
+find : inode 기반의 검색 [이전에는 locate라는 명령으로 진행]
 
+grep 
+[사용방법]
+# grep root /etc/passwd
+# CMD | grep root
 
+[옵션]
+-n 라인번호 출력
+-w 정확한 단어를 출력
+-i 대소문자를 구별하지 않음
+-l 파일을 대상으로 패턴이 있는 파일을 출력
+-lr 디렉토리 하부의 모든 파일을 대상으로 패턴을 검색
+
+-A N 검색된 라인을 시작으로 N만큼 아래 라인도 출력
+-B N 검색된 라인을 시작으로 N만큼 위 라인도 출력
+-C N 검색된 라인을 시작으로 N만큼 위,아래 라인도 출력
+
+/var/log/messages 파일에서 target이라는 패턴을 검색하고 검색된 순서대로 /root/list 파일로 저장
+공백 라인은 포함 될 수 없다.
+cat /var/log/messages | grep target  > /root/list
+
+grep의 두가지 추가 세트
+egrep : 단순한 패턴에서 벗어나 동시에 두개 이상의 패턴을 검색하는 용로
+fgrep  : 특수문자를 검색하는 용도
+
+locate 파일 이름을 기반으로 검색을 시도한다.
+updatedb라는 명령에 의존적인 locate
+단순하게 파일이름만을 가지고 검색을 하기 때문에 좋지않다.
+
+find
+# find [검색시작위치] [옵션1] [인자값1] [옵션2] [인자값2] ...
+
+find의 옵션은 보통 인지값을 가지고 있기 때문에 옵션과 해당 인자를 붙여서 잘 사용하는것이 중요하다.
+
+-name : 파일 이름을 기준으로 검색
+-iname: 대소문자를 구별하지 않고 파일 이름을 기준으로 검색
+-perm : 파일 권한을 기준으로 검색한다.
+
+find . -perm [퍼미션]
+600    : 정확히 rw-------를 찾는다.
+-600   : U자리의 rw를 찾고 나머지 권한 자리는 있든 없든 검색
+
+find에서 perm은 해당 자리의 권한을 포함한 나머지를 찾는것이 많기 때문에 -를 입력하는 경우가 대부분이다.
+
+-type : 파일의 종류를 기준으로 검색
+b : 블록 파일
+c : 문자
+d : 디렉토리
+f : 파일
+l : 링크
+s : 소켓
+
+-size : 파일의 크기를 기준으로 검색
++n : n보다 크다
+-n : n보다 작다
+n : n이다
+b : 512-byte
+c : Bytes (Character = Byte)
+k : Kilo Byte
+M : Mega Bytes
+G : Giga Bytes
+w : 2-byte
+
+-links : 링크의 개수를 기준으로 검색
+-user : 사용자 ID를 기준으로 검색
+-group: 그룹 ID를 기준으로 검색
+-atime : 특정 기간 이상 접근하지 않은 파일을 기준으로 검색
+-mtime : 특정 기간 이상 수정되지 않은 파일을 기준으로 검색
+-inum : number 지정된 inode 번호와 파일을 찾는다.
+-print : 표준출력으로 검색된 파일 출력: GNU는 디펄트, Unix는 필수 입력
+-exec command {} ₩; :찾은 각 파일에 대해 지정된 명령을 실행
+-ok command {} \; : 실행여부(실행 되어 있는지 아닌지)를 사용자에게 확인 후 명령을 실행
+
+------------------------------------------------------------------------------
+(형식1) # find / -name core -type [f|d]    (# find / -name "*oracle*" -type f)
+(형식2) # find / -user user01 -group class1 
+(형식3) # find / -mtime [-7|7|+7] 
+(형식4) # find / -perm [-700|755] 
+(형식5) # find / -size [-300M|300M|+300M]
+(형식6) # find / -name core -type f -exec rm {} \;
+------------------------------------------------------------------------------
+[참고] 파일 속성 정보
+     file6      file5       file4        file3      file2      file1
+  -----+----------+------------+----------+----------+----------+---------+   
+     0813        0814         0815       0816      0817        0818      0819
+
+# date 08191111
+# touch -t 08181111 file1 
+# touch -t 08171111 file2 
+# touch -t 08161111 file3 
+# touch -t 08151111 file4 
+# touch -t 08141111 file5 
+# touch -t 08131111 file6
+# ls -l file*
+-rw-r--r-- 1 root root 0 Aug 18 11:11 file1
+-rw-r--r-- 1 root root 0 Aug 17 11:11 file2
+-rw-r--r-- 1 root root 0 Aug 16 11:11 file3
+-rw-r--r-- 1 root root 0 Aug 15 11:11 file4
+-rw-r--r-- 1 root root 0 Aug 14 11:11 file5
+-rw-r--r-- 1 root root 0 Aug 13 11:11 file6
+# find . -mtime 3 -type f /* 수정 날짜가 3일전인 파일 */
+./file3
+# find . -mtime -3 -type f /* 수정한 날짜가 3일이 안된 파일 */
+./file3
+./file2
+./file1
+# find . -mtime +3 -type f /* 수정한 날짜가 3일이 지난 파일 */
+./file6
+./file5
+./file4
+
+디렉토리안에 특정한 패턴을 가진 파일들을 삭제(# find / -name file -type f -exec rm {} \;)
+
+# cd /test
+# find . -name file1 -type f /* 파일의 이름이 file1인 것 */
+./file1
+./dir2/file1
+
+# find . -name file1 -type f -ls 
+# find . -name file1 -type f -exec chown -v user01 {} \; 
+# find . -name file1 -type f -ls 
+
+# find . -name file1 -type f -exec chmod -v 640 {} \; 
+# find . -name file1 -type f -ls 
+
+# find . -name file1 -type f -exec rm -fv {} \; 
+# find . -name file1 –type f
+
+# find / -nouser -o -nogroup   사용자 및 그룹이 선언이 되어있지 않은 파일
+/proc 디렉토리 제외하고 검색하기
+# find / -name file1 -not -path '/proc/*'
+
+             .------표준출력--->./file1 {}안으로 치환
+           /                    --------
+          /                             \
+----------------------------             \
+# find . -name "*file*" -type f -exec rm -fv {  }   \; 
+                                          ----   ---
+                                          치환    명령어
+
+ex : ./file1 
+
+find 명령어에서 -exec 옵션에서 중괄호 {}의 역할
+find 명령어는 검색으로 출력되는 하나 이상의 파일 및 디렉토리 결과를 가지고 있다. 이 결과를 바탕으로 -exec 옵션에서는 2차적으로 명령을 진행가능하다.
+이때 {}는 버퍼의 역할을 하며 순차적으로 처음 검색된 내용부터 차례대로 치환된다. 이 치환은 마지막 검색내용이 입력될때까지 반복된다.
+
+find 명령어에서 -exec 옵션에서 세미콜론(;)의 역할
+find 명령어를 사용하면서 출력된 결과를 가지고 바로 후처리 실행으로 이어질수 있는 옵션인 exec ok가 존재한다. 해당 문법의마지막에는 세미콜론(;)이 입력된다. 하지만 쉘에서는 세미콜론(;)을 기준으로 앞 명령어와 뒤 명령어를 구분하는 구분자로 사용하기 때문에 그냥 사용할수는 없으며 바로 앞에 역슬래시를 붙여 \; 구조로 만들어줘야 find 명령어에서 정상적으로 해석가능하다.
+
+student가 소유한 모든 파일을 찾아 /root/student.list 디렉토리에 파일을 복사
+# find / -user student -exec cp -fv {} /root/student.list \;
+
+# find / -user student -type f -exec cp -fv {} /root/student.list \;
 
 
 
