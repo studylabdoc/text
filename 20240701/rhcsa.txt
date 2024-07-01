@@ -299,15 +299,155 @@ $6$ZbPZl0AgUDgcxYNo$SD9LOj9OwuBBjUE.FA8cXRsny9D0JOOkPetvz2oDB7c5UN3nhDdGN76AftxJ
 : 유예기간
 :만료일자
  예약되어 있는 필드
- 
 
+$6$ZbPZl0AgUDgcxYNo$SD9LOj9OwuBBjUE.FA8cXRsny9D0JOOkPetvz2oDB7c5UN3nhDdGN76AftxJjnExi2nnzfK.89JX7Vi9dKR4B1 비밀번호 필드에 대하여 잠시 ..
+비밀번호 필드내에서 구별하기 위해 $를 사용
+$1$2$3
+1: 암호화 알고리즘을 지정하는 필드
+md5 1
+sha256 5
+sha512 6
+2 salt 암호의 text와 함께 사용되는 임시값을 추가. 
+3 실제 암호화가 완료된 문자열
 
+password : redhat
+redhat + ZbPZl0AgUDgcxYNo => sha512 -> 
+D9LOj9OwuBBjU == D9LOj9OwuBBjU 
 
+/etc/group
+test1:x:1004: 
+test1: 그룹명
+x: 그룹 비밀번호
+1004: GID 번호
+해당 그룹에 가입된 계정명을 나열
 
+[root@servera ~]# useradd -D
+GROUP=100
+계정 생성시 그룹을 지정하지 않고 생성할 때 구성되는 기본 그룹 
+HOME=/home
+계정 생성시 홈 디렉토리의 부모 디렉토리
+INACTIVE=-1
+EXPIRE=
+SHELL=/bin/bash
+계정 생성시 기본값으로 가지는 쉘
+SKEL=/etc/skel
+사용자를 생성 할 때 필요한 기초 파일
+CREATE_MAIL_SPOOL=yes
+메일함
 
+계정을 생성시에 사용하는 기본 값
 
+[root@servera ~]# cat /etc/default/useradd
+# useradd defaults file
+GROUP=100
+HOME=/home
+INACTIVE=-1
+EXPIRE=
+SHELL=/bin/bash
+SKEL=/etc/skel
+CREATE_MAIL_SPOOL=yes
 
+[root@servera ~]# cat /etc/login.defs | grep -v ^# | sort | uniq
 
+CREATE_HOME     yes
+ENCRYPT_METHOD SHA512
+GID_MAX                 60000
+GID_MIN                  1000
+HMAC_CRYPTO_ALGO SHA512
+HOME_MODE       0700
+MAIL_DIR        /var/spool/mail
+PASS_MAX_DAYS   99999
+PASS_MIN_DAYS   0
+PASS_WARN_AGE   7
+SUB_GID_COUNT               65536
+SUB_GID_MAX             600100000
+SUB_GID_MIN                100000
+SUB_UID_COUNT               65536
+SUB_UID_MAX             600100000
+SUB_UID_MIN                100000
+SYS_GID_MAX               999
+SYS_GID_MIN               201
+SYS_UID_MAX               999
+SYS_UID_MIN               201
+UID_MAX                 60000
+UID_MIN                  1000
+UMASK           022
+USERGROUPS_ENAB yes
+
+[root@servera ~]# vi /etc/ssh/sshd_config
+vi에서 대소문자 없이 검색하기
+/\c[검색어]
+
+각각의 계정에 설정 되어 있는 비밀번호 정책 확인하기
+[root@servera ~]# chage -l test1
+Last password change                           : Jul 01, 2024
+Password expires                               : never
+Password inactive                              : never
+Account expires                                : never
+Minimum number of days between password change : 0
+Maximum number of days between password change : 99999
+Number of days of warning before password expires       : 7
+M 최대일자
+W 경고일자
+E 비활성화 날짜
+I 최대일자를 넘어 이용가능한 날짜
+-d 0 : 다음 로그인시 무조건 비밀번호를 변경 하게끔 프로세스 
+
+useradd에서 사용되는 옵션
+-u : UID 번호를 지정 
+# useradd -u 1250 test1
+
+비밀번호를 입력해보자.
+[root@servera ~]# passwd test1
+Changing password for user test1.
+New password: < 첫번째 입력
+BAD PASSWORD: The password is shorter than 8 characters
+Retype new password: < 동일한 비밀번호를 입력
+passwd: all authentication tokens updated successfully.
+
+[root@servera ~]# echo 'test1' | passwd --stdin test1
+Changing password for user test1.
+passwd: all authentication tokens updated successfully.
+[root@servera ~]# 
+
+usermod 
+계정에 대한 정보를 변경
+-G 부그룹을 추가 할 때 사용
+-a 기존 그룹을 유지한 채로 부그룹을 추가 적용시킴
+-aG 그룹을 추가하면서 기존 그룹을 유지
+
+[root@servera ~]# groupadd -g 60001 g1
+[root@servera ~]# groupadd -g 60002 g2
+[root@servera ~]# groupadd -g 60003 g3
+[root@servera ~]# usermod -aG g1 test1
+[root@servera ~]# usermod -aG g2 test1
+[root@servera ~]# id test1
+uid=1004(test1) gid=1004(test1) groups=1004(test1),10(wheel),60001(g1),60002(g2)
+[root@servera ~]# usermod -G g3 test1
+[root@servera ~]# id test1
+uid=1004(test1) gid=1004(test1) groups=1004(test1),60003(g3)
+
+-s 쉘 변경
+# cat /etc/shells  현재 시스템에서 사용가능할 쉘 확인
+/bin/sh
+/bin/bash
+/usr/bin/sh
+/usr/bin/bash
+로그인을 불가능하게 하는 쉘
+/sbin/nologin   * 
+
+리눅스 자격증 통합 준비 과정의 50p 문제
+계정 설정의 연습문제
+사용자 www-hacker, www-user, data-user 그리고 db-user를 생성한다.
+모든 사용자는 비밀번호를 rockylinuxworld라고 설정한다.
+사용자 www-hacker는 웹 서비스에 접근은 가능하나, 시스템에 접근은 불가능하다.
+www-user라는 그룹에 포함이 된다.
+www-user,data-user는 secure-data그룹에 포함이 된다.
+각 사용자는 tcsh를 통해서 시스템에 접근이 가능하다.
+db-user는 wheel그룹에 포함이 되며, 시스템에 로그인이 가능하다.
+각각 사용자를 ssh로 접근 후 "id"명령어 실행한다.
+
+15:05
 
 
 
