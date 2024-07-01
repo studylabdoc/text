@@ -732,6 +732,78 @@ usermod -aG g1 team02
 echo team01 | passwd --stdin team01
 echo team02 | passwd --stdin team02
 
+그룹 공유 디렉토리
+team01과 team02가 사용할 수 있는 디렉토리를 제공
+권한을 부여하여 team01과 team02가 사용 할 수 있는 편안한 디렉토리를 제공
+[root@servera test]# cd /test
+[root@servera test]# mkdir /test/share
+[root@servera test]# chmod 777 .
+[root@servera test]# chmod 777 share
+공유를 위해 생성한 디렉토리
+
+[root@servera test]# ls -ld share/
+drwxrwxrwx. 2 root root 6 Jul  1 16:08 share/
+[root@servera test]# chmod 770 share/
+[root@servera test]# ls -ld share/
+drwxrwx---. 2 root root 6 Jul  1 16:08 share/
+[root@servera test]# chown :g1 share/
+[root@servera test]# ls -ld share/
+drwxrwx---. 2 root g1 6 Jul  1 16:08 share/
+g1 그룹원만 이용할 수 있도록 share 디렉토리를 구성
+
+[team01@servera share]$ ls
+file1
+[team01@servera share]$ ls -l
+total 4
+-rw-r--r--. 1 team01 team01 4 Jul  1 16:11 file1
+[team01@servera share]$ chgrp g1 file1
+[team01@servera share]$ ls -l
+total 4
+-rw-r--r--. 1 team01 g1 4 Jul  1 16:11 file1
+[team01@servera share]$ chmod 664 file1
+[team01@servera share]$ ls -l
+total 4
+-rw-rw-r--. 1 team01 g1 4 Jul  1 16:11 file1
+[team01@servera share]$ exit
+logout
+수동으로 변경하여 그룹원이 이용 할 수 있도록 함
+
+[root@servera test]# su - team01
+[team01@servera ~]$ id
+uid=1010(team01) gid=1010(team01) groups=1010(team01),60005(g1) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+[team01@servera ~]$ newgrp g1
+[team01@servera ~]$ id
+uid=1010(team01) gid=60005(g1) groups=60005(g1),1010(team01) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+주 그룹을 g1으로 변경
+
+[team01@servera ~]$ cd /test/share/
+[team01@servera share]$ echo 22222 > file2
+[team01@servera share]$ ls -l
+total 8
+-rw-rw-r--. 1 team01 g1 4 Jul  1 16:11 file1
+-rw-r--r--. 1 team01 g1 6 Jul  1 16:13 file2
+[team01@servera share]$ chmod 664 file2
+[team01@servera share]$  exit
+exit
+newgrp를 이용하여 주그룹을 스위칭 하고 변경
+
+[root@servera test]# ls -ld share/
+drwxrwx---. 2 root g1 32 Jul  1 16:13 share/
+[root@servera test]# chmod 2770 share/
+[root@servera test]# ls -ld share/
+drwxrws---. 2 root g1 32 Jul  1 16:13 share/
+setgid 권한 부여
+
+[root@servera test]# su - team01
+[team01@servera ~]$ cd /test/share/
+[team01@servera share]$ echo 3333 > file3
+[team01@servera share]$ ls -l
+total 12
+-rw-rw-r--. 1 team01 g1 4 Jul  1 16:11 file1
+-rw-rw-r--. 1 team01 g1 6 Jul  1 16:13 file2
+-rw-r--r--. 1 team01 g1 5 Jul  1 16:14 file3
+
+
 
 
 
