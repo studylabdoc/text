@@ -471,6 +471,54 @@ usermod -aG secure-data -s /bin/tcsh www-user
 usermod -aG secure-data -s /bin/tcsh data-user
 usermod -aG wheel db-user
 
+권한
+[root@servera ~]# mkdir /test
+[root@servera ~]# cd /test
+[root@servera test]# touch file1
+[root@servera test]# ls -l
+total 0
+-rw-r--r--. 1 root root 0 Jul  1 15:15 file1
+권한을 하기 전에 ..
+각 필드별 해석
+- : 파일의 형식을 지정
+- 일반파일
+d 디렉토리
+l 링크파일 [심볼릭링크]
+b,c 디바이스 
+rw-r--r-- 권한
+.  ACL 정보를 나타낸다.
+[root@servera test]# getfacl file1
+# file: file1
+# owner: root
+# group: root
+user::rw-
+group::r--
+other::r--
+. acl정보가 없다.
++ acl 정보가 있다.
+
+[root@servera test]# setfacl -m u:student:rwx file1
+[root@servera test]# getfacl file1
+# file: file1
+# owner: root
+# group: root
+user::rw-
+user:student:rwx
+group::r--
+mask::rwx
+other::r--
+
+[root@servera test]# ls -l
+total 0
+-rw-rwxr--+ 1 root root 0 Jul  1 15:15 file1
+
+1 : inode 카운트
+root 소유자
+root 그룹 소유자
+0 용량
+Jul  1 15:15  수정시간
+file1 파일 이름
+
 
 
 
