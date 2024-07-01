@@ -519,6 +519,138 @@ root 그룹 소유자
 Jul  1 15:15  수정시간
 file1 파일 이름
 
+-rw-r--r--. 1 root root 0 Jul  1 15:21 file1
+ ---------    ---- ----
+  권한        소유자 그룹소유자
+  chmod       chown  chgrp
+
+소유자 명령:
+chown chown - change file owner and group
+
+# chown [계정] [F|D]
+# chown :[계정] [F|D]
+# chown [계정]:[계정] [F|D]
+
+# chown .[계정] [F|D]
+# chown [계정].[계정] [F|D]
+
+-R 하위 디렉토리까지 모두 변경
+-v 자세히 출력
+
+# mkdir /test
+# cd /test
+# touch file1
+선택사항 # watch -n 1 'ls -l /test/file1'
+[root@node1 test]# chown :team01 file1
+[root@node1 test]# chown .team01 file1
+[root@node1 test]# chown .user01 file1
+
+
+chgrp : 그룹 권한만 지원
+chgrp를 사용하는 사용자가 해당 파일의 소유권을 가지고 있어야 하고, 변경하려는 그룹에 그룹원으로 가입을 하고 있어야 한다.
+
+-rw-r--r--. 1 root root 0 Jun 12 14:21 file1
+
+rw-r--r-- -> 권한의 표시
+rwxrwxrwx > 반복 되어 있다.
+rwx|rwx|rwx
+[U] [G] [O]
+U user : 사용자
+G group : 그룹사용자
+O other : 전체 - {사용자, 그룹사용자}
+
+문자열이 있는 경우에는 권한을 허용
+문자열이 없고 -로 표기되면 권한이 없음
+
+[root@servera test]# stat file1
+  File: file1
+  Size: 0               Blocks: 0          IO Block: 4096   regular empty file
+Device: fd00h/64768d    Inode: 103744746   Links: 1
+Access: (0644/-rw-r--r--)  Uid: ( 1008/   test1)   Gid: ( 1008/   test1)
+Context: unconfined_u:object_r:default_t:s0
+Access: 2024-07-01 15:21:44.879506540 +0900 접근시간 
+Modify: 2024-07-01 15:21:44.879506540 +0900 수정시간
+Change: 2024-07-01 15:35:45.717357369 +0900 변경시간
+ Birth: 2024-07-01 15:21:44.879506540 +0900
+
+터미널을 하나 더 실행한 뒤 명령어 입력
+[root@servera test]# watch -n 1 'ls -l'
+
+
+chmod
+퍼미션
+[사용방법]
+# chmod [change-file-mode|bits] [F|D]
+
+모드 변경의 두가지 방법
+심볼릭 모드 : 문자를 통하여 변경하는 방법 < 권장 
+옥탈 모드 : 숫자를 통하여 변경하는 방법
+
+chmod 777   사용은 가능하지만 비권장 8진수로 하는 경우 숫자 계산 필요
+chmod a=rwx GNU에서는 이 방식을 매우 권장
+
+rw-r--r--
+--- --- ---
+ U   G   O
+심볼릭 모드 이해를 위한 문자
+u User 소유자의 권한
+g Group 그룹소유자의 권한
+o Other 소유자,그룹소유자를 제외한 전부
+a All U+G+O의 권한
+
++ 권한을 추가
+- 권한을 제거
+= 기존 권한을 무시하고 새로운 권한으로 업데이트 
+
+r read 읽기
+w write 수정
+x execute 실행
+X 디렉토리에만 적용되는 권한 
+: 디렉토리는 x권한을 부여하고 파일의 경우에는 기존에 x권한이 있다면 x권한을 부여하고 없다면 x권한을 부여하지 않는다.
+
+파일과 디렉토리의 권한 부여 차이
+FILE
+R 파일을 읽음 * 
+W 파일을 수정
+X 파일을 실행
+--x -wx -w-  [r-- rw- rwx r-x ]
+
+DIR : 명령어에 대한 권한
+R 디렉토리 읽음 : ls 명령어
+W 디렉토리를 수정 : cp mv rm 명령어
+X 디렉토리를 실행 : cd 명령어* 
+
+[root@node1 test]# chmod u=rw- file1
+[root@node1 test]# chmod g+rx file1
+[root@node1 test]# chmod o=rwx file1
+[root@node1 test]# chmod u+x file1
+[root@node1 test]# chmod g-x,o-x file1
+[root@node1 test]# chmod go-x file1
+[root@node1 test]# chmod a=rw file1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
