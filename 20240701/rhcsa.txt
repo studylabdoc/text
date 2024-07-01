@@ -41,3 +41,103 @@ serverb
 192.168.10.220
 root /redhat
 student / student
+
+리눅스 마스터 1/ 2급
+LPIC 1 / 2 / 3
+-----------------------
+LF 자격증
+suse 자격증
+RHEL 자격증
+
+100% 실기 시험
+
+일단 알고있다고 가정하고 출발하는 명령어
+# ls
+# cd
+# pwd
+# passwd
+# useradd
+# rm
+# cp
+# mv
+# date
+# touch
+# mkdir
+# rmdir
+# id
+# cat
+# ps
+# bash
+# su -
+# echo
+# more
+# man
+# clear
+# ln
+# tree
+# dnf
+# chmod
+# chown
+# umask
+# which
+# where is
+# whereis
+# alias
+# histroy
+# stat
+# file
+# cat file1 file2 > file3
+# find . -name core 2> /dev/null
+# cat < file1
+# ssh
+# scp
+# sftp
+# script
+# tree
+# vi
+# uname
+# systemctl
+# exit
+# export
+# ^c
+# ^d
+# export
+# poweroff
+# init 
+# reboot
+# shutdown
+# ping
+# telnet
+# ifconfig
+# head
+# tail
+# who
+# last
+# lastb
+# w
+# while true do ; action ; done
+# df
+# du
+# sort
+# tee
+# screen
+# mail
+# wall 
+# grep
+# find
+# lsscsi
+# lspci
+# fdisk
+# parted
+# mount
+# mkfs 
+# pvcreate
+# vgcreate
+# lsvrete
+# pvs
+# pvdisplay
+# vgs
+# vgdisplay
+# lvs
+# lvdisplay
+# blkid
