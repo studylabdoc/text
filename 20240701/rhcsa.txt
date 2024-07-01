@@ -23,4 +23,21 @@ serverb 3G
 이 내용을 위해서 필요한 기본 명령어 리스트 
 리스트를 먼저 확인을 좀 하고서 진행
 
+이제 시작
 
+메일 주소 수집
+
+김기연
+nsr230@studylab.xyz   < google meet 초대용 : 20240701 구글미트
+01097902540
+
+접속 정보
+servera
+192.168.10.210
+root/ redhat
+student / student 
+
+serverb
+192.168.10.220
+root /redhat
+student / student
