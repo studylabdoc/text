@@ -628,6 +628,125 @@ X 디렉토리를 실행 : cd 명령어*
 [root@node1 test]# chmod go-x file1
 [root@node1 test]# chmod a=rw file1
 
+옥탈모드
+
+R W X
+4 2 1   << 기본 값
+0 ---
+1 --x
+2 -w-
+3 -wx
+4 r--
+5 r-x
+6 rw-
+7 rwx
+
+F - R
+0 ---
+4 r--
+5 r-x
+6 rw-
+7 rwx
+
+D - X
+0 ---
+5 r-x
+7 rwx
+
+권한:
+U G O 를 벗어나지 못한다.
+파일:
+소유자/ 그룹 소유자 / 그외 사용자
+
+root:student   test1   file1 
+U - root
+G - student
+O - test1도 가능
+권한 상태가 다음과 같다면?
+rwxrw----
+
+test1: 지금 fiel1을 실행을 함에 있어서 root권한이 필요
+sudo X
+su - > root 비밀번호도 모름
+
+권한을 벗어나야 하는 경우:
+실행되는 프로그램에서 끝나지 않고 2차 파일을 건드리는 경우
+passwd 
+
+슈퍼비트
+setuid
+setgid
+stikybit
+
+[test1@servera ~]$ ls -l $(which passwd)
+-rwsr-xr-x. 1 root root 32656 May 15  2022 /usr/bin/passwd
+
+소유자의 권한을 빌리거나 그룹 권한을 빌려 사용하는 setuid setgid [stikybit]
+
+4 setuid
+2 setgid
+1 stikybit
+# chmod XXX
+setuid  파일
+setgid 디렉토리
+stikybit 디렉토리
+
+# chmod SXXX
+# chmod 4775 file1
+
+setuid 
+[root@node1 test]# chmod 4554 file1
+file1을 실행하여 사용할때 소유자권한 작업
+
+setgid
+[root@node1 test]# chmod 2777 dir1
+그룹 권한이 있는 사용자가 dir1에 접근하게 되면 자동으로 그룹 변경
+
+stikybit
+[root@node1 test]# chmod 1777 dir1
+drwxrwxrwt. 2 root root 6 Jun 12 15:23 dir1
+사용자가 파일을 생성하고 본인만 수정 및 삭제가 가능
+웹 게시판 
+
+그룹 생성 
+디렉토리 생성
+그룹에 그룹원 추가 하기
+chown
+chmod 
+
+조심해야 하는것 한가지
+[root@servera test]# chmod 4655 file1
+-rwSr-xr-x. 1 root root 0 Jun  3 17:09 file1
+s나 t가 대문자인 경우는 기존의 권한 x 권한이 없는 경우
+
+권한 설정
+  [@][$][###]
+[root@servera test]# chmod 0770 dir1 < 권한 변경이 되지 않는다.
+[root@servera test]# chmod 00770 dir1
+
+useradd team01
+useradd team02
+groupadd -g 60005 g1
+usermod -aG g1 team01
+usermod -aG g1 team02
+echo team01 | passwd --stdin team01
+echo team02 | passwd --stdin team02
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
