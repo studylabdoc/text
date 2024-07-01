@@ -1028,6 +1028,8 @@ w : 2-byte
 ./file1
 ./dir2/file1
 
+exec 형식
+-exec CMD OP..  \;{}
 # find . -name file1 -type f -ls 
 # find . -name file1 -type f -exec chown -v user01 {} \; 
 # find . -name file1 -type f -ls 
@@ -1064,8 +1066,19 @@ student가 소유한 모든 파일을 찾아 /root/student.list 디렉토리에 
 
 # find / -user student -type f -exec cp -fv {} /root/student.list \;
 
+지금까지 6문제 해결 
 
+계정 생성
+setid 디렉토리 문제
+계정 새어.
+파일 찾기
+문자열찾기
+기본 권한 설정
 
+30분 동안은 
+네트워크 관련 내용 ! 내일
+
+메일은 조금있다가 제가 추가 
 
 
 
