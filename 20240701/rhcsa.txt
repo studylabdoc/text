@@ -1862,8 +1862,21 @@ Wed, 14 Feb 2024 00:00:26 +0900
 System clock synchronized: no
               NTP service: n/a
           RTC in local TZ: no
-          
 
+구성하기
+-----------------------------------설치
+# dnf -y install chrony
+-----------------------------------설치 후 확인
+# rpm -qlc chrony
+/etc/chrony.conf
+/etc/chrony.keys
+/etc/logrotate.d/chrony
+/etc/sysconfig/chronyd
+-----------------------------------설정
+# vi /etc/chrony.conf
+#pool 2.rocky.pool.ntp.org iburst
+server 0.kr.pool.ntp.org
+:wq
 
 
 
