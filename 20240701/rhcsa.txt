@@ -1113,6 +1113,125 @@ vm > setting > add > NIC [NAT]
     altname enp2s2
 ens34라는 추가 장치가 있는지 확인 해주면 된다.
 
+servera에 다음과 같이 네크워크를 설정
+네트워크 설정을 위한 기본 정보
+IP 192.168.10.211
+netmask 255.255.255.0
+gateway 192.168.10.2
+dns 8.8.8.8
+
+네트워크 인터페이스 설정 *
+네트워크 구성이 되어 있지 않음. 이 머신의 네트워크를 활성화 시켜야한다.* 
+servera 
+인터페이스가 두개 장착
+1 ens33: 192.168.10.210
+2 ens34: 192.168.10.211 설정 에정
+DHCP가 비활성화 되어 있기 때문에 auto로는 설정이 불가능 하다.
+실제 서버에서도 고정화된 IP를 이용
+인스턴스화된 머신의 경우에는 DHCP에서 받기도 함.
+
+기본 정보 확인
+[root@servera ~]# ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: ens33: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 00:0c:29:77:4f:05 brd ff:ff:ff:ff:ff:ff
+    altname enp2s1
+    inet 192.168.10.210/24 brd 192.168.10.255 scope global noprefixroute ens33
+       valid_lft forever preferred_lft forever
+    inet6 fe80::20c:29ff:fe77:4f05/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+3: ens34: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 00:0c:29:77:4f:0f brd ff:ff:ff:ff:ff:ff
+    altname enp2s2
+
+[root@servera ~]# nmcli dev
+DEVICE  TYPE      STATE                   CONNECTION 
+ens33   ethernet  connected               ens33      
+lo      loopback  connected (externally)  lo         
+ens34   ethernet  disconnected            -- 
+
+참고: 이전 명령어들은 다음과 같이 시작
+ch~ 변경
+ls~ 확인
+mk~ 생성
+rm~ 삭제
+
+최근의 명령어들은 다음과 같은 형식이 많다.
+CMD [SET-CMD] [SET-CMD]
+이런 형식 때문에 필수 패키지가 하나 생겨버렸다.
+bash-completion  < 명령어에 대한 자동완성을 위한 패키지
+
+[root@servera ~]# nmcli dev
+DEVICE  TYPE      STATE                   CONNECTION 
+ens33   ethernet  connected               ens33 
+
+DEVICE 물리적인 장치 명을 출력 : ip a에서나오는 인터페이스 명과 동일
+TYPE 보통 ethernet으로 설정된다. 
+STATE 연결상태 정보를 나타낸다.
+CONNECTION  : 프로파일명을 출력
+
+[root@servera ~]# nmcli con show
+NAME   UUID                                  TYPE      DEVICE 
+ens33  81d234b9-f64b-334a-b796-c405e1e23be6  ethernet  ens33  
+lo     93c3415c-bf84-4da0-b15d-6d4a2ca3729c  loopback  lo     
+
+dev: 물리적인 장치의 상태를 나타냄
+con: 연결정보인 프로파일의 상태를 나타냄
+
+현재의 네트워크를 위해서 필요한 두가지
+
+1. 네트워크 인터페이스 [NIC]
+2. 프로파일 [connection file]
+프로파일을 네트워크 인터페이스에 적용시키고 활성화 시켜서 해당 정보를 NIC가 활용할 수 있도록 한다.
+
+하나의 NIC에는 여러개의 프로파일이 존재 할 수 있음.
+NIC에는 한번에 하나의 프로파일만 적용 가능
+연결 정보를 해제한다고 해서 NIC가 비활성화 되는것은 아님
+장치와 연결이 따로 있다는 것을 주의
+
+[root@servera ~]# nmcli con add type ethernet con-name <연결정보명> ifname <인터페이스명> ipv4.addresses 192.168.10.211/24 ipv4.gateway 192.168.10.2 ipv4.dns 8.8.8.8 ipv4.method manual autoconnect yes 
+
+[명령어 뜯어보기]
+nmcli con add : 네트워크 매니저에 연결정보 추가
+type ethernet  : 이더넷 형식으로 추가
+con-name ens34  : 연결정보 [프로파일명] 작성
+ifname ens34 : 실제 물리장치의 이름을 작성 [nmcli dev , ip a]
+ipv4.addresses 192.168.10.211/24  : 인터페이스 주소
+ipv4.gateway 192.168.10.2  : 게이트웨이 주소
+ipv4.dns 8.8.8.8  : DNS 주소
+ipv4.method manual  : 수동 작성 방법으로 명시
+autoconnect yes : 부팅시 자동 활성화
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
