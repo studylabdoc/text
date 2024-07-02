@@ -2235,8 +2235,65 @@ systemctl is-active httpd
 # reboot
 # systemctl status httpd
 
+방화벽
+ebtable → iptable → firewalld <netfilter / nftable>
 
+firewall-cmd 명령                 설명
 
+--get-default-zone
+			현재 기본 영역을 쿼리합니다.
+--set-default-zone=<ZONE> 
+			기본 영역을 설정합니다. 이 설정은 런타임 및 영구 구성을 둘 다 변경합니다.
+--get-zones 
+			사용 가능한 모든 영역을 나열합니다.
+--get-services 
+			사전 정의된 모든 서비스를 나열합니다.
+--get-active-zones 
+			현재 사용 중인 모든 영역(인터페이스가 있거나 연결된 소스가 있음)과 해당 인터페이스 및 소스 정보를 나열합니다.
+--add-source=<CIDR> [--zone=<ZONE>] 
+			IP 주소 또는 네트워크/넷마스크 <CIDR>의 모든 트래픽을 지정된 영역으로 라우팅합니다. --zone= 옵션을 입력하지 않은 경우 기본 영역이 사용됩니다.
+--remove-source=<CIDR> [--zone=<ZONE>] 
+			IP 주소 또는 네트워크/넷마스크 <CIDR>의 모든 트래픽을 라우팅하는 규칙을 지정된 영역에서 제거합니다. 
+      --zone= 옵션을 입력하지 않은 경우 기본 영역이 사용됩니다.
+--add-interface=<INTERFACE> [--zone=<ZONE>] 
+			<INTERFACE>의 모든 트래픽을 지정된 영역으로 라우팅합니다. --zone= 옵션을 입력하지 않은 경우 기본 영역이 사용됩니다.
+--change-interface=<INTERFACE> [--zone=<ZONE>] 
+			현재 영역 대신 인터페이스를 <ZONE>과 연결합니다. --zone= 옵션을 입력하지 않은 경우 기본 영역이 사용됩니다.
+--list-all [--zone=<ZONE>] 
+			 <ZONE>에 대해 구성된 모든 인터페이스, 소스, 서비스, 포트를 나열합니다. --zone= 옵션을 입력하지 않은 경우 기본 영역이 사용됩니다.
+--list-all-zones 
+			모든 영역(인터페이스, 소스, 포트, 서비스 등)에 대한 모든 정보를 검색합니다.
+--add-service=<SERVICE> 
+			<SERVICE>포트로 트래픽을 허용합니다. --zone= 옵션을 입력하지 않은 경우 기본 영역이 사용됩니다.
+--add-port=<PORT/PROTOCOL> 
+			<PORT/PROTOCOL> 포트로 트래픽을 허용합니다. --zone= 옵션을 입력하지 않은 경우 기본 영역이 사용됩니다.
+--remove-service=<SERVICE> 
+			영역에 허용된 목록에서 <SERVICE>를제거합니다. --zone= 옵션을 입력하지 않은 경우 기본 영역이 사용됩니다.
+--remove-port=<PORT/PROTOCOL> 
+			영역에 허용된 목록에서 <PORT/PROTOCOL> 포트를 제거합니다. --zone= 옵션을 입력하지 않은 경우 기본
+영역이 사용됩니다.
+--reload 런타임 구성을 삭제하고 영구 구성을 적용합니다.
+--timeout=<timeinseconds> 타임아웃으로 동작하여 실수가 있더라도 시간이 지나면 복구
+
+firewall-cmd 명령                              설명
+firewall-cmd --get-default-zone              현재 기본 영역 쿼리
+firewall-cmd --set-default-zone=[zone]       기본 영역 설정
+firewall-cmd --get-zones                     지정된 모든 영역 출력
+firewall-cmd --get-active-zones              현재 활동중인 영역 쿼리
+firewall-cmd --add-source=[IP/CIDR] --zone=[zone]       해당되는 [IP/CIDR]의 트래픽을 지정된 영역으로 라우팅한다. 만약 zone을 지정하지 않은 경우에는 기본 영역을 사용한다.
+firewall-cmd --add-remove=[IP/CIDR] --zone=[zone]       해당되는 [IP/CIDR]를 삭제, 만약 zone을 지정하지 않은 경우에는 기본 영역에서 삭제
+firewall-cmd --add-interface=[interface name] --zone=[zone]    해당되는 [interface name]의 트래픽을 지정된 영역으로 라우팅한다. 만약 zone을 지정하지 않은 경우에는 기본 영역을 사용한다.
+firewall-cmd --change-interface=[interface name] --zone=[zone] 해당되는 [interface name]의 라우팅을 다른 영역으로 변경
+firewall-cmd --list-all                     영역에 구성된 모든 설정 출력, zone을 지정하지 않으면 기본 영역 
+firewall-cmd --list-all --zone=home         영역에 구성된 모든 설정 출력
+firewall-cmd --list-all-zones               모든 영역에 구성된 모든 설정 출력
+firewall-cmd --add-service=[service name] --zone=[zone]   해당되는 [service name]의 트래픽을 허용한다. 만약 zone을 지정하지 않은 경우에는 기본 영역을 사용한다.
+firewall-cmd --add-port=[port number] --zone=[zone]       해당되는 [port number]의 트래픽을 허용한다. 만약 zone을 지정하지 않은 경우에는 기본 영역을 사용한다.
+firewall-cmd --remove-service=[service name] --zone=[zone] 해당되는 [service name]의 방화벽 설정을 삭제한다. 만약 zone을 지정하지 않은 경우에는 기본 영역을 사용한다.
+firewall-cmd --remove-port=[port number] --zone=[zone] 해당되는 [port number]의 방화벽 설정을 삭제한다. 만약 zone을 지정하지 않은 경우에는 기본 영역을 사용한다.
+firewall-cmd --permanent 재부팅시에도 설정 가능하도록 저장한다.
+firewall-cmd --reload    서비스를 재시작하지 않고 파일을 읽는다.
+예제 코드
 
 
 
