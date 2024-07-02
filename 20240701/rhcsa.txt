@@ -2446,6 +2446,16 @@ systemctl disable --now httpd
 firewall-cmd --permanent --remove-service=http
 firewall-cmd --reload
 
+웹서버의 노출 포트를 변경시켜 외부에서 접속 가능하게 하기
+
+dnf -y install httpd
+sed -i s/Listen\ 80/Listen\ 8888/ /etc/httpd/conf/httpd.conf
+echo 'serverb web' > /var/www/html/index.html
+systemctl enable --now httpd
+true
+
+
+
 
 
 
