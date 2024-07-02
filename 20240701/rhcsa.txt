@@ -2194,7 +2194,7 @@ Jul 02 11:41:14 servera.example.com chronyd[31985]: Load>Jul 02 11:41:14 servera
 
 systemctl : 모든 유닛의 상태정보
 systemctl --type=service
-systemctl status sshd <<
+systemctl status sshd << 현재 서비스의 상태 정보
 systemctl is-enabled sshd  부팅시 활성화 정보 확인
 systemctl is-active sshd   런타임 중 활성화 정보 확인
 systemctl list-units --type=service --all
@@ -2218,6 +2218,22 @@ systemctl mask network
 systemctl unmask network  
 마스크를 해제 
 
+serverb에서 작업 하시면 됩니다.
+웹 서버를 통해 service 기본 확인
+
+# dnf -y install httpd
+# echo 'web' > /var/www/html/index.html
+# systemctl start httpd
+# systemctl status httpd
+systemctl is-enabled httpd
+systemctl is-active httpd
+# reboot
+# systemctl status httpd
+# systemctl enable --now httpd
+systemctl is-enabled httpd
+systemctl is-active httpd
+# reboot
+# systemctl status httpd
 
 
 
