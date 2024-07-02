@@ -2454,14 +2454,152 @@ echo 'serverb web' > /var/www/html/index.html
 systemctl enable --now httpd
 true
 
+포트번호가 8888로 변경이 되어 있다.
+단순히 8888번때문에 에러가 났다?
+
+selinux 활성화 상태이기 때문에 에러가 난다.
+왜그런가? 어떤 설정때문인가.
+selinux의 enforcing으로 인해 강제 적용되어있다.
+8888번포트에 대한 허용작업이 되어 있지 않음. 이걸 해결해 줘야한다.
+
+[root@serverb ~]# systemctl restart httpd
+Job for httpd.service failed because the control process exited with error code.
+See "systemctl status httpd.service" and "journalctl -xeu httpd.service" for details.
+
+[root@serverb ~]# systemctl status httpd.service
+× httpd.service - The Apache HTTP Server
+     Loaded: loaded (/usr/lib/systemd/system/httpd.service; disabled; preset: disabled)
+     Active: failed (Result: exit-code) since Tue 2024-07-02 15:35:20 KST; 20s ago
+       Docs: man:httpd.service(8)
+    Process: 1927 ExecStart=/usr/sbin/httpd $OPTIONS -DFOREGROUND (code=exited, status=1/FAILURE)
+   Main PID: 1927 (code=exited, status=1/FAILURE)
+     Status: "Reading configuration..."
+        CPU: 30ms
+
+Jul 02 15:35:20 serverb.example.com systemd[1]: Starting The Apache HTTP Server... 웹 서버 시작 
+아래 두줄에서 권한 에러가 표시. 8888번 포트에 대한 권한 에러
+httpd 데몬의 apache 계정이 8888번을 사용함에 있어 이용할 수 없는 상태.
+Jul 02 15:35:20 serverb.example.com httpd[1927]: (13)Permission denied: AH00072: make_sock: could not bind to address [::]:8888  <<
+Jul 02 15:35:20 serverb.example.com httpd[1927]: (13)Permission denied: AH00072: make_sock: could not bind to address 0.0.0.0:8888 <<
+listening 불가능 + 프로세스  셧다운
+Jul 02 15:35:20 serverb.example.com httpd[1927]: no listening sockets available, shutting down
+Jul 02 15:35:20 serverb.example.com httpd[1927]: AH00015: Unable to open logs
+Jul 02 15:35:20 serverb.example.com systemd[1]: httpd.service: Main process exited, code=exited, status=1/FAILURE
+Jul 02 15:35:20 serverb.example.com systemd[1]: httpd.service: Failed with result 'exit-code'.
+Jul 02 15:35:20 serverb.example.com systemd[1]: Failed to start The Apache HTTP Server.
 
 
+# journalctl -f                                        
+Jul 02 15:35:24 serverb.example.com setroubleshoot[1928]: SELinux is preventing /usr/sbin/httpd from name_bind access on the tcp_socket port 8888. For complete SELinux messages run: sealert -l 4c9c83fa-b022-491d-9e6b-fa83f2061dc3
+Jul 02 15:35:24 serverb.example.com setroubleshoot[1928]: SELinux is preventing /usr/sbin/httpd from name_bind access on the tcp_socket port 8888.
+                                                          
+                                                          *****  Plugin bind_ports (92.2 confidence) suggests   ************************
+                                                          
+                                                          If you want to allow /usr/sbin/httpd to bind to network port 8888
+                                                          Then you need to modify the port type.
+                                                          Do
+                                                          # semanage port -a -t PORT_TYPE -p tcp 8888
+                                                              where PORT_TYPE is one of the following: http_cache_port_t, http_port_t, jboss_management_port_t, jboss_messaging_port_t, ntop_port_t, puppet_port_t.
+                                                          
+                                                          *****  Plugin catchall_boolean (7.83 confidence) suggests   ******************
+                                                          
+                                                          If you want to allow nis to enabled
+                                                          Then you must tell SELinux about this by enabling the 'nis_enabled' boolean.
+                                                          
+                                                          Do
+                                                          setsebool -P nis_enabled 1
+                                                          
+                                                          *****  Plugin catchall (1.41 confidence) suggests   **************************
+                                                          
+                                                          If you believe that httpd should be allowed name_bind access on the port 8888 tcp_socket by default.                                                          Then you should report this as a bug.
+                                                          You can generate a local policy module to allow this access.
+                                                          Do
+                                                          allow this access for now by executing:
+                                                          # ausearch -c 'httpd' --raw | audit2allow -M my-httpd
+                                                          # semodule -X 300 -i my-httpd.pp
+                                                          
+Jul 02 15:35:32 serverb.example.com systemd[1]: dbus-:1.1-org.fedoraproject.SetroubleshootPrivileged@0.service: Deactivated successfully.
+Jul 02 15:35:34 serverb.example.com systemd[1]: setroubleshootd.service: Deactivated successfully.
+Jul 02 15:35:34 serverb.example.com systemd[1]: setroubleshootd.service: Consumed 3.172s CPU time.
+
+[root@serverb ~]# sealert -l 4c9c83fa-b022-491d-9e6b-fa83f2061dc3
+SELinux is preventing /usr/sbin/httpd from name_bind access on the tcp_socket port 8888.
+
+*****  Plugin bind_ports (92.2 confidence) suggests   ************************
+
+If you want to allow /usr/sbin/httpd to bind to network port 8888
+Then you need to modify the port type.
+Do
+# semanage port -a -t PORT_TYPE -p tcp 8888
+    where PORT_TYPE is one of the following: http_cache_port_t, http_port_t, jboss_management_port_t, jboss_messaging_port_t, ntop_port_t, puppet_port_t.
+
+*****  Plugin catchall_boolean (7.83 confidence) suggests   ******************
+
+If you want to allow nis to enabled
+Then you must tell SELinux about this by enabling the 'nis_enabled' boolean.
+
+Do
+setsebool -P nis_enabled 1
+
+*****  Plugin catchall (1.41 confidence) suggests   **************************
+
+If you believe that httpd should be allowed name_bind access on the port 8888 tcp_socket by default.
+Then you should report this as a bug.
+You can generate a local policy module to allow this access.
+Do
+allow this access for now by executing:
+# ausearch -c 'httpd' --raw | audit2allow -M my-httpd
+# semodule -X 300 -i my-httpd.pp
 
 
+Additional Information:
+Source Context                system_u:system_r:httpd_t:s0
+Target Context                system_u:object_r:unreserved_port_t:s0
+Target Objects                port 8888 [ tcp_socket ]
+Source                        httpd
+Source Path                   /usr/sbin/httpd
+Port                          8888
+Host                          serverb.example.com
+Source RPM Packages           httpd-core-2.4.57-8.el9.x86_64
+Target RPM Packages           
+SELinux Policy RPM            selinux-policy-targeted-38.1.11-2.el9_2.2.noarch
+Local Policy RPM              selinux-policy-targeted-38.1.11-2.el9_2.2.noarch
+Selinux Enabled               True
+Policy Type                   targeted
+Enforcing Mode                Enforcing
+Host Name                     serverb.example.com
+Platform                      Linux serverb.example.com
+                              5.14.0-284.11.1.el9_2.x86_64 #1 SMP
+                              PREEMPT_DYNAMIC Tue May 9 17:09:15 UTC 2023 x86_64
+                              x86_64
+Alert Count                   4
+First Seen                    2024-07-02 15:14:30 KST
+Last Seen                     2024-07-02 15:35:20 KST
+Local ID                      4c9c83fa-b022-491d-9e6b-fa83f2061dc3
+
+Raw Audit Messages
+type=AVC msg=audit(1719902120.260:100): avc:  denied  { name_bind } for  pid=1927 comm="httpd" src=8888 scontext=system_u:system_r:httpd_t:s0 tcontext=system_u:object_r:unreserved_port_t:s0 tclass=tcp_socket permissive=0
 
 
+type=SYSCALL msg=audit(1719902120.260:100): arch=x86_64 syscall=bind success=no exit=EACCES a0=3 a1=56165bd0f378 a2=10 a3=7ffebf07e3dc items=0 ppid=1 pid=1927 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=4294967295 comm=httpd exe=/usr/sbin/httpd subj=system_u:system_r:httpd_t:s0 key=(null)
 
+Hash: httpd,httpd_t,unreserved_port_t,tcp_socket,name_bind
 
+[root@serverb ~]# semanage port -l | grep -w http_port_t
+http_port_t                    tcp      80, 81, 443, 488, 8008, 8009, 8443, 9000
+8888번은 현재 등록이 되어 있지 않음.
+
+[root@serverb ~]# semanage port -a -t http_port_t  -p tcp 8888
+[root@serverb ~]# semanage port -l | grep -w http_port_t
+http_port_t                    tcp      8888, 80, 81, 443, 488, 8008, 8009, 8443, 9000
+이제 8888번을 등록하였음.
+
+[root@serverb ~]# firewall-cmd --permanent --add-port=8888/tcp
+[root@serverb ~]# firewall-cmd --reload
+success
+
+[root@servera test]# curl http://192.168.10.220:8888
+serverb web
 
 
 
