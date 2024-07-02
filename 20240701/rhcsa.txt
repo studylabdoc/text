@@ -2601,6 +2601,416 @@ success
 [root@servera test]# curl http://192.168.10.220:8888
 serverb web
 
+리포지토리 설정 
+dnf
+yum
+
+YUM → DNF (dnf-3)
+RHEL 8까지 사용하던 패키지 관리자.
+yellowdog package update manager
+파이선 기반으로 작성됨 dnf RHEL 9부터 사용하는 패키지 관리자.
+
+기존 yum과 호환성 유지
+module 기능 추가 microdnf < 그냥 없다고 생각하면 편함
+컨테이너 이미지 생성시 많이 사용함. 
+혹은 기본 기능이 필요한 경우 사용
+dnf, yum의 저장소 정보 위치는, "/etc/yum.repos.d/".
+yum설정 파일은 "/etc/yum.conf", "/etc/yum/".
+dnf로 변경이 되면서 해당 파일은 "/etc/dnf/dnf.conf", /etc/dnf/"으로 변경.
+RHEL 9, Rocky 9, CentOS-9-Stream를 사용하는 경우 dnf 가 기본 사용
+
+프로그램 설치의 아주 얄팍한 역사
+소스설치 > RPM > yum > dnf
+소스설치 : configure> make > install 과정을 거치면서 직접 제어
+에러가 정말 많다. 모든걸 커스텀 가능
+RPM > 한방에 설치가 가능! 
+종속성의 문제. 
+yum > 종속성 문제를 해결하고 좀 더 편하게 이용 가능
+패키지가 리포지토리에 종속되어 있음 : 항상 최신버전
+메모리 상에서 hang이 걸리는 문제
+dnf : 파이썬으로 포팅되어 제작
+
+
+간단 명료한 rpm  dnf 사용법
+[rpm]
+rpm -qa : 현재 시스템에 설치된 모든 패키지 목록 나열
+[root@servera bin]# rpm -qa | grep httpd
+[root@servera bin]# rpm -ql httpd : 패키지에서 배포되는 파일을 확인
+rpm -qlc : 패키지의 설정파일만 
+rpm -qld : 패키지의 도움말만
+
+rpm -qi : 패키지의 메타 정보 확인
+rpm -qf :  rpm -qf /usr/bin/ls
+coreutils-8.32-34.el9.x86_64 : 특정 파일이 배포된 패키지를 확인
+
+[dnf]
+
+소스코드 -> rpm > yum, dnf
+
+[root@servera bin]# dnf repolist
+[root@servera bin]# dnf repolist --enabled
+repo id                      repo name
+appstream                    Rocky Linux 9 - AppStream
+baseos                       Rocky Linux 9 - BaseOS
+extras                       Rocky Linux 9 - Extras
+
+dnf list 전체 목록 확인
+dnf info 특정 패키지의 정보확인
+dnf provides  설치된 명령어의 실제 패키지 확인
+dnf install 
+dnf remove
+dnf history
+dnf hisotory undo 1
+
+[root@serverb dnf]# dnf clean all
+25 files removed
+[root@serverb dnf]# dnf list
+
+[root@serverb dnf]# dnf install telnet
+Last metadata expiration check: 0:00:10 ago on Tue 02 Jul 2024 04:11:14 PM KST.
+Dependencies resolved.
+============================================================================ Package       Architecture  Version                 Repository        Size
+============================================================================Installing:
+ telnet        x86_64        1:0.17-85.el9           appstream         63 k
+
+Transaction Summary
+============================================================================Install  1 Package
+
+Total download size: 63 k
+Installed size: 121 k
+Is this ok [y/N]: y
+Downloading Packages:
+telnet-0.17-85.el9.x86_64.rpm               438 kB/s |  63 kB     00:00    
+----------------------------------------------------------------------------Total                                        80 kB/s |  63 kB     00:00     
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                    1/1 
+  Installing       : telnet-1:0.17-85.el9.x86_64                        1/1 
+  Running scriptlet: telnet-1:0.17-85.el9.x86_64                        1/1 
+  Verifying        : telnet-1:0.17-85.el9.x86_64                        1/1 
+
+Installed:
+  telnet-1:0.17-85.el9.x86_64                                               
+
+Complete!
+
+[root@serverb dnf]# dnf -y install ftp
+Last metadata expiration check: 0:00:54 ago on Tue 02 Jul 2024 04:11:14 PM KST.
+Dependencies resolved.
+============================================================================ Package      Architecture    Version              Repository          Size
+============================================================================Installing:
+ ftp          x86_64          0.17-89.el9          appstream           61 k
+
+Transaction Summary
+============================================================================Install  1 Package
+
+Total download size: 61 k
+Installed size: 112 k
+Downloading Packages:
+ftp-0.17-89.el9.x86_64.rpm                  697 kB/s |  61 kB     00:00    
+----------------------------------------------------------------------------Total                                        80 kB/s |  61 kB     00:00     
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                    1/1 
+  Installing       : ftp-0.17-89.el9.x86_64                             1/1 
+  Running scriptlet: ftp-0.17-89.el9.x86_64                             1/1 
+  Verifying        : ftp-0.17-89.el9.x86_64                             1/1 
+
+Installed:
+  ftp-0.17-89.el9.x86_64                                                    
+
+Complete!
+
+[root@serverb dnf]# dnf remove telnet
+Dependencies resolved.
+============================================================================ Package       Architecture  Version                Repository         Size
+============================================================================Removing:
+ telnet        x86_64        1:0.17-85.el9          @appstream        121 k
+
+Transaction Summary
+============================================================================Remove  1 Package
+
+Freed space: 121 k
+Is this ok [y/N]: y
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                    1/1 
+  Erasing          : telnet-1:0.17-85.el9.x86_64                        1/1 
+  Running scriptlet: telnet-1:0.17-85.el9.x86_64                        1/1 
+  Verifying        : telnet-1:0.17-85.el9.x86_64                        1/1 
+
+Removed:
+  telnet-1:0.17-85.el9.x86_64                                               
+
+Complete!
+[root@serverb dnf]# dnf -y remove ftp
+Dependencies resolved.
+============================================================================ Package     Architecture   Version                Repository          Size
+============================================================================Removing:
+ ftp         x86_64         0.17-89.el9            @appstream         112 k
+
+Transaction Summary
+============================================================================Remove  1 Package
+
+Freed space: 112 k
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                    1/1 
+  Erasing          : ftp-0.17-89.el9.x86_64                             1/1 
+  Running scriptlet: ftp-0.17-89.el9.x86_64                             1/1 
+  Verifying        : ftp-0.17-89.el9.x86_64                             1/1 
+
+Removed:
+  ftp-0.17-89.el9.x86_64                                                    
+
+Complete!
+
+[root@serverb dnf]# dnf install httpd
+Last metadata expiration check: 0:01:47 ago on Tue 02 Jul 2024 04:11:14 PM KST.
+Dependencies resolved.  종속성에 관련해서 여러 패키지가 동시에 설치 되기도 한다.
+============================================================================ Package               Arch       Version               Repository     Size
+============================================================================Installing:
+ httpd                 x86_64     2.4.57-8.el9          appstream      45 k
+Installing dependencies:
+ apr                   x86_64     1.7.0-12.el9_3        appstream     122 k
+ apr-util              x86_64     1.6.1-23.el9          appstream      94 k
+ apr-util-bdb          x86_64     1.6.1-23.el9          appstream      12 k
+ httpd-core            x86_64     2.4.57-8.el9          appstream     1.4 M
+ httpd-filesystem      noarch     2.4.57-8.el9          appstream      12 k
+ httpd-tools           x86_64     2.4.57-8.el9          appstream      80 k
+ rocky-logos-httpd     noarch     90.15-2.el9           appstream      24 k
+Installing weak dependencies:
+ apr-util-openssl      x86_64     1.6.1-23.el9          appstream      14 k
+ mod_http2             x86_64     2.0.26-2.el9_4        appstream     162 k
+ mod_lua               x86_64     2.4.57-8.el9          appstream      59 k
+
+Transaction Summary
+============================================================================Install  11 Packages
+
+Total download size: 2.0 M
+Installed size: 6.0 M
+Is this ok [y/N]: 
+
+[root@serverb test]# wget https://download.rockylinux.org/pub/rocky/9/AppStream/x86_64/os/Packages/h/httpd-2.4.57-8.el9.x86_64.rpm
+--2024-07-02 16:14:31--  https://download.rockylinux.org/pub/rocky/9/AppStream/x86_64/os/Packages/h/httpd-2.4.57-8.el9.x86_64.rpm
+Resolving download.rockylinux.org (download.rockylinux.org)... 199.232.198.132, 199.232.194.132, 2a04:4e42:4c::644, ...
+Connecting to download.rockylinux.org (download.rockylinux.org)|199.232.198.132|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 46524 (45K) [application/x-redhat-package-manager]
+Saving to: ‘httpd-2.4.57-8.el9.x86_64.rpm’
+
+httpd-2.4.57-8.el9 100%[================>]  45.43K  --.-KB/s    in 0.1s    
+
+2024-07-02 16:14:31 (305 KB/s) - ‘httpd-2.4.57-8.el9.x86_64.rpm’ saved [46524/46524]
+
+[root@serverb test]# ls
+httpd-2.4.57-8.el9.x86_64.rpm
+[root@serverb test]# 
+
+[root@serverb test]# dnf localinstall httpd-2.4.57-8.el9.x86_64.rpm
+Last metadata expiration check: 0:04:15 ago on Tue 02 Jul 2024 04:11:14 PM KST.
+Dependencies resolved.
+============================================================================ Package               Arch       Version            Repository        Size
+============================================================================Installing:
+ httpd                 x86_64     2.4.57-8.el9       @commandline      45 k
+Installing dependencies:
+ apr                   x86_64     1.7.0-12.el9_3     appstream        122 k
+ apr-util              x86_64     1.6.1-23.el9       appstream         94 k
+ apr-util-bdb          x86_64     1.6.1-23.el9       appstream         12 k
+ httpd-core            x86_64     2.4.57-8.el9       appstream        1.4 M
+ httpd-filesystem      noarch     2.4.57-8.el9       appstream         12 k
+ httpd-tools           x86_64     2.4.57-8.el9       appstream         80 k
+ rocky-logos-httpd     noarch     90.15-2.el9        appstream         24 k
+Installing weak dependencies:
+ apr-util-openssl      x86_64     1.6.1-23.el9       appstream         14 k
+ mod_http2             x86_64     2.0.26-2.el9_4     appstream        162 k
+ mod_lua               x86_64     2.4.57-8.el9       appstream         59 k
+
+Transaction Summary
+============================================================================Install  11 Packages
+
+Total size: 2.0 M
+Total download size: 1.9 M
+Installed size: 6.0 M
+Is this ok [y/N]: 
+
+
+[root@serverb test]# dnf history
+ID     | Command line             | Date and time    | Action(s)      | Altered
+-------------------------------------------------------------------------------
+    10 | localinstall httpd-2.4.5 | 2024-07-02 16:15 | Install        |   11   
+     9 | -y remove httpd          | 2024-07-02 16:12 | Removed        |   11 EE
+     8 | -y remove ftp            | 2024-07-02 16:12 | Removed        |    1   
+     7 | remove telnet            | 2024-07-02 16:12 | Removed        |    1   
+     6 | -y install ftp           | 2024-07-02 16:12 | Install        |    1   
+     5 | install telnet           | 2024-07-02 16:11 | Install        |    1   
+     4 | -y install httpd         | 2024-07-02 14:47 | Install        |   11   
+     3 | -y install chrony        | 2024-07-02 11:37 | Upgrade        |    1   
+     2 | -y install nfs-utils     | 2023-11-19 18:03 | I, U           |   29 E<
+     1 |                          | 2023-11-11 13:57 | Install        | 1182 >E
+[root@serverb test]# dnf history undo 10 -y 
+Last metadata expiration check: 0:05:14 ago on Tue 02 Jul 2024 04:11:14 PM KST.
+Dependencies resolved.
+============================================================================ Package              Arch      Version              Repository        Size
+============================================================================Removing:
+ apr-util-openssl     x86_64    1.6.1-23.el9         @appstream        23 k
+ httpd                x86_64    2.4.57-8.el9         @@commandline     59 k
+ mod_http2            x86_64    2.0.26-2.el9_4       @appstream       442 k
+ mod_lua              x86_64    2.4.57-8.el9         @appstream       142 k
+Removing dependent packages:
+ apr                  x86_64    1.7.0-12.el9_3       @appstream       288 k
+ apr-util             x86_64    1.6.1-23.el9         @appstream       211 k
+ apr-util-bdb         x86_64    1.6.1-23.el9         @appstream        15 k
+ httpd-core           x86_64    2.4.57-8.el9         @appstream       4.7 M
+ httpd-filesystem     noarch    2.4.57-8.el9         @appstream       400  
+ httpd-tools          x86_64    2.4.57-8.el9         @appstream       199 k
+ rocky-logos-httpd    noarch    90.15-2.el9          @appstream        24 k
+
+Transaction Summary
+============================================================================Remove  11 Packages
+
+Freed space: 6.0 M
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                    1/1 
+  Running scriptlet: httpd-2.4.57-8.el9.x86_64                         1/11 
+  Erasing          : httpd-2.4.57-8.el9.x86_64                         1/11 
+  Running scriptlet: httpd-2.4.57-8.el9.x86_64                         1/11 
+  Erasing          : mod_lua-2.4.57-8.el9.x86_64                       2/11 
+  Erasing          : mod_http2-2.0.26-2.el9_4.x86_64                   3/11 
+  Erasing          : rocky-logos-httpd-90.15-2.el9.noarch              4/11 
+  Erasing          : httpd-core-2.4.57-8.el9.x86_64                    5/11 
+  Erasing          : httpd-tools-2.4.57-8.el9.x86_64                   6/11 
+  Erasing          : httpd-filesystem-2.4.57-8.el9.noarch              7/11 
+  Erasing          : apr-util-1.6.1-23.el9.x86_64                      8/11 
+  Erasing          : apr-util-bdb-1.6.1-23.el9.x86_64                  9/11 
+  Erasing          : apr-1.7.0-12.el9_3.x86_64                        10/11 
+  Erasing          : apr-util-openssl-1.6.1-23.el9.x86_64             11/11 
+  Running scriptlet: apr-util-openssl-1.6.1-23.el9.x86_64             11/11 
+  Verifying        : apr-1.7.0-12.el9_3.x86_64                         1/11 
+  Verifying        : apr-util-1.6.1-23.el9.x86_64                      2/11 
+  Verifying        : apr-util-bdb-1.6.1-23.el9.x86_64                  3/11 
+  Verifying        : apr-util-openssl-1.6.1-23.el9.x86_64              4/11 
+  Verifying        : httpd-2.4.57-8.el9.x86_64                         5/11 
+  Verifying        : httpd-core-2.4.57-8.el9.x86_64                    6/11 
+  Verifying        : httpd-filesystem-2.4.57-8.el9.noarch              7/11 
+  Verifying        : httpd-tools-2.4.57-8.el9.x86_64                   8/11 
+  Verifying        : mod_http2-2.0.26-2.el9_4.x86_64                   9/11 
+  Verifying        : mod_lua-2.4.57-8.el9.x86_64                      10/11 
+  Verifying        : rocky-logos-httpd-90.15-2.el9.noarch             11/11 
+
+Removed:
+  apr-1.7.0-12.el9_3.x86_64            apr-util-1.6.1-23.el9.x86_64        
+  apr-util-bdb-1.6.1-23.el9.x86_64     apr-util-openssl-1.6.1-23.el9.x86_64
+  httpd-2.4.57-8.el9.x86_64            httpd-core-2.4.57-8.el9.x86_64      
+  httpd-filesystem-2.4.57-8.el9.noarch httpd-tools-2.4.57-8.el9.x86_64     
+  mod_http2-2.0.26-2.el9_4.x86_64      mod_lua-2.4.57-8.el9.x86_64         
+  rocky-logos-httpd-90.15-2.el9.noarch
+
+Complete!
+
+[root@servera bin]# dnf check-update
+이중 필요한것만 빼서 ! 하면 됩니다.
+
+리포지토리 : 저장소
+
+위치 : 
+cd /etc/yum.repos.d
+[root@serverb yum.repos.d]# ls
+rocky-addons.repo  rocky-devel.repo  rocky-extras.repo  rocky.repo
+
+[baseos] 리포를 구별하기 위함 / dnf list에서 사용
+name= 리포 네임으로 사용
+mirrorlist : 사용가능한 위치의 사이트를 이용
+#baseurl= 단독으로 사용되는 주소의 리포를 가져오는 용도 *
+gpgcheck=1 gpgkey와 관련이 있으며 리포를 위한 인증키 1- 사용 0-사용하지 않음
+enabled=1 활성화 1- 활성화 0-비활성화
+countme=1 시스템이 실행된 시간  익명으로 센터에 보고되는 옵션 0- 사용하지 않음.
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+
+실제 이용할때는 이만큼 많은 옵션을 사용하지는 않음.
+
+기존의 모든 리포를 삭제
+cd /etc/yum.repos.d
+rm -rf *
+
+직접 작성하는 방식
+[baseos]
+name=
+baseurl=
+enabled=1
+gpgcheck=0
+
+[root@serverb yum.repos.d]# vi baseos.repo  : 파일을 생성할때의 옵션으로는 파일의 마지막을 .repo로 끝내야 한다.
+
+
+
+
+
+명령어를 통해서 사용하는 방식
+
+리포지토리 설정
+/etc/yum.repos.d 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
