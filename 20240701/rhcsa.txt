@@ -5,7 +5,8 @@
 링크에다가 메일 주소를 등록
 
 * 여러분들에게 공유하는 모든 파일은 구글드라이브 주소.
-
+https://open.kakao.com/o/sdyi1mAg
+1324
 
 1. 파일 다운로드 -> 환경 구축 
 2. 컨텐츠 풀이
@@ -1066,19 +1067,7 @@ student가 소유한 모든 파일을 찾아 /root/student.list 디렉토리에 
 
 # find / -user student -type f -exec cp -fv {} /root/student.list \;
 
-지금까지 6문제 해결 
 
-계정 생성
-setid 디렉토리 문제
-계정 새어.
-파일 찾기
-문자열찾기
-기본 권한 설정
-
-30분 동안은 
-네트워크 관련 내용 ! 내일
-
-메일은 조금있다가 제가 추가 
 
 
 
