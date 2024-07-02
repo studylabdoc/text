@@ -2029,6 +2029,136 @@ chronyc -a makestep
 Reach : 타임서버에 접속하여 [377] 값을 만들어오기 위한 값으로 시간차이를 나타내는 값 
         시간서버에 대한 통신 성공률 
 
+serverb에도 설정!
+asia.pool.ntp.org < 다음 타임서버를 이용해서 구성해보자.
+
+아카이빙
+tar 
+압축 / 아카이빙
+
+tar : 테이프 아카이빙
+
+tar
+tar(tape archive) 명령어는 여러개의 파일이나 디렉토리를 한 개의 묶음파일로 만들 때 사용한다. 또는 Tape 디바이스에 백업할 때 사용한다. tar 명령어는 c, x, v, f 옵션들을 사용할 수 있다. 한 개의 아카이빙 할 때는 c 옵션을 사용하고 f 옵션으로 만들어질 파일의 이름을 지정하면 된다. 아카이빙 파일의 내용을 볼때는 t 옵션을 사용하고 f 옵션으로 아카이빙 파일을 지정한다. 아카이빙 파일을 해제 할 때는 x 옵션을 사용하고 f 옵션으로 아카이빙 파일을 지정하면 된다.
+
+tar cvf
+tar tvf
+tar xvf
+tar cf
+
+LTO 장치로 사용을 했지만 최근에는 테이프 장치가 아니라 디스크 스토리지를 가상 LTO 장치로 생성하여 테이프 아카이빙을 받는다.
+
+[명령어 형식]
+tar명령어 사용시 옵션에 -기호 생략가능
+# tar cvf <묶음파일명> <파일명1> <파일명2> .../* c: create, v: verbose, f: file or tape */
+# tar tvf <묶음파일명> /* t: content */
+# tar xvf <묶음파일명>/* x: extract */
+v - 아카이빙을 풀거나 묶을때 사용 /CPU사용율이 올라감/
+
+그냥 압축
+gzip
+gzip file1
+bzip2
+bzip2 file4
+xz
+ xz file5
+압축 해제시에는 -d 옵션 사용
+
+리눅스 명령어의 압축의 경우 특징
+단일 파일을 대상으로 한다.
+
+# tar cvf file.tar file1 file2 file3
+# tar tvf file.tar
+# tar xvf file.tar
+
+# tar cf - . | (cd /dir ; tar xf -)
+
+# tar cvzf file.tar.gz file1 file2 file3   (# tar cvzf file.tgz file1 file2 file3)
+# tar tvzf file.tar.gz
+# tar xvzf file.tar.gz                     (# tar xvf file.tar.gz)
+
+# tar cvjf file.tar.bz2 file1 file2 file3  (# tar cvjf file.tbz file1 file2 file3)
+# tar tvjf file.tar.bz2
+# tar xvjf file.tar.bz2                    (# tar xvf file.tar.bz2)
+
+[명령어 옵션]
+
+**옵션 : 설명**
+
+-c : 여러 개의 파일을 하나의 파일로 묶을 때
+-v : 생성과정을 보여 줌
+-x : 파일의 압축을 해제하고 풀어 낼 때
+-f : 기본장치인 테이프가 아니라 파일로서 동작시키는 경우 사용되는 옵션
+-r : 파일 및 디렉토리 추가
+-u : tar 파일과 새로운 디렉토리 내의 파일과 비교하여 최근 파일을 아카이브에 추가
+-t : tar 파일의 내용을 확인할 때
+**-z :** gzip과 관련하여 압축이나 해제를 한꺼번에 할 때
+**-j, -l :** bzip2를 이용해서 압축한다.
+**-J, : xz를 이용해서 압축한다.
+
+tar와 함께 사용해야 하는 세가지 옵션
+-z gzip
+-j bzip2
+-J xz
+
+# tar cvzf file.tar.gz file1 file2 file3
+# tar cvjf file.tar.bzip2 file1 file2 file
+
+
+tar를 통하여 압축과 아카이빙을 동시에 진행한다.
+
+# tar [c|t|x]vf[z|j|J] file filelist....
+
+다음 디렉터리를 압축해서 /tmp에 보관. > /tmp의 데이터를 삭제
+/usr/share/doc, bzip, doc.tar.bz2
+/usr/local, xz, local.tar.xz
+/var/log, gzip, log.tar.gz
+
+tar: Removing leading `/' from member names
+최상위 디렉토리를 포함하지 못하도록 하는 기능
+해당기능이 아닌 최상위 디렉토리도 포함하려면 -P 옵션을 이용
+
+
+이 파일의 형식 확인
+[root@servera ~]# cd /tmp
+[root@servera tmp]# ls
+doc.tar.bz2  local.tar.xz  log.tar.gz
+[root@servera tmp]# file *
+doc.tar.bz2:  bzip2 compressed data, block size = 900k
+local.tar.xz: XZ compressed data
+log.tar.gz:   gzip compressed data, from Unix, original size modulo 2^32 9123840
+[root@servera tmp]# 
+
+해당 문제의 함정 카드
+다음 디렉터리를 압축해서 /tmp에 보관. > /tmp의 데이터를 삭제
+/usr/share/doc, bzip, doc.tar.bz2
+
+문제의 함정을 이해->
+
+/tmp 디렉토리 아래에 gzip 알고리즘을 사용한 tar 아카이빙 파일을 생성한다. 파일명은 doc.tar.bz2이며 대상 디렉토리는 /usr/share/doc이다.
+# tar cvfz doc.tar.bz2 /usr/share/doc
+
+file1을 아카이빙한다. 압축을 위해서 gzip을 이용한다. 파일명을 file1.tar.gz으로 사용한다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
