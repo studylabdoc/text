@@ -1067,15 +1067,51 @@ student가 소유한 모든 파일을 찾아 /root/student.list 디렉토리에 
 
 # find / -user student -type f -exec cp -fv {} /root/student.list \;
 
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+네트워크 구성 
+설정에 사용하는 명령어 :
+nmcli nmtui
+네트워크 매니저 :
+nmcli : 커맨드라인에서 네트워크 구성을 위해 사용
+nmtui : 텍스트 유저 인터페이스로 네트워크 구성을 위해 사용
 
+네트워크 설정을 위한 기본 정보
+IP: 엔드디바이스를 위한 주소
+공인망 / 사설망 주소로 나뉜다.
+IPv4* / IPv6 
+192.168.0.5  172.16.15.4
+netmask:호스트가 어느 구역에 속해 있는지를 파악하기 위해 필요
+gateway:LAN 통신이 아닌 다른 구역으로 통신을 하기 위해서는 게이트웨이가 필요하다. 
+dns: DOMAIN -> IP / IP -> DOMAIN 질의 서비스를 하기 위해 필요함. /etc/resolv.conf
 
+현재 버전에서는 /etc/sysconfig/network-scripts를 사용하지 않고
+/etc/NetworkManager/system-connections/ 디렉토리를 사용한다.
 
+servera에 네트워크 장치를 하나 추가 한뒤 이를 이용하여 192.168.10.211/24로 네트워크를 구성해보자.
 
-
-
-
-
-
+1. DHCP 비활성화
+edit -> virtual network editor > 관리자 권한 획득
+VMnet8 > DHCP 비활성화
+2. NIC [NAT] 장치 추가 servera
+vm > setting > add > NIC [NAT]
+[root@servera ~]# ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: ens33: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 00:0c:29:77:4f:05 brd ff:ff:ff:ff:ff:ff
+    altname enp2s1
+    inet 192.168.10.210/24 brd 192.168.10.255 scope global noprefixroute ens33
+       valid_lft forever preferred_lft forever
+    inet6 fe80::20c:29ff:fe77:4f05/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+3: ens34: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 00:0c:29:77:4f:0f brd ff:ff:ff:ff:ff:ff
+    altname enp2s2
+ens34라는 추가 장치가 있는지 확인 해주면 된다.
 
 
 
