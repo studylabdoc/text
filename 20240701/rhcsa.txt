@@ -1757,6 +1757,113 @@ ens33  81d234b9-f64b-334a-b796-c405e1e23be6  ethernet  ens33
 ens34  13adef32-9263-4d70-9bbe-2269bb8d522a  ethernet  ens34  
 lo     93c3415c-bf84-4da0-b15d-6d4a2ca3729c  loopback  lo   
 
+NTP
+NTP 이전
+rdate라는 명령을 data stream으로 사용
+rdate는 8버전 부터 명령어 자체가 삭제
+
+[참고] 지금은 사용할수 없음
+time.kriss.re.kr : 한국표준과학연구원 타임서버
+time.bora.net    : 보라넷 타임서버
+time-a.nist.gov  : 네트워크 타임 프로토콜(ntp.org)타임서버
+
+# nslookup time.bora.net
+Server:		192.168.10.2
+Address:	192.168.10.2#53
+
+Non-authoritative answer:
+Name:	time.bora.net
+Address: 203.248.240.140
+
+만약 호스트 정보가 출력되지 않는다면 다른 시간서버를 이용한다.
+
+지금은 안되는 명령어
+# rdate -p time.bora.net /* -p : peer, 타임서버 시간 출력 */
+rdate: [time.bora.net]	Wed Mar 11 15:07:41 2020
+
+# rdate -s time.bora.net /* 타임서버의 시간을 운영체제 시간에 적용 */
+
+현재는 rdate를 시간 설정용으로 사용하지 않고 NTP 프로토콜을 사용한다.
+rdate 단점
+
+rdate Client           rdate Server
+     |                    	|
+  T1 | ------------------>	| T2
+     |                    	|
+     |                    	|
+  T4 | <------------------	| T3
+     |                    	|
+     |                    	|
+
+네트워크에서 보낸시간 = T1+T2+T3+T4
+
+NTP Client           NTP Server
+     |                    	|
+  T1 | ------------------>	| T2
+     |                    	|
+     |                    	|
+  T4 | <------------------	| T3
+     |                    	|
+     |                    	|
+네트워크에서 보낸시간 = [(T2-T1)+(T4-T3)] / 2
+
+네트워크에서 사용되는 프로그램에서의 시간 동기화: OTP SSO
+
+ntp 서버 동기화를 설정 , 구성하는데 두가지 방식을 지원
+ntpd / [chronyd] 
+systemd-timesyncd (앞으로는 이 서비스를 기반으로 NTP Client 구성)
+구성을 위한 timedatectl
+현재의 구성파일 /etc/chrony.conf
+
+[root@servera ~]# timedatectl
+               Local time: Tue 2024-07-02 11:12:49 KST
+           Universal time: Tue 2024-07-02 02:12:49 UTC
+                 RTC time: Tue 2024-07-02 02:12:49
+                Time zone: Asia/Seoul (KST, +0900)
+System clock synchronized: yes *
+              NTP service: active *
+          RTC in local TZ: no
+
+Local time: 현재 시스템 시간
+Universal time:  현재 UTC 시간
+RTC time: 현재 하드웨어 시간
+Time zone: 설정된 time zone 
+System clock synchronized: 시간 정보에 대하여 동기화가 이루어지고 있는지 확인 
+NTP service:  NTP 서비스가 실행되고 있는지 확인
+RTC in local TZ:  RTC과의 동기화 진행 유무
+
+systemctl stop chronyd
+systemctl is-active chronyd
+systemctl status chronyd
+systemctl enable --now chronyd
+
+[root@servera ~]# date
+Tue Jul  2 11:15:16 AM KST 2024
+[root@servera ~]# date --utc
+Tue Jul  2 02:15:25 AM UTC 2024
+[root@servera ~]# date 08301300
+Fri Aug 30 01:00:00 PM KST 2024
+[root@servera ~]# date --set 12:13:15
+Fri Aug 30 12:13:15 PM KST 2024
+[root@servera ~]# date --set 2024-02-14
+Wed Feb 14 12:00:00 AM KST 2024
+[root@servera ~]# date -R
+Wed, 14 Feb 2024 00:00:26 +0900
+
+실습을 위한 사전 구성
+
+[root@servera ~]# systemctl stop --now chronyd.service
+[root@servera ~]# dnf -y remove chrony > /dev/null
+[root@servera ~]# timedatectl
+               Local time: Wed 2024-02-14 00:01:34 KST
+           Universal time: Tue 2024-02-13 15:01:34 UTC
+                 RTC time: Tue 2024-07-02 02:18:01
+                Time zone: Asia/Seoul (KST, +0900)
+System clock synchronized: no
+              NTP service: n/a
+          RTC in local TZ: no
+          
+
 
 
 
