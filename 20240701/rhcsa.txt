@@ -1878,9 +1878,156 @@ System clock synchronized: no
 server 0.kr.pool.ntp.org
 :wq
 
+[root@servera ~]# timedatectl
+               Local time: Tue 2024-07-02 11:40:42 KST
+           Universal time: Tue 2024-07-02 02:40:42 UTC
+                 RTC time: Tue 2024-07-02 02:40:42
+                Time zone: Asia/Seoul (KST, +0900)
+System clock synchronized: yes
+              NTP service: active
+          RTC in local TZ: no
 
+시간 동기화를 포기하고 처음부터 진행
 
+[root@servera ~]# timedatectl
+               Local time: Tue 2024-07-02 11:40:42 KST
+           Universal time: Tue 2024-07-02 02:40:42 UTC
+                 RTC time: Tue 2024-07-02 02:40:42
+                Time zone: Asia/Seoul (KST, +0900)
+System clock synchronized: yes
+              NTP service: active
+          RTC in local TZ: no
+[root@servera ~]# systemctl stop --now chronyd
+[root@servera ~]# timedatectl set-ntp 
+false  true   
+[root@servera ~]# timedatectl set-ntp false 
+[root@servera ~]# timedatectl
+               Local time: Tue 2024-07-02 11:42:02 KST
+           Universal time: Tue 2024-07-02 02:42:02 UTC
+                 RTC time: Tue 2024-07-02 02:42:02
+                Time zone: Asia/Seoul (KST, +0900)
+System clock synchronized: yes
+              NTP service: inactive
+          RTC in local TZ: no
 
+[root@servera ~]# date
+Tue Jul  2 11:42:12 AM KST 2024
+[root@servera ~]# date 07021140
+Tue Jul  2 11:40:00 AM KST 2024
+[root@servera ~]# timedatectl
+               Local time: Tue 2024-07-02 11:40:03 KST
+           Universal time: Tue 2024-07-02 02:40:03 UTC
+                 RTC time: Tue 2024-07-02 02:42:33
+                Time zone: Asia/Seoul (KST, +0900)
+System clock synchronized: no
+              NTP service: inactive
+          RTC in local TZ: no
+
+[root@servera ~]# systemctl enable --now chronyd
+Created symlink /etc/systemd/system/multi-user.target.wants/chronyd.service → /usr/lib/systemd/system/chronyd.service.
+
+[root@servera ~]# chronyc sources
+MS Name/IP address         Stratum Poll Reach LastRx Last sample               
+===============================================================================
+^? mail.innotab.com              3   6     1     2  -149.8s[-149.8s] +/-   10ms
+
+[root@servera ~]# chronyc sources -v
+
+  .-- Source mode  '^' = server, '=' = peer, '#' = local clock.
+ / .- Source state '*' = current best, '+' = combined, '-' = not combined,
+| /             'x' = may be in error, '~' = too variable, '?' = unusable.
+||                                                 .- xxxx [ yyyy ] +/- zzzz
+||      Reachability register (octal) -.           |  xxxx = adjusted offset,
+||      Log2(Polling interval) --.      |          |  yyyy = measured offset,
+||                                \     |          |  zzzz = estimated error.
+||                                 |    |           \
+MS Name/IP address         Stratum Poll Reach LastRx Last sample               
+===============================================================================
+^? mail.innotab.com              3   6     1    19  -149.8s[-149.8s] +/-   10ms
+
+[root@servera ~]# watch -n 1 'chronyc sources -v'
+[root@servera ~]# timedatectl
+               Local time: Tue 2024-07-02 11:42:19 KST
+           Universal time: Tue 2024-07-02 02:42:19 UTC
+                 RTC time: Tue 2024-07-02 02:44:49
+                Time zone: Asia/Seoul (KST, +0900)
+System clock synchronized: no
+              NTP service: active
+          RTC in local TZ: no
+
+[root@servera ~]# watch -n 1 'timedatectl'
+Every 1.0s: tim...  servera.example.com: Tue Jul  2 11:42:54 2024
+
+               Local time: Tue 2024-07-02 11:42:54 KST
+           Universal time: Tue 2024-07-02 02:42:54 UTC
+                 RTC time: Tue 2024-07-02 02:45:24
+                Time zone: Asia/Seoul (KST, +0900)
+System clock synchronized: no
+              NTP service: active
+          RTC in local TZ: no
+
+[root@servera ~]# chronyc -a makestep
+200 OK
+
+# dnf -y install chrony < 시간서버를 설정하기 위한 패키지 설치
+# vi /etc/chrony.conf
+pool 2.centos.pool.ntp.org iburst < NTP 클라이언트가 어느 서버에 접속하여 시간 정보를 받아 올 것인가를 지정
+server ntp.example.com iburst < NTP 클라이언트가 특정 서버에 접속하여 시간 정보를 받아 올 것인가를 지정
+
+iburst 옵션의 의미  
+타임 서버들은 초기 서비스에 걸리는 동기화 시간이 존재한다. 서비스를 시작하고 외부, 내부망에서 네트워크를 확인한 뒤 패킷을 보내 동기화를 시작
+
+패킷을 전송하고 다음 패킷까지 걸리는 시간은 16초가 걸린다. 이 시간을 줄이기 위해서 한번에 8개를 동시에 전송하라는 옵션이다.
+
+[root@servera ~]# systemctl enable --now chronyd
+[root@servera ~]# timedatectl
+               Local time: Tue 2024-06-04 12:44:58 KST
+           Universal time: Tue 2024-06-04 03:44:58 UTC
+                 RTC time: Tue 2024-06-04 03:44:58
+                Time zone: Asia/Seoul (KST, +0900)
+System clock synchronized: yes
+              NTP service: active
+          RTC in local TZ: no
+
+[root@servera ~]# chronyc sources -v
+[root@servera ~]# timedatectl
+               Local time: Tue 2024-06-04 12:45:37 KST
+           Universal time: Tue 2024-06-04 03:45:37 UTC
+                 RTC time: Tue 2024-06-04 03:45:38
+                Time zone: Asia/Seoul (KST, +0900)
+System clock synchronized: yes
+              NTP service: active
+          RTC in local TZ: no
+[root@servera ~]# chronyc sources -v
+
+  .-- Source mode  '^' = server, '=' = peer, '#' = local clock.
+ / .- Source state '*' = current best, '+' = combined, '-' = not combined,
+| /             'x' = may be in error, '~' = too variable, '?' = unusable.
+||                                                 .- xxxx [ yyyy ] +/- zzzz
+||      Reachability register (octal) -.           |  xxxx = adjusted offset,
+||      Log2(Polling interval) --.      |          |  yyyy = measured offset,
+||                                \     |          |  zzzz = estimated error.
+||                                 |    |           \
+MS Name/IP address         Stratum Poll Reach LastRx Last sample               
+===============================================================================
+^* 106.247.248.106               2   6    17    43   -492us[ -405us] +/-   29ms
+
+자주 사용되는 명령어
+# chronyc tracking
+# chronyc sources
+# chronyc sources -v
+# chronyc -a makestep 이 명령어는 NTP 서버와 최대한 근접하게 시간을 수정하여 동기화 되는 시간을 줄여줄수 있다.
+
+dnf -y install chrony
+vi /etc/chrony.conf
+  server 0.kr.pool.ntp.org iburst
+systemctl enable --now chronyd
+timedatectl
+chronyc sources -v
+chronyc -a makestep
+
+Reach : 타임서버에 접속하여 [377] 값을 만들어오기 위한 값으로 시간차이를 나타내는 값 
+        시간서버에 대한 통신 성공률 
 
 
 
