@@ -3111,10 +3111,97 @@ crontab -e
 
 사용자 user4에 다음과 같은 메세지를 매 10분마다 /var/log/messages에 출력되게 한다. "Hello hacker world this is 10 10 messages"
 
+시스템 성능 조절:
+sysctl -a 
 
+커널파라미터를 프로파일 기반으로 조절해주는 도구
 
+이전 방식
+sysctl -a
+sysctl -w=V
+sysctl -p
 
+이제는 하드한 방식이 아니라 tuned 서비스를 이용하여 상황에 맞게 변경 가능
+알고있어야 하는것:
 
+패키지 : tuned
+[root@serverb yum.repos.d]# dnf -y install tuned
+
+profile < 이미 제작되어 있다.
+
+active
+recommand
+
+정적 방식의 튜닝
+서비스를 시작하고 튜닝파일을 직접 선택
+활동 수준이 변경 될 때 까지 매개변수 조절이 이루어지지 않는다.
+
+동적 방식의 튜닝
+서비스를 시작하고 시스템 활동을 모니터링 
+런타임 동작 환경에 따라서 튜닝파일을 변경
+
+tuned에는 disk net load 플러그인 모니터링이 탑재 
+
+설치
+[root@node2 ~]# dnf -y install tuned
+
+활성화
+[root@node2 ~]# systemctl enable --now tuned
+
+[root@node2 ~]# tuned-adm --help
+    list                list available profiles or plugins (by default
+                        profiles)
+    active              show active profile
+    off                 switch off all tunings
+    profile             switch to a given profile, or list available
+    recommend           recommend profile
+    verify              verify profile
+    auto_profile        enable automatic profile selection mode, switch to
+                        the recommended profile
+    profile_mode        show current profile selection mode
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --version, -v         show program's version number and exit
+  --debug, -d           show debug messages
+  --async, -a           with dbus do not wait on commands completion and
+                        return immediately
+  --timeout TIMEOUT, -t TIMEOUT
+                        with sync operation use specific timeout instead
+                        of the default 600 second(s)
+  --loglevel LOGLEVEL, -l LOGLEVEL
+                        level of log messages to capture (one of debug,
+                        info, warn, error, console, none). Default:
+                        console
+
+[root@node2 ~]# tuned-adm list  프로파일 확인
+
+[root@node2 ~]# tuned-adm profile desktop   desktop프로파일로 적용 
+[root@node2 ~]# tuned-adm active  현재 적용된 프로파일을 확인 
+Current active profile: desktop
+
+[root@node2 ~]# tuned-adm off   프로파일 미적용 상태로 변환 
+[root@node2 ~]# tuned-adm active
+No current active profile. 
+
+[root@node2 ~]# tuned-adm recommend 현재 시스템에 추천하는 프로파일을 보여준다.
+virtual-guest
+
+[root@node2 ~]# tuned-adm profile virtual-guest
+[root@node2 ~]# tuned-adm active
+Current active profile: virtual-guest
+
+[root@node2 ~]# tuned-adm profile $(tuned-adm recommend)
+[root@node2 ~]# tuned-adm active
+Current active profile: virtual-guest
+
+각 node에 다음과 같이 프로파일을 사용하고 부팅시에도 적용할 수 있도록 한다.
+
+node1 : aws
+* node2 : 권장 프로파일
+확인
+------------------------
+이후에 node1은 동적 변경이 가능한 프로파일로 재 구성
 
 
 
