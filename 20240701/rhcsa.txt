@@ -1215,19 +1215,75 @@ NAME   UUID                                  TYPE      DEVICE
 ens33  81d234b9-f64b-334a-b796-c405e1e23be6  ethernet  ens33  
 ens34  9439c69b-c7b3-4e53-9d78-10fb35b71b9a  ethernet  ens34  
 lo     93c3415c-bf84-4da0-b15d-6d4a2ca3729c  loopback  lo     
+현재 연결 정보 상태를 나타낸다.
 
 [root@servera ~]# nmcli dev 
 DEVICE  TYPE      STATE                   CONNECTION 
 ens33   ethernet  connected               ens33      
 ens34   ethernet  connected               ens34      
 lo      loopback  connected (externally)  lo         
+장치 상태를 나타낸다.
 
+[root@servera ~]# ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: ens33: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 00:0c:29:77:4f:05 brd ff:ff:ff:ff:ff:ff
+    altname enp2s1
+    inet 192.168.10.210/24 brd 192.168.10.255 scope global noprefixroute ens33
+       valid_lft forever preferred_lft forever
+    inet6 fe80::20c:29ff:fe77:4f05/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+3: ens34: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 00:0c:29:77:4f:0f brd ff:ff:ff:ff:ff:ff
+    altname enp2s2
+    inet 192.168.10.211/24 brd 192.168.10.255 scope global noprefixroute ens34
+       valid_lft forever preferred_lft forever
+    inet6 fe80::2171:53d9:b3c6:93fe/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
 
+네트워크 구성이 잘 되었는지 확인하기 위해 serverb에서 ping test
+[root@serverb ~]# ping 192.168.10.211
+PING 192.168.10.211 (192.168.10.211) 56(84) bytes of data.
+64 bytes from 192.168.10.211: icmp_seq=1 ttl=64 time=0.755 ms
+64 bytes from 192.168.10.211: icmp_seq=2 ttl=64 time=0.252 ms
+64 bytes from 192.168.10.211: icmp_seq=3 ttl=64 time=0.523 ms
+^C
+--- 192.168.10.211 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2075ms
+rtt min/avg/max/mdev = 0.252/0.510/0.755/0.205 ms
 
+[root@servera ~]# nmcli connection down ens34 
+Connection 'ens34' successfully deactivated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/3)
 
+[root@servera ~]# nmcli con 
+NAME   UUID                                  TYPE      DEVICE 
+ens33  81d234b9-f64b-334a-b796-c405e1e23be6  ethernet  ens33  
+lo     93c3415c-bf84-4da0-b15d-6d4a2ca3729c  loopback  lo     
+ens34  9439c69b-c7b3-4e53-9d78-10fb35b71b9a  ethernet  --     
 
+[root@servera ~]# nmcli con up ens34
+Connection successfully activated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/4)
+[root@servera ~]# nmcli device disconnect ens34
+Device 'ens34' successfully disconnected.
 
+[root@servera ~]# nmcli dev
+DEVICE  TYPE      STATE                   CONNECTION 
+ens33   ethernet  connected               ens33      
+lo      loopback  connected (externally)  lo         
+ens34   ethernet  disconnected            --         
 
+serverb에 다음을 작업해봅시다.
+servera에 다음과 같이 네크워크를 설정
+네트워크 설정을 위한 기본 정보
+IP 192.168.10.221
+netmask 255.255.255.0
+gateway 192.168.10.2
+dns 8.8.8.8
 
 
 
