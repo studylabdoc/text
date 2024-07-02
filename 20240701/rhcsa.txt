@@ -2136,18 +2136,87 @@ log.tar.gz:   gzip compressed data, from Unix, original size modulo 2^32 9123840
 문제의 함정을 이해->
 
 /tmp 디렉토리 아래에 gzip 알고리즘을 사용한 tar 아카이빙 파일을 생성한다. 파일명은 doc.tar.bz2이며 대상 디렉토리는 /usr/share/doc이다.
+# cd tmp
 # tar cvfz doc.tar.bz2 /usr/share/doc
 
 file1을 아카이빙한다. 압축을 위해서 gzip을 이용한다. 파일명을 file1.tar.gz으로 사용한다.
 
+서비스 / firewall
+systemctl CMD
 
+init → systemd
 
+service 방식
+standalone : 데몬에 항시 떠있으면서 대기하다가 요청을 받으면 처리하는 방식
+xinetd     : xinetd 데몬만 실행, 나머지 프로그램은 요청이 오면 xinetd가 호출하는 방식 telnet
+inetd > xinetd 
 
+현재는 없는 명령어:
+chkconfig > service > systemctl
+chkconfig -list : xnetd 기반의 서비스들의 on/ off 상태 확인
 
+init =====================  systemd
+# service httpd restart            # systemctl restart httpd
+# chkconfig                        # systemctl
+# chkconfig httpd on               # systemctl enable httpd
 
+systemctl 명령어 세트 하나를 통하여 systemd를 제어
 
+부팅부터 종료까지의 시스템에서 시스템 리소스 , 서버 데몬, 프로세스 활성화 방법도 제공
 
+서비스 = 데몬
+# systemctl -t help
+Available unit types:
+service  <<
+mount
+swap
+socket  <<
+target <<
+device
+automount
+timer
+path
+slice
+scope
 
+[root@servera test]# systemctl status chronyd
+● chronyd.service - NTP client/server
+     Loaded: loaded (/usr/lib/systemd/system/chronyd.ser>     Active: active (running) since Tue 2024-07-02 11:41>       Docs: man:chronyd(8)
+             man:chrony.conf(5)
+    Process: 31983 ExecStart=/usr/sbin/chronyd $OPTIONS >   Main PID: 31985 (chronyd)
+      Tasks: 1 (limit: 22863)
+     Memory: 1.0M
+        CPU: 63ms
+     CGroup: /system.slice/chronyd.service
+             └─31985 /usr/sbin/chronyd -F 2
+
+Jul 02 11:41:14 servera.example.com chronyd[31985]: Load>Jul 02 11:41:14 servera.example.com chronyd[31985]: Freq>Jul 02 11:41:14 servera.example.com chronyd[31985]: Usin>Jul 02 11:41:14 servera.example.com chronyd[31985]: Load>Jul 02 11:41:14 servera.example.com systemd[1]: Started >Jul 02 11:43:23 servera.example.com chronyd[31985]: Syst>Jul 02 11:43:24 servera.example.com chronyd[31985]: Sele>Jul 02 11:43:24 servera.example.com chronyd[31985]: Syst>Jul 02 11:45:54 servera.example.com chronyd[31985]: Syst>Jul 02 11:45:54 servera.example.com chronyd[31985]: Syst>
+
+systemctl : 모든 유닛의 상태정보
+systemctl --type=service
+systemctl status sshd <<
+systemctl is-enabled sshd  부팅시 활성화 정보 확인
+systemctl is-active sshd   런타임 중 활성화 정보 확인
+systemctl list-units --type=service --all
+
+systemctl start sshd 서비스 시작  <<
+systemctl stop sshd  서비스 중지  <<
+systemctl status sshd 서비스 상태 확인 <<
+systemctl restart sshd 서비스 재시작 <<
+systemctl reload sshd  서비스를 재시작 하지 않고 설정 파일을 다시 읽어들임
+systemctl reload-or-restart sshd reload를 시도하고 실패시에 재시작 <<
+
+systemctl enable sshd 부팅시 활성화
+systemctl disable sshd 부팅시 비활성화
+systemctl enable --now sshd 부팅시 활성화 + 현재 런타임에서 start   <<<
+
+mask
+
+systemctl mask network 
+서비스에 마스크 작업이 된 경우에는 /dev/null로 링크가 되어 있기 때문에 아무일도 일어나지 않는다.
+서비스를 다시 사용하고 싶다면
+systemctl unmask network  
+마스크를 해제 
 
 
 
