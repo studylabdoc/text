@@ -2957,6 +2957,12 @@ baseurl=
 enabled=1
 gpgcheck=0
 
+
+https://download.rockylinux.org/pub/rocky/9/BaseOS/x86_64/os/
+https://download.rockylinux.org/pub/rocky/9/AppStream/x86_64/os/
+baseos 필수적인 유틸
+appstream 부가적인 기능
+
 [root@serverb yum.repos.d]# vi baseos.repo  : 파일을 생성할때의 옵션으로는 파일의 마지막을 .repo로 끝내야 한다.
 
 
