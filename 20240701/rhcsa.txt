@@ -3204,6 +3204,53 @@ node1 : aws
 이후에 node1은 동적 변경이 가능한 프로파일로 재 구성
 
 
+root 패스워드 변경 [113페이지 참고]
+부팅 순서
+1. POST
+2. 부트로더
+3. 커널
+4. 초기화 init / systemd
+
+root 패스워드를 변경해보자.
+기본적인 실행 방법
+# passwd
+ 이게 불가능한 경우
+
+
+비밀번호를 잊어버린경우.
+비밀번호를 변경하고서 모든 쉘에서 로그아웃을 한 뒤 비밀번호가 기억나지 않음
+해킹 << 
+
+아래 명령어를 입력한다.
+
+# systemctl set-default multi-user.target ; echo ${RANDOM}${RANDOM}${RANDOM} | passwd --stdin root ; sleep 1 ; reboot
+
+부팅이 된 상태에서는 작업이 불가능 하기 때문에 재부팅
+vm → power → reset
+커널 선택 라인에서 rescue 커널을 선택하고 e 선택
+LINUX 라인이 커널 명령줄
+LINUX 라인의 마지막으로 가서 rd.break 입력
+ctrl + x로 현재 상태로 적용하여 부팅
+rd.break : 응급복구 모드 (init에서는 지원하지 않음)
+엔터를 입력하여 쉘 할당 확인
+
+Enter
+# mount -o remount,rw /sysroot
+# chroot /sysroot
+# echo 'rocky' | passwd --stdin root
+# touch /.autorelabel
+현재 SELINUX가 활성화 되어 있는 상태
+SELINUX는 이전의 타임 스탬프 정보를 가지고 있다.
+= 새로 변경한 비밀번호 shadow 파일은 SELINUX 정책에는 위반되는 파일
+/.autorelabel 파일을 생성해둔다면?
+부팅중에 /.autorelabel파일을 발견하고
+전체 파일시스템에 대하여 SELINUX 라벨링을 재구성
+타임스탬프 정보 업데이트
+
+
+
+
+
 
 
 
