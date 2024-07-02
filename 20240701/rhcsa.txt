@@ -3048,7 +3048,7 @@ MAILTO=root
 # |  .------------- hour (0 - 23)
 # |  |  .---------- day of month (1 - 31)
 # |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
-# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat`
 # |  |  |  |  |
 # *  *  *  *  * user-name  command to be executed
 
@@ -3109,7 +3109,8 @@ crontab -e
 크론탭을 이용할때 왠만하면 0분은 사용하지 맙시다.
 시스템에서 구성되어 있는 anacron 및 커널 스케쥴러들이 동작을 한다. 그렇기 때문에 이때 크론탭을 동작시키면 오히려 안될수도 있다.
 
-사용자 user4,5에 다음과 같은 메세지를 매 10분마다 /var/log/messages에 출력되게 한다. "Hello hacker world this is 10 10 messages"
+사용자 user4에 다음과 같은 메세지를 매 10분마다 /var/log/messages에 출력되게 한다. "Hello hacker world this is 10 10 messages"
+
 
 
 
