@@ -2274,6 +2274,9 @@ firewall-cmd 명령                 설명
 영역이 사용됩니다.
 --reload 런타임 구성을 삭제하고 영구 구성을 적용합니다.
 --timeout=<timeinseconds> 타임아웃으로 동작하여 실수가 있더라도 시간이 지나면 복구
+--permanent 설정파일에 적용하여 영구설정을 저장
+순서
+시간을 주고 테스트 > 영구설정 파일 저장 > 런타임으로 적용
 
 firewall-cmd 명령                              설명
 firewall-cmd --get-default-zone              현재 기본 영역 쿼리
@@ -2295,9 +2298,153 @@ firewall-cmd --permanent 재부팅시에도 설정 가능하도록 저장한다.
 firewall-cmd --reload    서비스를 재시작하지 않고 파일을 읽는다.
 예제 코드
 
+[root@serverb ~]# firewall-cmd --list-all --zone=public
+public (active)
+  target: default
+  icmp-block-inversion: no
+  interfaces: ens33
+  sources: 
+  services: cockpit dhcpv6-client mountd nfs rpc-bind ssh
+  ports: 
+  protocols: 
+  forward: yes
+  masquerade: no
+  forward-ports: 
+  source-ports: 
+  icmp-blocks: 
+  rich rules: 
 
+ [root@serverb ~]# firewall-cmd --add-service=http
+success
+[root@serverb ~]# firewall-cmd --list-all --zone=public
+public (active)
+  target: default
+  icmp-block-inversion: no
+  interfaces: ens33
+  sources: 
+  services: cockpit dhcpv6-client http mountd nfs rpc-bind ssh
+  ports: 
+  protocols: 
+  forward: yes
+  masquerade: no
+  forward-ports: 
+  source-ports: 
+  icmp-blocks: 
+  rich rules: 
 
+[root@serverb ~]# firewall-cmd --reload
+success
+[root@serverb ~]# firewall-cmd --list-all --zone=public
+public (active)
+  target: default
+  icmp-block-inversion: no
+  interfaces: ens33
+  sources: 
+  services: cockpit dhcpv6-client mountd nfs rpc-bind ssh
+  ports: 
+  protocols: 
+  forward: yes
+  masquerade: no
+  forward-ports: 
+  source-ports: 
+  icmp-blocks: 
+  rich rules: 
 
+[root@serverb ~]# firewall-cmd --permanent --add-service=http
+success
+[root@serverb ~]# firewall-cmd --reload
+success
+[root@serverb ~]# firewall-cmd --list-all --zone=public
+public (active)
+  target: default
+  icmp-block-inversion: no
+  interfaces: ens33
+  sources: 
+  services: cockpit dhcpv6-client http mountd nfs rpc-bind ssh
+  ports: 
+  protocols: 
+  forward: yes
+  masquerade: no
+  forward-ports: 
+  source-ports: 
+  icmp-blocks: 
+  rich rules: 
+
+[root@serverb ~]# firewall-cmd --permanent --add-port=8888/tcp
+success
+[root@serverb ~]# firewall-cmd --reload
+success
+[root@serverb ~]# firewall-cmd --list-all --zone=public
+public (active)
+  target: default
+  icmp-block-inversion: no
+  interfaces: ens33
+  sources: 
+  services: cockpit dhcpv6-client http mountd nfs rpc-bind ssh
+  ports: 8888/tcp
+  protocols: 
+  forward: yes
+  masquerade: no
+  forward-ports: 
+  source-ports: 
+  icmp-blocks: 
+  rich rules: 
+
+[root@servera test]# curl http://192.168.10.220
+web
+정상 적용이라면 servera에서도 웹에 대한 통신이 가능하다.
+
+SELINUX
+기본적인 명령어
+# getenforce : 현재 SELINUX의 상태를 확인
+# setenforce [1|0] 현재 SELINUX의 상태를 변경
+
+영구설정으로 변경 하려면?
+/etc/selinux/config
+
+enforcing 강제모드
+permissive 허용모드
+disabled 비활성화 < 현재 지원하지 않음.
+grubby --update-kernel ALL --args selinux=0 selinux 비활성화
+grubby --update-kernel ALL --remove-args selinux selinux 활성화
+
+disable시 SELINUX는 파일시스템 XaT(확장속성)을 제거
+파일 시스템의 속도가 약간 향상한다.
+하지만 권장하지는 않는다. 
+enabled: 파일시스템에 XaT(확장속성)를 다시 재 구성(disable시) 
+permissive : 실제로 SELINUX 정책은 적용하지 않고 감사만 실행
+setenforce를 통해서 1 / 0 으로 변경하여 사용
+
+[root@servera test]# touch file1
+[root@servera test]# ls -l
+total 0
+-rw-r--r--. 1 root root 0 Jul  2 15:06 file1
+[root@servera test]# lsattr file1
+---------------------- file1
+[root@servera test]# ls -lZ file1
+-rw-r--r--. 1 root root unconfined_u:object_r:default_t:s0 0 Jul  2 15:06 file1
+[root@servera test]# 
+
+setenforce를 사용하여 변경하는 방법은 임시적인 방법이며 영구적용을 위해서는
+/etc/selinux/config의 SELINUX= 라인을 찾아 enforcing permissive으로 변경해야 한다.
+
+연습문제
+SELINUX의 모드를 permissive로 임시 변경하세요
+이후 다시 enforcing으로 복귀 시키세요.
+
+관련파일
+/var/log/audit/audit.log
+/var/log/messages
+journalctl
+
+sealert -l UUID
+sealert -a /var/log/audit/audit.log 
+
+serverb에서 포트를 변경하여 통신을 시도하자.
+
+systemctl disable --now httpd
+firewall-cmd --permanent --remove-service=http
+firewall-cmd --reload
 
 
 
