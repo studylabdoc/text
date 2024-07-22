@@ -15,4 +15,123 @@ JOIN
 Web Applications>  Classroom Web Terminal > access
 
 PDF는 MS 엣지로 오픈
+10:00 - 18:00 
+쉬는시간 : 10 / 15분 
+점심시간 : 12:30 - 14:00
 
+[10] < 10page 
+
+[7]
+목차
+
+RH134 과정을 위한 사전 명령어
+# ls
+# cd
+# pwd
+# passwd
+# useradd
+# rm
+# cp
+# mv
+# date
+# touch
+# mkdir
+# rmdir
+# id
+# cat
+# ps
+# bash
+# su -
+# echo
+# more
+# man
+# clear
+# ln
+# tree
+# dnf
+# chmod
+# chown
+# umask
+# which
+# where is
+# whereis
+# alias
+# histroy
+# stat
+# file
+# cat file1 file2 > file3
+# find . -name core 2> /dev/null
+# cat < file1
+# ssh
+# scp
+# sftp
+# script
+# tree
+# vi
+# uname
+# systemctl
+# exit
+# export
+# ^c
+# ^d
+# export
+# poweroff
+# init 
+# reboot
+# shutdown
+# ping
+# telnet
+# ifconfig
+# head
+# tail
+# who
+# last
+# lastb
+# w
+# while true do ; action ; done
+# df
+# du
+# sort
+# tee
+# screen
+# mail
+# wall 
+# grep
+# find
+
+124 / 134 / 199 -> RHCSA
+1장
+
+시험을 대비하는 분들을 위해:
+연습가이드: 간단한 Bash 스크립트 작성
+2장
+연습가이드: 반복 실행 사용자 작업 예약
+3장
+연습가이드: 정확한 시간 유지 관리
+4장
+연습 가이드: 압축된 tar 아카이브 관리 
+tar + gz , bzip2, xz 
+5장
+연습가이드: 튜닝 프로파일 조정
+6장
+연습 가이드: SELinux 문제 조사 및 해결
++ 11장 연습 가이드: SELinux 포트 레이블 지정 제어
++ 연습 가이드: 서버 방화벽 관리
+
+7장 8장 all
+block storage를 마운트 하고 fstab까지 구성이 가능한 상태 >
+LVM 구성 
++ LVM 생성
++ LVM 확장
++ swap
+
+9장
+연습 가이드: 네트워크 연결 스토리지 자동 마운트
+
+10장
+연습 가이드: 루트 암호 재설정
+
+13장
+container build 
+container image control
+연습 가이드: 컨테이너를 시스템 서비스로 관리
