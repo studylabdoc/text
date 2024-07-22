@@ -7,6 +7,10 @@ https://drive.google.com/drive/folders/1MIP3LQNU3oISKebgHWvUCgEVF4_2Xg95?usp=sha
 miro
 https://miro.com/app/board/uXjVKwkVIgM=/?share_link_id=305482122361
 
+google docs
+https://docs.google.com/document/d/1vbzX5a2MGcT2SaKxQ3SR5XfKiK7ITvymUA98Fyz7eUI/edit?usp=sharing
+
+[랩 접속 방법]
 메일 : 20240722
 rol.redhat.com  < RHLS 
 
