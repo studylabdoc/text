@@ -26,83 +26,165 @@ PDF는 MS 엣지로 오픈
 
 RH134 과정을 위한 사전 명령어
 # ls
-# cd
-# pwd
-# passwd
-# useradd
-# rm
-# cp
-# mv
-# date
-# touch
-# mkdir
-# rmdir
-# id
-# cat
-# ps
-# bash
-# su -
-# echo
-# more
-# man
-# clear
-# ln
-# tree
-# dnf
+디렉토리의 컨켄츠 확인
 # chmod
-# chown
-# umask
-# which
-# where is
-# whereis
-# alias
-# histroy
-# stat
-# file
-# cat file1 file2 > file3
-# find . -name core 2> /dev/null
-# cat < file1
-# ssh
-# scp
-# sftp
-# script
+권한 변경
+# pwd
+현재 디렉토리 확인
+# passwd
+비밀번호 변경
+# useradd
+계정 생성
+# rm
+삭제
+# cp
+복사
+# mv
+파일 이동 / 이름 변경
+# date
+시간 확인 / 시간변경 > timedatectl
+# touch
+파일의 시간 변경 , 빈 파일 생성
+# mkdir
+디렉토리 생성
+# rmdir
+빈 디렉토리 삭제 -> rm -rf dir
+# id
+현재 계정의 정보 확인
+UID / GID / groups / selinux data
+# cat
+파일 확인 / 파일 병합 > 표준 출력 
+# tac
+파일 출력 방향을 반대로 돌림
+# ps
+프로세스 확인 / ps / ps -ef / ps aux
+# bash
+사용자 쉘 명령 / 서브 쉘을 실행 최근에는 bash도 사용하지만 fish / zsh 도 많이 사용중
+# su -
+접속 된 계정이 아닌 새로운 계정으로 전환 / 최근에는 sudo 명령 권장
+# echo
+빈 한 줄을 리턴 / 환경변수 호출
+# more
+cat의 경우에는 라인이 길어도 모두 한번에 출력
+페이지 단위로 한 페이지 씩 끊어서 화면에 출력
+more와 man에서 사용되는 기능키
+* spacebar : 매뉴얼 페이지에서 한 화면 단위로 넘어 갈 때 사용
+Enter : 매뉴얼 페이지에서 한 라인씩 넘어 갈 때 사용
+b : Back Screen, 한 화면 전 화면으로 넘어갈 때 사용
+* /pattern : 특정한 패턴을 빨리 찾을 때 사용
+* n : Next, 특정한 패턴을 찾은 후 다음 번째 똑같은 문자열을 찾을 때 사용
+h : help 매뉴얼 페이지 안에서 사용 할 수 있는 명령어 소개
+* q : quit, 빠져나옴
+# man
+도움말 
+https://linux.die.net/man/
+# clear
+화면을 청소 / 청소 이후 위의 출력 결과를 알수가 없음
+# ln
+출력 결과의 앞에 번호를 붙임
 # tree
+파일시스템의 파일, 디렉토리의 구조화
+# dnf
+yum, dnf 패키지 관리 프로그램
+# chown
+소유자 변경 
+# umask
+기본 권한 변경, 확인
+# which
+명령어 절대경로 확인
+# whereis
+매뉴얼 확인
+# alias
+기본 명령이 아닌 쉽게 사용할 수 있는 약어 생성, 확인
+# histroy
+사용한 명령어를 확인
+# stat
+전체 시간 정보 + 권한등 여러가지를 확인
+# file
+파일의 형식 확인
+# cat file1 file2 > file3
+표준 출력의 리다이렉션
+# find . -name core 2> /dev/null
+표준 에러의 리다이렉션
+# cat < file1
+표준 입력의 리다이렉션
+# ssh
+원격 접속을 위한 보안 쉘
+# scp
+원격 파일 복사를 위한 보안 쉘 [사용을 현재 중지]
+# sftp
+보안 파일 전송 프로토콜
+# script
+화면에 출력되는 모든 텍스트를 캡처, 저장
 # vi
-# uname
+텍스트 에디터
 # systemctl
+systemd를 위한 명령어
 # exit
+쉘을 빠져나가기
 # export
+환경 변수 지정
 # ^c
+현재 작업중인 내용을 인터럽트하고 강제 종료
 # ^d
-# export
+EOF / EXIT
+EOF: 파일의 끝
+EXIT: 쉘을 끝내는 단축키
 # poweroff
-# init 
+시스템 종료
 # reboot
+재부팅
 # shutdown
+시스템 종료 / 유예시간을 부여 할 수 있다. 
 # ping
-# telnet
+ICMP 프로토콜을 이용하여 헬스 체크 / 조건문에서 사용하기 위해 작성
 # ifconfig
+NIC 정보 확인 > 최근에는 잘 사용되지 않음.
+net-tools 패키지가 있어야 하지만 설치자체를 하지 않음.
+ip a 명령으로 대체
 # head
+파일의 상단 10줄
 # tail
+파일의 하단 10줄
 # who
+현재 접속자 확인
 # last
+사용자들의 접속 기록
 # lastb
+사용자의 잘못된 접속 기록
 # w
+현재 접속자의 사용 명령 확인
 # while true do ; action ; done
+반복문
 # df
+디스크의 남은 용량 / 파일 시스템 확인
 # du
+디스크의 사용 용량
 # sort
+데이터 정렬
+# uniq 
+데이터의 값 중 유일한 것 하나만 추출
 # tee
+출력을 두 방향으로 복제
 # screen
+지금은 tmux 명령으로 변경
+쉘을 이용하면 쉘이 꺼지게 되면 작업 중지
+내부에서 백 그라운드 작업으로 돌기 때문에 쉘이 꺼져도 계속 작업이 가능.
 # mail
+s-nail 명령으로 변환
 # wall 
+현재 실행중인 모든 터미널에 동일한 내용으로 브로드캐스트 
 # grep
+컨텐츠 내에서 특정 패턴을 찾기 위해 사용
++ 특정 패턴을 걸고 디렉토리나 파일에서 해당 내용이 존재하는 파일을 찾는 용도
 # find
+inode 정보를 필터링 하여 원하는 파일 / 디렉토리를 찾는 용도
++ 검색된 파일과 디렉토리에 실행 명령을 내려 2차 작업이 가능 
 
 124 / 134 / 199 -> RHCSA
-1장
 
 시험을 대비하는 분들을 위해:
+1장
 연습가이드: 간단한 Bash 스크립트 작성
 2장
 연습가이드: 반복 실행 사용자 작업 예약
@@ -135,3 +217,15 @@ LVM 구성
 container build 
 container image control
 연습 가이드: 컨테이너를 시스템 서비스로 관리
+
+[14]
+강의실 환경에 대한 오리엔테이션
+workstation : 작업을 위한 컴퓨터
+servera,serverb : 실제 작업을 위한 서버 
+나머지 서버들은 lab 환경을 위해 존재한다.
+
+시스템의 계정들은 다음과 같다.
+student / student
+root / redhat
+
+1장
