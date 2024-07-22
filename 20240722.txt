@@ -275,9 +275,46 @@ i : 입력모드
 esc -> 명령행모드
 :wq  -> 저장+ 빠져나가기
 
+현재 쉘에서 실행하기
+./run.sh
+./ = 현재 디렉토리 
+run.sh = 실제 사용할 파일
+./= /home/student/
+./run.sh = /home/student/run.sh
+실행을 위해서는 x권한이 필요
+[student@workstation ~]$ ls -l run.sh
+-rw-r--r--. 1 student student 67 Jul 21 23:12 run.sh
+[student@workstation ~]$ chmod u+x run.sh
+[student@workstation ~]$ ls -l run.sh
+-rwxr--r--. 1 student student 67 Jul 21 23:12 run.sh
 
+명령어를 호출하는 순서
+1 hash에서 검색 
+  # hash , # hash -r 
+2 alias 에서 확인
+3 실제 경로를 확인
+4 명령어 실행
 
+# command ls
+alias 무시후 실제 경로에서만 실행
 
+[student@workstation ~]$ echo $PATH
+/home/student/.local/bin:/home/student/bin:/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin:/home/student/.venv/labs/bin
+PATH 환경변수는 명령어를 입력 했을때 3번[실제 경로를 확인] 작업을 위한 디렉토리를 모아둔 곳
+
+실제 경로를 확인
+[student@workstation ~]$ ls
+Desktop    Downloads  Music     Public  Templates
+Documents  file1      Pictures  run.sh  Videos
+[student@workstation ~]$ mkdir bin
+[student@workstation ~]$ mv run.sh bin
+[student@workstation ~]$ tree bin
+bin
+└── run.sh
+
+0 directories, 1 file
+run.sh 파일을 bin 디렉토리 아래에 복사.
+해당 디렉토리는 /home/student/bin에 존재
 
 
 
