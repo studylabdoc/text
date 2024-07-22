@@ -3,6 +3,10 @@ https://github.com/studylabdoc/text/blob/main/20240722.txt
 
 구글드라이브
 https://drive.google.com/drive/folders/1MIP3LQNU3oISKebgHWvUCgEVF4_2Xg95?usp=sharing
+
+miro
+https://miro.com/app/board/uXjVKwkVIgM=/?share_link_id=305482122361
+
 메일 : 20240722
 rol.redhat.com  < RHLS 
 
@@ -232,3 +236,94 @@ student / student
 root / redhat
 
 1장
+[20]
+스크립트 = 자동화
+쉘 스크립트, perl, -> [ansible:RHCE:RH294]
+
+스크립트 top-down 
+리눅스에 존재하는 왠만한 파일들은 위에서 아래로 읽어 내려감
+1 shell을 사용한다는 것을 명시
+2 명령어 작성
+
+# vi run.sh
+리눅스에서는 파일명 끝의 확장자는 아무 의미 없음.
+
+명령 인터프리터 지정
+# < 주석 처리로 진행이 되지만 첫줄에서 #! -> 이 뒤에 오는 파일 명을 가지고 쉘을 실행
+sample
+#!/usr/bin/bash == #!/bin/bash
+
+실제 사용할 명령 리스트 순서대로 진행
+
+date
+echo 'run.sh file'
+sleep 2
+echo 'run.sh exit'
+
+
+$ vi run.sh
+---------------------------
+#!/usr/bin/bash
+date
+echo 'run.sh file'
+sleep 2
+echo 'run.sh exit'
+---------------------------
+
+i : 입력모드
+입력
+esc -> 명령행모드
+:wq  -> 저장+ 빠져나가기
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
