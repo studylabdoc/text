@@ -1,1 +1,18 @@
-1
+https://github.com/studylabdoc/text/blob/main/20240722.txt
+
+메일 : 20240722
+rol.redhat.com  < RHLS 
+
+MY VIRTUAL TRAINING CLASSES
+RH134 - Red Hat System Administration II
+Class Starts: 월, 7월 22 2024, 10:00 오전 
+
+Class Ends: 금, 7월 26 2024, 06:00 오후 
+JOIN
+
+리소스 -> pdf download
+랩 > workstation
+Web Applications>  Classroom Web Terminal > access
+
+PDF는 MS 엣지로 오픈
+
