@@ -704,6 +704,830 @@ cat /etc/group- > /etc/group
 vi bash-lab
 echo ‘#!/usr/bin/bash’ >> bash-lab
 
+[54] 
+
+at
+crontab  << * 
+anacron
+timer
+
+at: 1회성 작업을 위한 스케쥴러
+른 예는 방화벽 구성 작업 중인 시스템 관리자가 새 방화벽 구성이 작동했기 때문에 방화벽 설정을 10분 이내에 이전의 작업 상태로 재설정하기 위해 안전 작업 을 대기열에 추가하는 경우  << 현재 firewalld를 사용하면 이 구성은 굳이 필요없다.
+방화벽 구성
+at을 이용해서 10분뒤에 원복하면 된다.
+현재 firewalld를 이용하는 경우에는 timer 옵션으로 원상태로 복구 가능하기 때문에 약간 틀린 예시: CMD –timeout 600 
+
+실제 예시: 
+다른 시스템이 재부팅 : 재부팅 이후에 체크, 재부팅 이후 접속
+ 
+명령어 : at
+데몬 [서비스] : atd 
+[root@servera ~]# systemctl status atd
+ atd.service - Deferred execution scheduler
+     Loaded: loaded (/usr/lib/systemd/system/atd.service; enabled; vendor preset: enabled)
+     Active: active (running) since Sun 2024-07-21 21:47:36 EDT; 23h ago
+       Docs: man:atd(8)
+   Main PID: 803 (atd)
+      Tasks: 1 (limit: 10799)
+     Memory: 312.0K
+        CPU: 13ms
+     CGroup: /system.slice/atd.service
+             └─803 /usr/sbin/atd -f
+
+Jul 21 21:47:36 servera.lab.example.com systemd[1]: Started Deferred execution scheduler.
+
+
+
+
+
+서비스 파일 설명
+[root@servera ~]# systemctl status atd
+atd.service - Deferred execution scheduler : 데몬[서비스]명 확인
+     Loaded: loaded (/usr/lib/systemd/system/atd.service; enabled; vendor preset: enabled)
+     서비스 파일에 대해서 읽은 상태 |실제 파일 위치 | 활성화 정보 
+     Active: active (running) since Sun 2024-07-21 21:47:36 EDT; 23h ago
+      현재 상태 
+       Docs: man:atd(8)
+       사용 가능한 도움말
+   Main PID: 803 (atd)
+       현재 사용중인 PID 번호 확인
+      Tasks: 1 (limit: 10799)
+     Memory: 312.0K
+        CPU: 13ms
+     CGroup: /system.slice/atd.service
+             └─803 /usr/sbin/atd -f
+
+Jul 21 21:47:36 servera.lab.example.com systemd[1]: Started Deferred execution scheduler.
+로그 중에 atd 와 관련있는 로그들을 추출하여 status 출력시 최신 로그를 같이 보여준다.
+
+작업:
+1 현재 시간을 확인
+[root@servera log]# date   < 시간을 확인
+Mon Jul 22 09:20:41 PM EDT 2024
+[root@servera log]# at 09:25   < at 명령을 실행 TIMESPEC 지정
+warning: commands will be executed using /bin/sh
+at> logger 'test at'
+at> <EOT>
+job 1 at Tue Jul 23 09:25:00 2024
+
+
+[root@servera log]# at 09:25  < file1   : 작업을 수동으로 입력하지 않고 파일에서 작업을 불러온다.
+
+[root@servera log]# atq
+1       Tue Jul 23 09:25:00 2024 a root
+현재 지정된 작업들을 확인
+
+[root@servera log]# at -c 1
+
+마지막 부분에서 실제 사용한 명령을 확인 할 수 있다.
+
+[root@servera log]# atrm 1 
+at의 작업을 삭제 하는 용도
+
+[59]
+crontab
+
+[root@servera ~]# cat /etc/crontab 
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=root
+변수처리된 부분은 top-down 형식으로 진행되기 때문에 변수가 지정된 이후 모든 작업에 적용된다.
+
+# For details see man 4 crontabs
+
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name  command to be executed
+
+[1] [2] [3] [4] [5] [user-name] [command to be executed]
+
+각 자리가 표시 하는것 
+[1]: 분
+[2]: 시
+[3]: 일
+[4]: 월
+[5]: 주
+
+각 자리가 표시 하는것 + 숫자의 범위
+[1]: 분 0-59
+[2]: 시 0-23
+[3]: 일 1-31
+[4]: 월 1-12
+[5]: 주 0-6  0==7  1-5 월-금 6 토 일0,7 
+
+
+
+각 자리가 표시 하는것 + 숫자의 범위 + 표시 되는 형식에서 알아야 하는것
+주의 사항을 알아보자
+
+[1]: 분 0-59
+0분을 사용하지 말것
+모든 시간의 0분에는 시스템에서 사용되는 스케쥴러들이 많이 돌아간다.
+[2]: 시 0-23
+0시는 제외
+하루가 시작되는 시간에 모든 초기화 작업, 정보 수집이 새로 시작되는데 이때 크론을 걸게 되면 부하가 심해짐
+[3]: 일 1-31
+1 제외
+30일,28일,27
+[4]: 월 1-12
+[5]: 주 0-6  0==7  1-5 월-금 6 토 일0,7 
+사용하는 사람들마다 0과 7을 섞어서 사용함.
+팀에서 포맷 맞춰서 사용
+
+숫자를 이용할때 사용 가능한 형식
+[1]: 분 0-59
+
+* 모든 시간을 지정
+
+10 : 10분이라는 시간에 지정
+
+10,15 10분,15분이라는 시간에 지정
+
+10-15 10,11,12,13,14,15 분이라는 시간에 지정
+
+10-15,20 10,11,12,13,14,15,20 분이라는 시간에 지정
+
+*/N  N분에 한번씩
+*/2 2분에 한번씩
+*/10 10분에 한번씩
+
+*/N 단점:  크론탭은 1분에 한번씩 동작
+*/10  10분에 한번씩 로그를 출력해야겠다.
+*/10 * * * * PATH/script.log
+
+XXXX  XX XX XX:10
+XXXX  XX XX XX:20
+XXXX  XX XX XX:30
+XXXX  XX XX XX:40
+
+reboot, restart : 부팅 이후 시간기준으로 10분간격
+service start time XXXX  XX XX XX:16
+XXXX  XX XX XX:16
+XXXX  XX XX XX:26
+XXXX  XX XX XX:36
+XXXX  XX XX XX:46
+
+[user-name] [command to be executed]
+
+[user-name] 이전방식 : /etc/crontab 파일에서 사용하다보니 어떤 사용자로 실행 할 것인가를 지정
+ [command to be executed] 실행 파일을 지정 실행 권한도 같이 필요.
+
+과거에는 /etc/crontab 파일에 작성을 root 계정으로 하고 관리도 root가 진행
+현재:  더이상 /etc/crontab 파일에 작성하지 않는다. 이 파일은 이제 참고용 파일로 남겨둠
+
+각각 계정별로 작업을 한다.
+1 root 계정으로 각 사용자 파일을 생성
+[root@servera cron]# crontab -e -u student
+2 실제 사용자 계정으로 파일을 생성
+[root@servera cron]# su -  student
+Last login: Mon Jul 22 02:15:38 EDT 2024 from 172.25.250.9 on pts/0
+[student@servera ~]$ crontab -e 
+
+# crontab 
+-l : crontab 파일을 확인
+-e : crontab 파일을 수정
+-r:  crontab 파일을 삭제
+-u [계정] 위 명령들을 현재 사용자가 아니라 특정 사용자로 지정하여 진행
+
+[root@servera ~]# cd
+[root@servera ~]# id
+uid=0(root) gid=0(root) groups=0(root) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+
+[root@servera ~]# crontab -l
+no crontab for root   < 현재는 크론 파일이 생성되지 않음.
+
+[root@servera ~]# crontab -e
+
+"/tmp/crontab.Y7L9LY" 0L, 0B   << crontab  파일의 경우는 임시파일로 생성 한뒤 실제 파일로 변환
+i
+*/2 * * * * logger 'test log'
+esc
+:wq
+
+crontab: installing new crontab   < 정상 저장이 완료
+
+[root@servera ~]# cd /var/spool/cron/
+[root@servera cron]# pwd
+/var/spool/cron
+[root@servera cron]# ls
+root
+[root@servera cron]# file root
+root: ASCII text
+[root@servera cron]# cat root 
+*/2 * * * * logger 'test log'
+[root@servera cron]# crontab -l
+*/2 * * * * logger 'test log'
+
+[root@servera cron]# crontab -e -u student 
+*/2 * * * * logger 'test log student'
+[root@servera cron]# ls -l
+total 8
+-rw-------. 1 root root 30 Jul 22 22:17 root
+-rw-------. 1 root root 38 Jul 22 22:19 student
+생성된 파일의 경우에는 root 권한으로 생성 되지만 상관 없음.
+실제 진행되는 프로세스는  student 파일명으로 동일한 계정에서 실행
+
+[root@servera cron]# journalctl | grep 'test log'
+Jul 22 22:18:01 servera.lab.example.com CROND[2662]: (root) CMD (logger 'test log')
+Jul 22 22:18:01 servera.lab.example.com root[2662]: test log
+Jul 22 22:18:01 servera.lab.example.com CROND[2660]: (root) CMDEND (logger 'test log')
+Jul 22 22:20:01 servera.lab.example.com CROND[2685]: (root) CMD (logger 'test log')
+Jul 22 22:20:01 servera.lab.example.com root[2685]: test log
+Jul 22 22:20:01 servera.lab.example.com CROND[2680]: (root) CMDEND (logger 'test log')
+Jul 22 22:20:01 servera.lab.example.com CROND[2696]: (student) CMD (logger 'test log student')
+Jul 22 22:20:01 servera.lab.example.com student[2696]: test log student
+Jul 22 22:20:01 servera.lab.example.com CROND[2681]: (student) CMDEND (logger 'test log student')
+현재 crontab에 지정한 내용들이 정상 동작중이다.
+
+[root@servera cron]# ls
+root  student
+[root@servera cron]# crontab -r 
+[root@servera cron]# ls
+student
+[root@servera cron]# rm -rf student 
+[root@servera cron]# crontab -u student -l
+no crontab for student
+
+crontab은 저장 하는 순간부터 진행
+
+[root@servera cron]# systemctl status crond
+● crond.service - Command Scheduler
+     Loaded: loaded (/usr/lib/systemd/system/crond.service; enabled; vendor preset: enabled)
+     Active: active (running) since Sun 2024-07-21 21:47:36 EDT; 24h ago
+   Main PID: 804 (crond)
+      Tasks: 1 (limit: 10799)
+     Memory: 1.3M
+        CPU: 1.163s
+     CGroup: /system.slice/crond.service
+             └─804 /usr/sbin/crond -n
+
+Jul 22 20:01:01 servera.lab.example.com CROND[2408]: (root) CMD (run-parts /etc/cron.hourly)
+
+프로세스의 진행 시간을 확인 하는 명령어
+[root@servera cron]# cd 
+[root@servera ~]# dd if=/dev/zero of=/root/bigfile bs=1M count=1024
+1024+0 records in
+1024+0 records out
+1073741824 bytes (1.1 GB, 1.0 GiB) copied, 2.09995 s, 511 MB/s
+[root@servera ~]# ls
+bigfile  lines.txt  list  list1
+[root@servera ~]# file bigfile 
+bigfile: data
+
+
+[root@servera ~]# time dd if=/dev/zero of=/root/bigfile bs=1M count=1024
+1024+0 records in
+1024+0 records out
+1073741824 bytes (1.1 GB, 1.0 GiB) copied, 2.4091 s, 446 MB/s
+
+real    0m2.474s   << * 
+user    0m0.003s
+sys     0m0.683s
+
+# man crond
+# man -s 5 crontab
+# man -s 8 crontab
+
+[62]
+시험에서 crontab 이 출제 
+2.3 구문
+
+ [65]
+반복 실행 시스템 작업 예약 
+
+[root@servera ~]# cd /etc/cron.
+cron.d/   : 반복 실행될 시스템 작업에 대한 예약
+cron.hourly/ :시간에 동작
+cron.weekly/ :  주에 한번 동작
+cron.daily/ : 일에 한번 동작
+cron.monthly/ :  월에 한번 동작
+[root@servera ~]# cd /etc/cron.d
+[root@servera cron.d]# ls
+0hourly
+[root@servera cron.d]# 
+[root@servera cron.d]# cat 0hourly 
+# Run the hourly jobs
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=root
+01 * * * * root run-parts /etc/cron.hourly
+run-parts : 특정 디렉토리에 있는 스크립트를 실행하는 데 사용하는 명령
+
+
+anacron
+crontab과의 차이점: 
+crontab의 경우에는 사용자 관점
+anacron의 경우에는 시스템 관점
+crontab의 경우는 충돌이나 재부팅등 사용이 불가능한 상황에 놓여 시간을 놓치게 된다면 해당 작업을 무시. 그 다음 시간대에 작업을 재개
+anacron의 경우는  충돌이나 재부팅등 사용이 불가능한 상황이 오게 되면 그 이후 재부팅, 충돌에 대한 해결이 된 다음 곧 바로 작업을 재개
+
+[root@servera cron.hourly]# cat /etc/anacrontab 
+# /etc/anacrontab: configuration file for anacron
+
+# See anacron(8) and anacrontab(5) for details.
+
+SHELL=/bin/sh
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=root
+# the maximal random delay added to the base delay of the jobs
+RANDOM_DELAY=45
+# the jobs will be started during the following hours only
+START_HOURS_RANGE=3-22
+
+#period in days    | delay in minutes  |  job-identifier  |  command
+ 1                                 5                                  cron.daily              nice run-parts /etc/cron.daily
+ 7                                 25                               cron.weekly           nice run-parts /etc/cron.weekly
+@monthly                 45                                cron.monthly            nice run-parts /etc/cron.monthly
+[root@servera cron.hourly]# cat /etc/anacrontab  | tail -4 | column -t
+
+timer
+
+init > systemd
+
+systemd에서 사용 가능한 timer 유닛
+현재 anacron의 경우에는 timer 유닛으로 모두 변경
+[root@servera cron.hourly]# systemctl -t timer
+  UNIT                         LOAD   ACTIVE SUB     DESCRIPTION                           
+  dnf-makecache.timer          loaded active waiting dnf makecache --timer
+  logrotate.timer              loaded active waiting Daily rotation of log files
+  mlocate-updatedb.timer       loaded active waiting Updates mlocate database every day
+  systemd-tmpfiles-clean.timer loaded active waiting Daily Cleanup of Temporary Directories
+
+timer의 장점:
+crontab은 1분에 한번 작용
+timer는 초단위 가능
+
+/tmp
+/var/tmp
+
+[68] 실습
+
+[84]
+시스템 로그 아키텍처 설명
+
+로그 : 시스템 감사 및 문제 해결에 사용 , 이벤트에 대한 기록
+로그는 보통 텍스트 파일로 구성 되어있지만 모두가 그런것은 아님
+
+[root@servera ~]# cd /var/log
+[root@servera log]# ls
+audit                  dnf.librepo.log  maillog   spooler
+boot.log               dnf.log          messages  sssd
+boot.log-20240722      dnf.rpm.log      private   tallylog
+btmp                   firewalld        qemu-ga   tuned
+chrony                 hawkey.log       README    wtmp
+cloud-init.log         insights-client  rhsm
+cloud-init-output.log  kdump.log        samba
+cron                   lastlog          secure
+[root@servera log]# file * | grep -v  empty | grep -v directory | grep -v ASCII | grep -v text | grep -v symbolic
+lastlog:               data
+wtmp:                  data
+ 
+data 파일의 경우에는 텍스트가 아니기 때문에 바로 읽을수 없음
+특정 명령을 이용해야만 가능한 경우들도 있다.
+로그 파일이든 뭐든 사용자가 직접 생성한 파일이 아닌 경우에는 
+file 명령을 통해서 형식을 확인하는 것이 좋다.
+[root@servera log]# file lastlog
+lastlog: data
+[root@servera ~]# ls
+bigfile  lines.txt  list  list1
+[root@servera ~]# file bigfile 
+bigfile: data
+
+[root@servera ~]# journalctl  현재부팅 이후부터 모든 로그를 가지고 있음
+[root@servera ~]# journalctl -f 최근의 로그만 확인
+
+
+systemd-journald  재부팅 후 유지되지 않는 파일 시스템에 저장 /run 밑에서 사용을 하기 때문에 그렇다.
+
+syslog / rsyslog
+사용되는 용어들도 알아야 하고 나오는 메시지도 봐야 하고 ..
+
+syslog 기능 개요
+메세지 종류  설  명
+authpriv    개인 인증을 요하는 프로그램 유형이 발생한 메세지(EX: su, telnet, ssh)
+cron        crontab(crond), at(atd) 프로그램이 발생한 메세지(EX: crontab, at)
+daemon      시스템 데몬이 생성한 메세지. (EX: telnetd, ftpd) 
+kern        커널이 발생한 메세지
+lpr         프린트 유형의 프로그램이 발생한 메세지
+mail        메일시스템이 발생한 메세지.
+mark        syslogd 데몬에 의해 생성된 일정한 시간간격의 반복적인 메세지
+news        유즈넷 뉴스 프로그램 유형이 발생한 메세지
+security(auth)  인증 프로그램이 생성한 메세지(EX: login)
+syslog     syslog 프로그램이 생성한 메세지(EX: syslogd)
+user       사용자 프로그램에 의해 생성된 메세지(EX: top, system-config-*)
+uucp       UUCP(Unix to Unix Copy) 시스템이 발생한 메세지
+local0-7   예약된 메세지 종류, 여분으로 남겨둔 유형(EX: local0, local1, local2, ...)
+*          모든 메세지(단, mark 메세지 종류는 제외)
+
+ 메세지 난이도(Level)
+메세지 레벨        설  명
+0 emerg (panic)   패닉상태, 모든 사용자에게 전달되어야 할 위험한 상황의 메세지
+1 alert           즉각적인 조치를 위해야 상황의 메세지
+2 crit            시스템에 문제가 생기는 단계의 메세지
+3 error (err)     에러가 발생하는 경우의 메세지
+4 warning (warn)  주의를 요하는 경고 메세지
+5 notice          특별한 주의를 요하는 에러는 아닌 메세지
+6 info            통계, 기본정보 메세지
+7 debug           프로그램을 디버깅할 때 생성되는 메세지
+
+실제 로그를 수집 하기 위한 정책에 대한 파일
+메시지 기록 위치
+# cat /etc/rsyslog.conf
+
+Facility : 메세지의 종류
+Level : 메세지의 난이도(위험 수준)
+Action : 메세지 기록 위치
+
+
+/etc/rsyslog.conf의 구성
+authpriv.* /var/log/secure
+Facility.Level      Action
+
+메세지 기록 위치      설  명
+/var/log/messages     기록을 남길 특정한 로그 파일 선택(예: /var/log/file.log)
+만약에 없는 파일에 기록을 하는 경우 파일이 없어 에러가 날 수 있음. 미리 touch로 빈 파일을 생성
+/dev/console          기록을 남길 콘솔에 로그 기록 남김(예: /dev/console)
+user01,root, *        특정한 사용자나 모든 사용자 선택(예: user01, *)
+@hostA, @172.16.8.254 다른 호스트 선택(예: @172.16.8.254)-> 보통 로그 서버 선택
+
+예시파일
+# cat /etc/syslog.conf
+# Log all kernel messages to the console.
+# Logging much else clutters up the screen.
+#kern.*                                                 /dev/console
+커널에 관련한 모든 메세지는 콘솔창에 출력한다.
+
+# Log anything (except mail) of level info or higher.
+# Don't log private authentication messages!
+*.info;mail.none;news.none;authpriv.none;cron.none      /var/log/messages
+메일(mail),뉴스(news),개인인증(authpriv),크론(cron) 메세지를 제외한 대부분의 메세지를 /var/log/messages 파일에 기록한다.
+
+# The authpriv file has restricted access.
+authpriv.*                                              /var/log/secure
+개인적인 인증에 관련한 부분은 /var/log/secure 파일에 기록한다.(su, sshd)
+
+# Log all the mail messages in one place.
+mail.*                                                  -/var/log/maillog
+메일에 관련한 모든 메세지는 /var/log/maillog 파일에 기록한다.
+ -/var/log/maillog에서 -의 기능
+기록 후 파일 동기화를 생략하기 위해 -를 접두사로 붙여 지정 가능
+시스템이 쓰기를 시도 할 때 충돌 할 가능성이 있다. 성능에 따라서 사용 할 때 가 있음.
+
+# Log cron stuff
+cron.*                                                  /var/log/cron
+크론(cron) 메세지 모두를 /var/log/cron 파일에 기록한다.
+
+# Everybody gets emergency messages
+*.emerg                                                 *
+모든 경우 위험한 메세지(패닉 상태)는 모든 사용자에게 뿌린다.
+
+# Save news errors of level crit and higher in a special file.
+uucp,news.crit                                          /var/log/spooler
+uucp,news에 대한 critical 이상 메세지는 /var/log/spooler 파일에 기록한다.
+
+# Save boot messages also to boot.log
+local7.*                                                /var/log/boot.log
+미리 예약된 local7 종류에 대한 모든 메세지(부팅시의 메세지)를 /var/log/boot.log 파일에 기록한다.
+
+#
+# INN
+#
+news.=crit                                        /var/log/news/news.crit
+news.=err                                         /var/log/news/news.err
+news.notice                                       /var/log/news/news.notice
+
+각 로그파일은 var/log 디렉토리에 존재한다.
+
+로그파일                      설   명
+(T) /var/log/messages      메일(mail), 뉴스(news), 인증(authpriv), 크론(cron) 메세지를 제외한 시스템의 전반적인 메세지를 기록하는 로그파일이다. 리눅스에서는 가장 많은 메세지를 담고 있는 파일이다. 
+(TUI) # tail -f /var/log/messages 
+(T) /var/log/secure        개인인증을 기록하는 로그파일이다.(EX: su, telnet, ssh)
+(T) /var/log/dmesg         시스템이 부팅할때 메세지를 기록하는 로그 파일이다. dmesg 명령어가 이 파일을 참조하여 정보를 출력한다. # dmesg 
+(D) /var/log/lastlog       사용자의 가장 마지막에 로그인한 시간을 기록하는 로그 파일이다. 바이너리 파일이므로 안의 내용을 cat 명령어를 통해 확인할 수 없다. lastlog 명령어가 이 파일을 참조하여 정보를 출력한다. # lastlog 
+(T) /var/log/cron          crontab, at 명령어를 통해 실행했던 작업을 기록하는 로그 파일이다.
+- crond -> crontab CMD
+- atd   -> at CMD
+(T) /var/log/maillog       postfix 메일 관련 작업을 기록하는 로그 파일이다.
+(T) /var/log/xferlog       FTP 서버에서 업로드/다운로드을 기록하는 로그 파일이다.
+(D) /var/log/wtmp          사용자의 로그인/로그아웃 시간을 기록하는 로그파일이다. 데이터 파일이므로 안의 내용을 cat 명령어를 통해 확인할 수 없다. last 명령어가 이 파일을 참조하여 정보를 출력한다. # last   (# last oracle)
+(D) /var/run/utmp          현재 로그인한 사용자 정보를 기록하는 로그 파일이다. 데이터 파일이므로 안의 내용을 cat 명령어를 통해 확인 할 수 없다. who 명령어가 이 파일을 참조하여 정보를 출력한다. # who
+
+logrotate
+로그파일은 시간이 지남에따라 계속 계속 커진다.
+1~2M 일때는 사실 상관 없음. 하지만 수많은 로그 데이터가 쌓이게 되면 파일을 오픈 하는 것도 힘들다.
+
+32bit system : 코드 파일 ? 2.4G
+open: 4시간 
+하나의 파일이 너무 커지는 것을 방지하기 위해 logrotate를 사용한다.
+logrotate를 통해 순환 파일로 제공
+이전 방식: /var/log/messages.0 .1 .2 .3 
+ /var/log/messages
+
+
+현재 방식: var/log/messages-20220320
+
+로그 데이터
+Mar 20 20:11:48 localhost sshd[1433]: Failed password for student from 172.25.0.10 port 59344 ssh2
+
+Mar 20 20:11:48 : 시간 timestamp
+localhost  host 
+sshd[1433]: id 사용자나 데몬이름 + PID
+Failed password for student from 172.25.0.10 port 59344 ssh2 : 해당 로그의 상세한 내용
+lastb
+
+보통은logrotate를 통해 이동한 로그 파일들은 삭제 되기전에 tar 명령어를 통해 특정 디렉토리로 이동, 일정시간 저장 한 뒤에 ISO 이미지로 생성
+cp 복사 > 시간 현재 시간 업데이트
+tar -> 시간+ 권+ 소 + + 기존 파일 그대로 가지고 이동
+컨테이너로 가면서 tar 명령어가 더 많이 사용
+
+로그 이벤트 모니터링 방법
+# tail -f /path/to/file : 일반 파일로 저장된 내용을 확인 하기 위해 사용
+[root@servera log]# journalctl -f   < systemd-journal에서 나오는 데이터를 바로 확인
+
+[104]
+저널 보존
+
+저널의 경우에는 부팅시 - 종료시까지 사용하고 기본 값은 삭제
+/etc/systemd/ journald.conf 옵션을 조정하여 영구 보관 할 수 있도록 만들어야 함
+#Storage=auto
+auto :  /var/log/journal 디렉토리가 존재 한다면 systemd가 영구 보관용 데이터를 사용하고 없다면 /run/log 에서 처리
+persistent : /var/log/journal 생성 부팅-종료시까지의 모든 데이터를 보관
+
+필요하다면 저널 영구 저장 장치에 대한 작업을 실시한다.
+ansible을 사용하다보니까 초기 구축시에 해당 작업을 완료.
+
+NTP : network time protocol
+많은 네트워크 프로그램들은 시간 동기화가 필요하게 된다. 네트워크 상에서 서로 연동하는 시스템들 간에 시간이 일치 하지 않게 된다면 다수의 시스템 장애처리, 성능카운트, 분석, 로깅등 수많은 문제점을 갖게된다.
+
+시간 서버의 발전
+이전에는 rdate 사용
+현재는 ntp
+
+[root@servera ~]# timedatectl
+               Local time: Tue 2024-07-23 03:42:49 EDT   현재 시스템 시간
+           Universal time: Tue 2024-07-23 07:42:49 UTC UTC의 시간 
+                 RTC time: Tue 2024-07-23 07:42:49 하드웨어 시간
+                Time zone: America/New_York (EDT, -0400) 현재 서버의 타임존 
+System clock synchronized: yes  시간 동기화가 되어 있는지 확인
+              NTP service: active  NTP 서비스가 실행중인지 
+          RTC in local TZ: no
+
+# date 월일시분
+[root@servera ~]# date 06121300 
+Wed Jun 12 01:00:00 PM EDT 2024
+
+[root@servera ~]# timedatectl set-time 13:00:00
+Failed to set time: Automatic time synchronization is enabled
+
+[root@servera ~]# timedatectl set-time 13:00:00
+Failed to set time: Automatic time synchronization is enabled
+[root@servera ~]# timedatectl set-ntp 
+false  true   
+[root@servera ~]# timedatectl set-ntp false 
+[root@servera ~]# timedatectl set-time 13:00:00
+
+[root@servera ~]# timedatectl set-time '2012-10-30 13:00:00'
+[root@servera ~]# timedatectl 
+               Local time: Tue 2012-10-30 13:00:04 EDT
+           Universal time: Tue 2012-10-30 17:00:04 UTC
+                 RTC time: Tue 2012-10-30 17:00:04
+                Time zone: America/New_York (EDT, -0400)
+System clock synchronized: no
+              NTP service: inactive
+          RTC in local TZ: no
+
+위의 내용은 timedatectl 명령을 이용하여 수동으로 시간을 변경
+보통은 이렇게 하지 않음 NTP 서버가 동작하고 해당 서버를 바라보게 하기 때문에 이렇게 사용하지는 않는다.
+[root@servera ~]# dnf -y remove chrony
+chrony 삭제 후 진행
+
+[root@servera ~]# ls -l $(which yum)
+lrwxrwxrwx. 1 root root 5 Mar 21  2022 /usr/bin/yum -> dnf-3
+[root@servera ~]# ls -l $(which dnf)
+lrwxrwxrwx. 1 root root 5 Mar 21  2022 /usr/bin/dnf -> dnf-3
+
+[root@servera ~]# dnf list
+[root@servera ~]# dnf repolist
+[root@servera ~]# dnf clean all
+
+[root@servera ~]# dnf install telnetRed Hat Enterprise Linux 9.0 BaseOS (dvd)   779 kB/s | 2.7 kB     00:00    
+Red Hat Enterprise Linux 9.0 AppStream (dvd 1.1 MB/s | 2.8 kB     00:00    
+Dependencies resolved.
+============================================================================
+ Package Arch    Version          Repository                           Size
+============================================================================
+Installing:
+ telnet  x86_64  1:0.17-85.el9    rhel-9.0-for-x86_64-appstream-rpms   66 k
+
+Transaction Summary
+============================================================================
+Install  1 Package
+
+Total download size: 66 k
+Installed size: 121 k
+Is this ok [y/N]: y
+Downloading Packages:
+telnet-0.17-85.el9.x86_64.rpm               398 kB/s |  66 kB     00:00    
+----------------------------------------------------------------------------
+Total                                       394 kB/s |  66 kB     00:00     
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                    1/1 
+  Installing       : telnet-1:0.17-85.el9.x86_64                        1/1 
+  Running scriptlet: telnet-1:0.17-85.el9.x86_64                        1/1 
+  Verifying        : telnet-1:0.17-85.el9.x86_64                        1/1 
+
+Installed:
+  telnet-1:0.17-85.el9.x86_64                                               
+
+Complete!
+[root@servera ~]# 
+[root@servera ~]# dnf -y install ftp 
+Red Hat Enterprise Linux 9.0 BaseOS (dvd)   628 kB/s | 2.7 kB     00:00    
+Red Hat Enterprise Linux 9.0 AppStream (dvd 1.3 MB/s | 2.8 kB     00:00    
+Dependencies resolved.
+============================================================================
+ Package
+       Arch     Version          Repository                            Size
+============================================================================
+Installing:
+ ftp   x86_64   0.17-89.el9      rhel-9.0-for-x86_64-appstream-rpms    64 k
+
+Transaction Summary
+============================================================================
+Install  1 Package
+
+Total download size: 64 k
+Installed size: 112 k
+Downloading Packages:
+ftp-0.17-89.el9.x86_64.rpm                  1.1 MB/s |  64 kB     00:00    
+----------------------------------------------------------------------------
+Total                                       1.1 MB/s |  64 kB     00:00     
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                    1/1 
+  Installing       : ftp-0.17-89.el9.x86_64                             1/1 
+  Running scriptlet: ftp-0.17-89.el9.x86_64                             1/1 
+  Verifying        : ftp-0.17-89.el9.x86_64                             1/1 
+
+Installed:
+  ftp-0.17-89.el9.x86_64                                                    
+
+Complete!
+[root@servera ~]# 
+
+install  : 설치
+remove  : 삭제
+
+ntp를 구성하여 클라이언트로서 동작 시키기
+1 패키지 설치
+# dnf -y install chrony
+[root@servera ~]# rpm -ql chrony
+chrony 패키지에서 추출된 파일 목록 확인
+[root@servera ~]# rpm -qlc chrony
+설정 파일만 모아보기
+[root@servera ~]# rpm -qld chrony
+문서파일만 모아보기
+/etc/chrony.conf : chrony에서의 설정 파일
+해당 파일에서 클라이언트 구성은 1번 섹션이다.
+server / pool
+server : 단독 서버 
+pool : 다수의 서버로 구성되어 있다.
+server 2.rhel.pool.ntp.org iburst
+server : 서버를 지정
+2.rhel.pool.ntp.org : 서버로 지정할 호스트/ IP 
+iburst : 타임 서버들은 초기 서비스에 걸리는 동기화 시간이 존재한다. 서비스를 시작하고 외부, 내부망에서 네트워크를 확인한 뒤 패킷을 보내 동기화를 시작
+패킷을 전송하고 다음 패킷까지 걸리는 시간은 16초가 걸린다. 이 시간을 줄이기 위해서 한번에 8개를 동시에 전송하라는 옵션이다.
+[root@servera ~]# vi  /etc/chrony.conf
+#pool 2.rhel.pool.ntp.org iburst  <  기존 라인 주석 처리
+server classroom.example.com iburst 
+:wq
+
+여기부터 따라하면 됩니다.
+[root@servera ~]# timedatectl set-ntp false 
+[root@servera ~]# timedatectl set-time '2012-10-30 13:00:00'
+[root@servera ~]# systemctl daemon-reload   < systemd에 변경된 파일이 있으면 업데이트
+[root@servera ~]# systemctl enable --now chronyd 
+Created symlink /etc/systemd/system/multi-user.target.wants/chronyd.service → /usr/lib/systemd/system/chronyd.service.
+사용한 명령:  systemctl enable --now chronyd 
+1 systemctl start chronyd 
+2 systemctl enable chronyd 
+[root@servera ~]# systemctl is-active chronyd
+active
+[root@servera ~]# systemctl is-enabled chronyd
+enabled
+
+[root@servera ~]# systemctl status chronyd
+● chronyd.service - NTP client/server
+     Loaded: loaded (/usr/lib/systemd/system/chronyd.service; enabled; vendor preset: enabled)
+     Active: active (running) since Tue 2012-10-30 13:00:38 EDT; 11 years 8 months ago
+       Docs: man:chronyd(8)
+             man:chrony.conf(5)
+    Process: 27544 ExecStart=/usr/sbin/chronyd $OPTIONS (code=exited, status=0/SUCCESS)
+   Main PID: 27546 (chronyd)
+      Tasks: 1 (limit: 10799)
+     Memory: 804.0K
+        CPU: 21ms
+     CGroup: /system.slice/chronyd.service
+             └─27546 /usr/sbin/chronyd -F 2
+
+[root@servera ~]# timedatectl 
+               Local time: Tue 2024-07-23 04:24:32 EDT
+           Universal time: Tue 2024-07-23 08:24:32 UTC
+                 RTC time: Tue 2024-07-23 08:24:32
+                Time zone: America/New_York (EDT, -0400)
+System clock synchronized: yes   <<< 싱크가 완료
+              NTP service: active    <<< 활성화
+          RTC in local TZ: no
+
+다른 터미널을 열어서 root 권한으로 아래의 명령을 실행한다.
+[root@servera ~]# while true; do date 06191300 ; sleep 1; done
+
+[root@servera ~]# chronyc sources
+MS Name/IP address         Stratum Poll Reach LastRx Last sample               
+===============================================================================
+^? 172.25.254.254                0   6   377     -     +0ns[   +0ns] +/-    0ns
+
+[root@servera ~]# chronyc sources -v
+
+  .-- Source mode  '^' = server, '=' = peer, '#' = local clock.
+ / .- Source state '*' = current best, '+' = combined, '-' = not combined,
+| /             'x' = may be in error, '~' = too variable, '?' = unusable.
+||                                                 .- xxxx [ yyyy ] +/- zzzz
+||      Reachability register (octal) -.           |  xxxx = adjusted offset,
+||      Log2(Polling interval) --.      |          |  yyyy = measured offset,
+||                                \     |          |  zzzz = estimated error.
+||                                 |    |           \
+MS Name/IP address         Stratum Poll Reach LastRx Last sample               
+===============================================================================
+^? 172.25.254.254                0   6   377     -     +0ns[   +0ns] +/-    0ns
+
+
+[root@servera ~]# watch -n 1 'chronyc sources -v'
+시간 동기화를 모니터링
+[root@servera ~]# timedatectl set-ntp false ; date 06191300 ; timedatectl set-ntp true 
+
+
+
+  .-- Source mode  '^' = server, '=' = peer, '#' = local clock.
+ / .- Source state '*' = current best, '+' = combined, '-' = not combined,
+| /             'x' = may be in error, '~' = too variable, '?' = unusable.
+||                                                 .- xxxx [ yyyy ] +/- zzzz
+||      Reachability register (octal) -.           |  xxxx = adjusted offset,
+||      Log2(Polling interval) --.      |          |  yyyy = measured offset,
+||                                \     |          |  zzzz = estimated error.
+||                                 |    |           \
+MS Name/IP address         Stratum Poll Reach LastRx Last sample
+===============================================================================
+^* 172.25.254.254                2   6    17    32  -1154ns[-3900ns] +/- 3832us
+동기화가 완료 되면 Reach 값이 377로 유지된다.
+
+다시한번 이렇게 구성
+[root@servera ~]# timedatectl set-ntp false ; date 06191300
+
+[root@servera ~]# timedatectl set-ntp true  
+[root@servera ~]# chronyc -a makestep 
+200 OK
+200 OK chronyc -a makestep 이 명령어는 NTP 서버와 최대한 근접하게 시간을 수정하여 동기화 되는 시간을 줄여줄수 있다.
+
+타임존을 변경해야 하는 경우에는 아래와 같이 사용한다.
+[root@servera ~]# timedatectl set-timezone Asia/Seoul 
+[root@servera ~]# timedatectl
+               Local time: Tue 2024-07-23 17:35:30 KST
+           Universal time: Tue 2024-07-23 08:35:30 UTC
+                 RTC time: Tue 2024-07-23 08:35:30
+                Time zone: Asia/Seoul (KST, +0900)
+System clock synchronized: yes
+              NTP service: active
+          RTC in local TZ: no
+
+
+MS Name/IP address         Stratum Poll Reach LastRx Last sample
+===============================================================================
+^* 172.25.254.254                2   6   377    49  +5620ns[  +17us] +/- 4601us
+
+Reach 이 377이면 동기화가 완료 되었다 라고 보면 된다.
+
+시험에서는 설정 파일을 구성하고 ntp 서비스에서 대해 enabled만 구성되면 끝
+패키지 설치 / 설정 파일 변경 / enabled 확인
+
+연습문제는 내일 오전에 하고
+ 
+storage 부터 7장 나가도록 하겠습니다.
+
+
+
 
 
 
